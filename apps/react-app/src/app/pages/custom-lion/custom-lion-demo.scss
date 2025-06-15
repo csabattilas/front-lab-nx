@@ -1,0 +1,15 @@
+locked-selection-list-box [checked] {
+  background: inherit;
+}
+
+locked-selection-list-box [disabled]:not([data-expected]) {
+  opacity: 1;
+  cursor: not-allowed;
+  color: red !important;
+}
+
+locked-selection-list-box [disabled][data-expected] {
+  opacity: 1;
+  cursor: not-allowed;
+  color: green !important;
+}

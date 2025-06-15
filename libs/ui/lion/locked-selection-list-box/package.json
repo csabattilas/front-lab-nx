@@ -1,0 +1,11 @@
+{
+  "name": "@front-lab/locked-selection-list-box",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "@lion/ui": "0.11.5",
+    "lit": "^3.0.0"
+  }
+}

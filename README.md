@@ -2,16 +2,39 @@
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+A modern frontend development workspace built with Nx, React, and custom web components. This monorepo contains both React applications and reusable UI components based on the Lion web component library.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Project Structure
 
-## Finish your CI setup
+- **apps/react-app**: React application that demonstrates the usage of custom Lion components
+- **libs/ui/lion**: Custom Lion web components library
+  - **locked-selection-list-box**: A custom Lion component that implements locked selection functionality
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/CGb0dDo7Tf)
+## Getting Started
 
+### Installation
 
-## Run tasks
+```sh
+npm install
+```
+
+### Running the React App
+
+```sh
+npm run start:react-app
+```
+
+### Running Tests
+
+```sh
+# Test the locked-selection-list-box component
+npm run test:locked-selection-list-box
+
+# Test the React app
+npm run test:react-app
+```
+
+## Development
 
 To run tasks with Nx use:
 

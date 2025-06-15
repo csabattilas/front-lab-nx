@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "declarationDir": "dist/types"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
