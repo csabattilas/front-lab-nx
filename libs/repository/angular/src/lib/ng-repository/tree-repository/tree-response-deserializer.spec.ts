@@ -1,134 +1,163 @@
+import { describe, it, expect } from 'vitest';
 import { deserializeTreeData } from './tree-response-deserializer';
 import { TreeApiResponse } from './tree-repository-dto.model';
 
-describe('TreeResponseDeserializer', () => {
+describe('tree-response-deserializer', () => {
   describe('deserializeTreeData', () => {
-    it('should transform API response to tree nodes', () => {
+    it('should deserialize valid tree data correctly', () => {
       const mockApiResponse: TreeApiResponse = {
         folders: {
           columns: ['id', 'title', 'parent_id'],
           data: [
             [1, 'Root Folder', null],
-            [2, 'Subfolder', 1],
+            [2, 'Child Folder', 1],
+            [3, 'Another Root', null],
+            [4, 'Nested Folder', 2],
           ],
         },
         items: {
           columns: ['id', 'title', 'folder_id'],
           data: [
-            [101, 'Item in Root', 1],
-            [102, 'Item in Subfolder', 2],
+            [5, 'Item in Root', 1],
+            [6, 'Item in Child', 2],
+            [7, 'Item in Nested', 4],
+            [8, 'Another Item in Root', 1],
           ],
         },
       };
 
       const result = deserializeTreeData(mockApiResponse);
 
-      expect(result.length).toBe(1);
-      expect(result[0].id).toBe(1);
-      expect(result[0].title).toBe('Root Folder');
-      expect(result[0].items?.length).toBe(2); // Subfolder and Item in Root
+      expect(result).toHaveLength(2);
 
-      const subfolder = result[0].items?.find(item => item.id === 2);
-      expect(subfolder).toBeDefined();
-      expect(subfolder?.title).toBe('Subfolder');
-      expect(subfolder?.items?.length).toBe(1);
-      expect(subfolder?.items?.[0].id).toBe(102);
+      const rootFolder = result.find(node => node.id === 1);
+      const anotherRoot = result.find(node => node.id === 3);
 
-      const itemInRoot = result[0].items?.find(item => item.id === 101);
+      expect(rootFolder).toBeDefined();
+      expect(rootFolder?.title).toBe('Root Folder');
+      expect(rootFolder?.items).toHaveLength(3);
+
+      expect(anotherRoot).toBeDefined();
+      expect(anotherRoot?.title).toBe('Another Root');
+      expect(anotherRoot?.items).toHaveLength(0);
+
+      const childFolder = rootFolder?.items?.find(node => node.id === 2);
+      expect(childFolder).toBeDefined();
+      expect(childFolder?.title).toBe('Child Folder');
+      expect(childFolder?.items).toHaveLength(2);
+
+      const nestedFolder = childFolder?.items?.find(node => node.id === 4);
+      expect(nestedFolder).toBeDefined();
+      expect(nestedFolder?.title).toBe('Nested Folder');
+      expect(nestedFolder?.items).toHaveLength(1);
+
+      const itemInRoot = rootFolder?.items?.find(node => node.id === 5);
       expect(itemInRoot).toBeDefined();
       expect(itemInRoot?.title).toBe('Item in Root');
-    });
+      expect(itemInRoot?.items).toBeUndefined();
 
-    it('should handle empty data', () => {
-      const emptyResponse: TreeApiResponse = {
-        folders: {
-          columns: ['id', 'title', 'parent_id'],
-          data: [],
-        },
-        items: {
-          columns: ['id', 'title', 'folder_id'],
-          data: [],
-        },
-      };
+      const anotherItemInRoot = rootFolder?.items?.find(node => node.id === 8);
+      expect(anotherItemInRoot).toBeDefined();
+      expect(anotherItemInRoot?.title).toBe('Another Item in Root');
 
-      const result = deserializeTreeData(emptyResponse);
+      const itemInChild = childFolder?.items?.find(node => node.id === 6);
+      expect(itemInChild).toBeDefined();
+      expect(itemInChild?.title).toBe('Item in Child');
 
-      expect(result).toEqual([]);
-    });
-
-    it('should throw error for missing required columns in folders', () => {
-      const invalidResponse = {
-        folders: {
-          columns: ['wrong_id', 'title', 'parent_id'],
-          data: [[1, 'Root Folder', null]],
-        },
-        items: {
-          columns: ['id', 'title', 'folder_id'],
-          data: [],
-        },
-      };
-
-      expect(() =>
-        deserializeTreeData(invalidResponse as TreeApiResponse)
-      ).toThrowError(
-        `Invalid folder data format: missing required column 'id'`
-      );
-    });
-
-    it('should throw error for missing required columns in items', () => {
-      const invalidResponse = {
-        folders: {
-          columns: ['id', 'title', 'parent_id'],
-          data: [],
-        },
-        items: {
-          columns: ['id', 'name', 'folder_id'],
-          data: [[101, 'Item', 1]],
-        },
-      };
-
-      expect(() =>
-        deserializeTreeData(invalidResponse as TreeApiResponse)
-      ).toThrowError(
-        `Invalid item data format: missing required column 'title'`
-      );
+      const itemInNested = nestedFolder?.items?.find(node => node.id === 7);
+      expect(itemInNested).toBeDefined();
+      expect(itemInNested?.title).toBe('Item in Nested');
     });
 
     it('should sort folders before items and sort alphabetically within each type', () => {
-      const response: TreeApiResponse = {
+      const mockApiResponse: TreeApiResponse = {
         folders: {
           columns: ['id', 'title', 'parent_id'],
           data: [
             [1, 'Z Root Folder', null],
-            [2, 'B Subfolder', 1],
-            [3, 'A Subfolder', 1],
+            [2, 'A Child Folder', 1],
+            [3, 'B Child Folder', 1],
           ],
         },
         items: {
           columns: ['id', 'title', 'folder_id'],
           data: [
-            [101, 'Z Item', 1],
-            [102, 'A Item', 1],
+            [4, 'A Item', 1],
+            [5, 'Z Item', 1],
+            [6, 'M Item', 1],
           ],
         },
       };
 
-      const result = deserializeTreeData(response);
+      const result = deserializeTreeData(mockApiResponse);
 
-      expect(result[0].title).toBe('Z Root Folder');
+      expect(result).toHaveLength(1);
 
-      const children = result[0].items ?? [];
-      expect(children.length).toBe(4);
+      const rootFolder = result[0];
+      expect(rootFolder.title).toBe('Z Root Folder');
+      expect(rootFolder.items).toHaveLength(5);
 
-      expect(children[0].title).toBe('A Subfolder');
-      expect(children[1].title).toBe('B Subfolder');
+      expect(rootFolder.items?.[0].title).toBe('A Child Folder');
+      expect(rootFolder.items?.[1].title).toBe('B Child Folder');
 
-      expect(children[2].title).toBe('A Item');
-      expect(children[3].title).toBe('Z Item');
+      expect(rootFolder.items?.[2].title).toBe('A Item');
+      expect(rootFolder.items?.[3].title).toBe('M Item');
+      expect(rootFolder.items?.[4].title).toBe('Z Item');
     });
 
-    it('should handle complex nested structures', () => {
-      const complexResponse: TreeApiResponse = {
+    it('should throw an error if required folder columns are missing', () => {
+      const invalidFolderData: TreeApiResponse = {
+        folders: {
+          columns: ['id', 'title'],
+          data: [[1, 'Root']],
+        },
+        items: {
+          columns: ['id', 'title', 'folder_id'],
+          data: [],
+        },
+      };
+
+      expect(() => deserializeTreeData(invalidFolderData)).toThrow(
+        "Invalid folder data format: missing required column 'parent_id'"
+      );
+    });
+
+    it('should throw an error if required item columns are missing', () => {
+      const invalidItemData: TreeApiResponse = {
+        folders: {
+          columns: ['id', 'title', 'parent_id'],
+          data: [[1, 'Root', null]],
+        },
+        items: {
+          columns: ['id', 'title'],
+          data: [[2, 'Item']],
+        },
+      };
+
+      expect(() => deserializeTreeData(invalidItemData)).toThrow(
+        "Invalid item data format: missing required column 'folder_id'"
+      );
+    });
+
+    it('should handle empty data correctly', () => {
+      const emptyData: TreeApiResponse = {
+        folders: {
+          columns: ['id', 'title', 'parent_id'],
+          data: [],
+        },
+        items: {
+          columns: ['id', 'title', 'folder_id'],
+          data: [],
+        },
+      };
+
+      const result = deserializeTreeData(emptyData);
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle complex nested structure with multiple levels', () => {
+      const complexData: TreeApiResponse = {
         folders: {
           columns: ['id', 'title', 'parent_id'],
           data: [
@@ -143,34 +172,29 @@ describe('TreeResponseDeserializer', () => {
         items: {
           columns: ['id', 'title', 'folder_id'],
           data: [
-            [101, 'Root Item', 1],
-            [102, 'Level 1-A Item', 2],
-            [103, 'Level 1-B Item', 3],
-            [104, 'Level 2-A Item', 4],
-            [105, 'Level 2-B Item', 5],
-            [106, 'Level 3-A Item', 6],
+            [7, 'Item Root', 1],
+            [8, 'Item L1-A', 2],
+            [9, 'Item L1-B', 3],
+            [10, 'Item L2-A', 4],
+            [11, 'Item L2-B', 5],
+            [12, 'Item L3-A', 6],
           ],
         },
       };
 
-      const result = deserializeTreeData(complexResponse);
+      const result = deserializeTreeData(complexData);
 
-      expect(result.length).toBe(1);
+      expect(result).toHaveLength(1);
 
       const root = result[0];
-      expect(root.title).toBe('Root');
+      const level1A = root.items?.find(node => node.id === 2);
+      const level2A = level1A?.items?.find(node => node.id === 4);
+      const level3A = level2A?.items?.find(node => node.id === 6);
 
-      const level1A = root.items?.find(i => i.id === 2);
-      expect(level1A?.title).toBe('Level 1-A');
-
-      const level2A = level1A?.items?.find(i => i.id === 4);
-      expect(level2A?.title).toBe('Level 2-A');
-
-      const level3A = level2A?.items?.find(i => i.id === 6);
+      expect(level3A).toBeDefined();
       expect(level3A?.title).toBe('Level 3-A');
-
-      const level3AItem = level3A?.items?.[0];
-      expect(level3AItem?.title).toBe('Level 3-A Item');
+      expect(level3A?.items).toHaveLength(1);
+      expect(level3A?.items?.[0].title).toBe('Item L3-A');
     });
   });
 });

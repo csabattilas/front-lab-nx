@@ -7,7 +7,7 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { TreeSelectionContextService } from '../folder-tree-contex';
+import { TreeSelectionContextService } from '../folder-tree-context';
 import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
 import { CheckboxComponent } from '../../../checkbox/checkbox';
 

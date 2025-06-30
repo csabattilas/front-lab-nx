@@ -36,12 +36,12 @@ export abstract class BaseFolderTreeNodeComponent {
     return !!this.node().items?.length;
   }
 
-  protected onToggle(event: Event): void {
+  public onToggle(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
     this.checked.set(isChecked);
   }
 
-  protected toggleExpanded(): void {
+  public toggleExpanded(): void {
     if (!this.hasChildren) {
       return;
     }

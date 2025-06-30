@@ -47,8 +47,8 @@ export default [
           varsIgnorePattern: '^_',
           args: 'after-used',
           argsIgnorePattern: '^_',
-          ignoreRestSiblings: true
-        }
+          ignoreRestSiblings: true,
+        },
       ],
       '@typescript-eslint/member-ordering': ['error'],
       '@typescript-eslint/naming-convention': [
@@ -77,6 +77,7 @@ export default [
       '@typescript-eslint/no-implied-eval': ['error'],
       '@typescript-eslint/no-invalid-this': 'error',
       '@typescript-eslint/no-misused-new': 'error',
+      '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
@@ -95,7 +96,6 @@ export default [
       ],
       '@typescript-eslint/no-unnecessary-qualifier': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
@@ -114,20 +114,22 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'error',
     },
   },
-  ...compat.extends(
-    'plugin:@angular-eslint/template/recommended',
-    'plugin:@angular-eslint/template/accessibility'
-  ).map((config) => ({
-    ...config,
-    files: ['**/*.html'],
-    rules: {
-      ...config.rules,
-      '@angular-eslint/template/no-negated-async': 'error',
-      '@angular-eslint/template/conditional-complexity': [
-        'warn',
-        { maxComplexity: 4 },
-      ],
-      '@angular-eslint/template/prefer-control-flow': 'error',
-    },
-  })),
+  ...compat
+    .extends(
+      'plugin:@angular-eslint/template/recommended',
+      'plugin:@angular-eslint/template/accessibility'
+    )
+    .map(config => ({
+      ...config,
+      files: ['**/*.html'],
+      rules: {
+        ...config.rules,
+        '@angular-eslint/template/no-negated-async': 'error',
+        '@angular-eslint/template/conditional-complexity': [
+          'warn',
+          { maxComplexity: 4 },
+        ],
+        '@angular-eslint/template/prefer-control-flow': 'error',
+      },
+    })),
 ];

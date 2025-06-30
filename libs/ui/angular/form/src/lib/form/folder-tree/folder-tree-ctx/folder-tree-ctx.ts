@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
-import { TreeSelectionContextService } from './folder-tree-contex';
+import { TreeSelectionContextService } from './folder-tree-context';
 
 @Component({
   selector: 'fl-form-folder-tree-ctx',

@@ -6,6 +6,12 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "config": "libs/repository/angular/vite.config.mts"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     }

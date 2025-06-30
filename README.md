@@ -33,9 +33,6 @@ pnpm start:angular-app
 # Start React app
 pnpm start:react-app
 
-# Start Next.js app
-pnpm start:next-app
-
 # Run tests
 pnpm test
 ```
@@ -46,11 +43,12 @@ Run tasks with Nx:
 
 ```bash
 pnpm nx <target> <project-name>
-
+pnpm <script-name>
 # Examples
 pnpm nx serve angular-app
-pnpm nx build react-app
-pnpm nx test next-app
+pnpm lint:angular-libs
+pnpm test:angular-libs
+pnpm build:angular-app
 ```
 
 ## Deployment
@@ -63,3 +61,4 @@ The Angular application is automatically deployed to Firebase hosting when chang
 
 - add more components
 - add e2e tests
+- add more unit tests

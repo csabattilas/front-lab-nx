@@ -71,10 +71,7 @@ Run the unit tests for this library:
 
 ```bash
 # Run tests for the entire library
-pnpm nx test ng-form
-
-# Run tests with coverage
-pnpm nx test ng-form --coverage
+pnpm run test:ng-form
 ```
 
 ## Development
