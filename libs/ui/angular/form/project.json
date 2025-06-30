@@ -1,0 +1,19 @@
+{
+  "name": "ng-form",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/angular/form/src",
+  "prefix": "fl-form",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/ui/angular/form/**/*.ts",
+          "libs/ui/angular/form/**/*.html"
+        ]
+      }
+    }
+  }
+}

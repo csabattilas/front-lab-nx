@@ -2,7 +2,7 @@
   "name": "angular-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "fl",
   "sourceRoot": "apps/angular-app/src",
   "tags": [],
   "targets": {
@@ -23,12 +23,7 @@
           }
         ],
         "styles": ["apps/angular-app/src/styles.scss"],
-        "scripts": [],
-        "server": "apps/angular-app/src/main.server.ts",
-        "ssr": {
-          "entry": "apps/angular-app/src/server.ts"
-        },
-        "outputMode": "server"
+        "scripts": []
       },
       "configurations": {
         "production": {

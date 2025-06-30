@@ -1,1 +1,1 @@
-export * from './lib/locked-selection-list-box'; 
+export * from './lib/locked-selection-list-box';

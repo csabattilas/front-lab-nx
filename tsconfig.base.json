@@ -13,8 +13,12 @@
     "lib": ["es2020", "dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
+      "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
+      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"],
       "@front-lab/locked-selection-list-box": [
         "libs/ui/lion/locked-selection-list-box/src/index.js"
       ]

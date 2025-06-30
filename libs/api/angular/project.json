@@ -1,0 +1,20 @@
+{
+  "name": "ng-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/angular/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/api/angular/**/*.ts",
+          "libs/api/angular/**/*.html"
+        ]
+      }
+    }
+  }
+}
