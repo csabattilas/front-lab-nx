@@ -23,7 +23,6 @@ export default [
       },
     },
     rules: {
-      'no-unused-private-class-members': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -43,10 +42,10 @@ export default [
       '@angular-eslint/prefer-inject': 'error',
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { 
-          vars: 'all', 
-          varsIgnorePattern: '^_', 
-          args: 'after-used', 
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
           argsIgnorePattern: '^_',
           ignoreRestSiblings: true
         }

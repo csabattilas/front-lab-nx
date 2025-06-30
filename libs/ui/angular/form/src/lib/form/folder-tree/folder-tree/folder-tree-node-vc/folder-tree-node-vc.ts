@@ -23,6 +23,7 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
 
   private readonly children = viewChildren(FolderTreeNodeVcComponent);
 
+  // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
     const checked = this.checked();
 
@@ -38,6 +39,7 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
     }
   });
 
+  // @ts-expect-error: TS6133
   private readonly childrenCheckedEffect = effect(() => {
     if (!this.hasChildren) return;
 
@@ -54,12 +56,9 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
       c => c.indeterminate
     ).length;
 
-    if (checkedCount === total) {
-      this.checked.set(true);
-    }
-
-    if (checkedCount === 0) {
-      this.checked.set(false);
+    if (checkedCount === total || checkedCount === 0) {
+      this.indeterminate.set(false);
+      this.checked.set(checkedCount === total);
     }
 
     this.indeterminate.set(

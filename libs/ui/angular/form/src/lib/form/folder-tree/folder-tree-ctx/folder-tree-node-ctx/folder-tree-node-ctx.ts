@@ -31,8 +31,6 @@ export class FolderTreeNodeCtxComponent
   private currentChecked = false;
   private indeterminateChecked = false;
 
-  private readonly hello = 'ff';
-
   // todo: this could also be pushed out into a base class with abstract method forced to be implemented for vc and ctx nodes
   private readonly childStates = computed(() => {
     if (!this.hasChildren) return [];
@@ -44,6 +42,7 @@ export class FolderTreeNodeCtxComponent
     );
   });
 
+  // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
     if (this.checked() !== this.currentChecked) {
       this.currentChecked = this.checked();
@@ -65,6 +64,7 @@ export class FolderTreeNodeCtxComponent
     }
   });
 
+  // @ts-expect-error: TS6133
   private readonly updatedIntermediate = effect(() => {
     if (this.indeterminate() !== this.indeterminateChecked) {
       this.indeterminateChecked = this.indeterminate();
@@ -75,7 +75,8 @@ export class FolderTreeNodeCtxComponent
     }
   });
 
-  private readonly childrenIndeterminateEffect = effect(() => {
+  // @ts-expect-error: TS6133
+  private readonly childrenCheckedEffect = effect(() => {
     if (!this.hasChildren) return;
 
     const total = this.node().items?.length ?? 0;
@@ -100,10 +101,5 @@ export class FolderTreeNodeCtxComponent
 
   public ngOnInit(): void {
     this.ctx.registerNode(this.node().id, this.hasChildren);
-  }
-
-  public override onToggle($event: Event): void {
-    super.onToggle($event);
-    this.indeterminate.set(false);
   }
 }

@@ -5,10 +5,7 @@
       [indeterminate]="indeterminate()"
       (change)="onToggle($event)"
     >
-      <span [class.folder]="hasChildren"
-        >{{ node().title }} [{{node().id}}] {{checked()}}
-        {{indeterminate()}}</span
-      >
+      <span [class.folder]="hasChildren">{{ node().title }}</span>
     </fl-form-checkbox>
     @if (hasChildren) {
     <span class="chevron" [class.expanded]="expandedSignal()">

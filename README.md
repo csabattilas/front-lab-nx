@@ -2,17 +2,26 @@
 
 A modern frontend development workspace built with Nx, featuring Angular, React, and Next.js applications with shared libraries. This monorepo serves as an experimental laboratory for frontend technologies, allowing developers to explore different frameworks and approaches while sharing common UI components, repository services, and API interfaces. The project demonstrates how to effectively structure a multi-framework application ecosystem with code reuse and consistent development patterns.
 
-## What's Inside
+It includes:
 
-- **Angular App**: Angular application with shared UI components
-- **React App**: React application with custom components
-- **Next.js App**: Next.js application for server-side rendering
-- **Shared Libraries**:
-  - UI components (Angular, React)
-  - Repository services
-  - API interfaces
+- Angular, React, and Next.js applications
+- Shared libraries providing UI components, repository services, and API interfaces
 
-## Quick Start
+## Applications
+
+- Angular App: A standalone Angular application showcasing Angular components and services
+  - **Live Demo**: [https://angular-front-lab.web.app](https://angular-front-lab.web.app)
+- React App: A React application with modern React patterns.
+  Currently testing out some custom lion component integration
+- Next.js App: Server-side rendered application using Next.js. Empty for now
+
+## Libraries
+
+- UI Components: Reusable UI components for Angular, React, and Web Components
+- Repository Services: Data access layer for backend communication
+- API Interfaces: Shared API models and services
+
+## Getting Started
 
 ```bash
 # Install dependencies
@@ -44,9 +53,13 @@ pnpm nx build react-app
 pnpm nx test next-app
 ```
 
-## Need Help?
+## Deployment
 
-For more information about Nx and this workspace, check out:
+The Angular application is automatically deployed to Firebase hosting when changes are pushed to the main branch:
 
-- [Nx Documentation](https://nx.dev)
-- Install [Nx Console](https://nx.dev/getting-started/editor-setup) for your IDE
+- **Live Demo**: [https://angular-front-lab.web.app](https://angular-front-lab.web.app)
+
+## Future
+
+- add more components
+- add e2e tests

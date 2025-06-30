@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, InjectionToken } from '@angular/core';
 import { ApiService } from './interfaces/api.interface';
 import { ApiConfig } from './models/api-config.model';
@@ -11,7 +10,6 @@ export const API_CONFIG = new InjectionToken<ApiConfig>('API_CONFIG');
   providedIn: 'root',
 })
 export class ApiFactoryService {
-  private http = inject(HttpClient);
   private config = inject(API_CONFIG, { optional: true }) || {
     implementation: 'mock',
   };

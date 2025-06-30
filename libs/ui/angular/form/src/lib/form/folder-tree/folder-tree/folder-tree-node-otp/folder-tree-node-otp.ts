@@ -42,6 +42,8 @@ export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
   // I could not use computed/linkedSignals as it is hard design this only declaratively
   // the checked state depends on the order of the actions. always latest wins
   // perhaps there is a way, but I could not find it
+
+  // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
     if (this.currentChecked !== this.checked()) {
       this.currentChecked = this.checked();
@@ -62,6 +64,7 @@ export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
   });
 
   //side effect to notify the parent about their children indeterminate state
+  // @ts-expect-error: TS6133
   private readonly indeterminateEffect = effect(() => {
     if (!this.hasChildren) return;
 

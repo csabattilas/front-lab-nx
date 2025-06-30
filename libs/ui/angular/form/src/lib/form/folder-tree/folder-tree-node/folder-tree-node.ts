@@ -23,6 +23,7 @@ export abstract class BaseFolderTreeNodeComponent {
     return this.inheritedChecked();
   });
 
+  // @ts-expect-error: TS6133
   private readonly formControlChecked = effect(() => {
     if (this.ctx.isFormUpdate() && !this.hasChildren) {
       this.checked.set(this.ctx.selectedItemsIds().has(this.node().id));

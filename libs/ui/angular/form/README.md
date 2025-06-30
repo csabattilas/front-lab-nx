@@ -2,46 +2,62 @@
 
 A collection of reusable Angular form components built with modern Angular patterns. This library provides standalone form components that can be easily integrated into any Angular application within the workspace.
 
-## Components
+## Form Components
 
 ### Folder Tree
 
-A hierarchical folder tree component with selection capabilities:
+A hierarchical folder tree custom form control.
 
-- `FolderTreeComponent`: Main component that implements `ControlValueAccessor` and provides context for the tree structure
-- `FolderTreeCtxComponent`: Context provider component that manages tree selection state
-- Node components:
-  - `FolderTreeNodeOtpComponent`: Optimized tree node implementation
-  - `FolderTreeNodeVcComponent`: View container implementation of tree nodes
+The tree is built based on a JSON data structure. An example of this structure can be found here:
+
+`libs/api/angular/src/lib/ng-api/implementations/mock/mock-data.ts`
+
+Based on this data, the tree repository will build on more suitable data structure, which is fed to the folder tree component when used.
+
+#### Basic usage:
+
+```
+<fl-form-folder-tree [formControl]="folderSelectionControlOutputBasedTree">
+  @for (node of data; track node.id) {
+    <fl-form-folder-tree-node-otp
+      [node]="node"
+      [expanded]="true"
+    ></fl-form-folder-tree-node-otp>
+  }
+</fl-form-folder-tree>
+```
+
+Other usages can be found in the `apps/angular-app/src/app/features/folder-tree-demo/folder-tree-demo.html`
+
+The `node` data will be provided by the tree repository lib, which builds the tree structure based on the provided endpoint.
+
+I am trying to research the performance of various implementations of the folder tree component, hence there are three different implementations:
+
+- **Output-based tree**: This implementation uses an output-based approach to render the tree nodes. Each child will tell its parent when its checked or intermediate state is changing.
+- **ViewChild-based tree**: This implementation uses the new `viewchildren` signal to query the checked or intermediate state of the children.
+- **Custom nodeMap-based tree**: This implementation registers the checked or intermediate (signal-based) state of each node into a Map based on a custom id (the folders and items can have the same id).
+
+In order to link the tree node to the form control, we use a context object. For the `output` and `viewchild` based implementations, the context object is provided by the `FolderTreeComponent`, which implements the `ControlValueAccessor` interface.
+
+While the `nodeMap` based implementation uses a separate context service, which is also responsible for registering the nodes in the custom nodemap. The context-based implementation has its own custom control (`FolderTreeCtxComponent`) too.
+
+#### Component extensions
+
+The node components share some similarities, so they are extended from a base component: `BaseFolderTreeNodeComponent`.
+
+I realize that there are similarities between the `viewchild` and `nodeMap` based node components (`FolderTreeNodeVcComponent` and `FolderTreeNodeCtxComponent`) as well, which can be further pushed into extension hierarchy, but for now, I decided to keep them separate for clarity.
+
+e.g., the effects checking the state are almost the same, and the state signals implementation can be forced with abstract methods.
 
 ### Checkbox
 
-Custom checkbox component with enhanced functionality and styling.
-
-## Usage
-
-Import the required components in your Angular module or standalone component:
-
-```typescript
-import {
-  FolderTreeComponent,
-  FolderTreeCtxComponent,
-} from '@front-lab-nx/ui/angular/form';
-```
-
-Example usage of folder tree:
-
-```html
-<fl-form-folder-tree-ctx>
-  <fl-form-folder-tree [items]="folderItems"></fl-form-folder-tree>
-</fl-form-folder-tree-ctx>
-```
+Custom checkbox component with enhanced functionality and styling. Just to have a nicer checkbox.
 
 ## Testing Components
 
 ### View in Angular App
 
-To test these components in action:
+To test these components in action on a local development environment:
 
 1. Start the Angular application:
    ```bash
