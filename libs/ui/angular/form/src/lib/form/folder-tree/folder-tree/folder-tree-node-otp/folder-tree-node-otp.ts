@@ -48,14 +48,14 @@ export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
     if (this.currentChecked !== this.checked()) {
       this.currentChecked = this.checked();
       this.checkedChange.emit(this.currentChecked);
-    }
 
-    const node = this.node();
+      const node = this.node();
 
-    if (this.checked() && !this.hasChildren) {
-      this.ctx.addSelectedItems(node.id);
-    } else if (!this.checked() && !this.hasChildren) {
-      this.ctx.removeSelectedItems(node.id);
+      if (this.checked() && !this.hasChildren) {
+        this.ctx.addSelectedItems(node.id);
+      } else if (!this.checked() && !this.hasChildren) {
+        this.ctx.removeSelectedItems(node.id);
+      }
     }
 
     if (this.checked() && this.hasChildren) {
