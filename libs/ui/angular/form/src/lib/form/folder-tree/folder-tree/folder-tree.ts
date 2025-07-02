@@ -1,7 +1,7 @@
 import {
   Component,
   forwardRef,
-  effect,
+  untracked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   inject,
@@ -45,15 +45,6 @@ export class FolderTreeComponent
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly isFormUpdate = this._isFormUpdate.asReadonly();
 
-  constructor() {
-    effect(() => {
-      const selectedIds = this.selectedItemsIds();
-      const idsArray = Array.from(selectedIds);
-      this.onChange(idsArray);
-      this.cdr.markForCheck();
-    });
-  }
-
   public writeValue(value: number[]): void {
     this.transaction(() => {
       this._selectedItemsIds.set(new Set(value || []));
@@ -83,6 +74,7 @@ export class FolderTreeComponent
       return new Set(ids);
     });
     this.onTouched();
+    this.emitChange();
   }
 
   public removeSelectedItems(id: number): void {
@@ -95,6 +87,7 @@ export class FolderTreeComponent
       return new Set(ids);
     });
     this.onTouched();
+    this.emitChange();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -107,6 +100,7 @@ export class FolderTreeComponent
   };
 
   // transactional update. the writeValue will cascade back otherwise.
+  // it's a trick i tried to avoid (without having reference to each item from here), but no luck so far
   private transaction<T>(fn: () => T): T {
     this._isFormUpdate.set(true);
     try {
@@ -116,5 +110,12 @@ export class FolderTreeComponent
         this._isFormUpdate.set(false);
       }, 0);
     }
+  }
+
+  private emitChange(): void {
+    const selectedIds = untracked(() => this.selectedItemsIds());
+    const idsArray = Array.from(selectedIds);
+    this.onChange(idsArray);
+    this.cdr.markForCheck();
   }
 }
