@@ -3,6 +3,8 @@ import {
   forwardRef,
   effect,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
@@ -38,6 +40,8 @@ export class FolderTreeComponent
 
   private readonly _isFormUpdate = signal(false);
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly isFormUpdate = this._isFormUpdate.asReadonly();
 
@@ -46,6 +50,7 @@ export class FolderTreeComponent
       const selectedIds = this.selectedItemsIds();
       const idsArray = Array.from(selectedIds);
       this.onChange(idsArray);
+      this.cdr.markForCheck();
     });
   }
 

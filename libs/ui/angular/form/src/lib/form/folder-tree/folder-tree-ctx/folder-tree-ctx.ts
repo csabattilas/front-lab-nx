@@ -4,6 +4,7 @@ import {
   effect,
   ChangeDetectionStrategy,
   inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
@@ -31,10 +32,13 @@ import { TreeSelectionContextService } from './folder-tree-context';
 export class FolderTreeCtxComponent implements ControlValueAccessor {
   private readonly ctx = inject(TreeSelectionContextService);
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor() {
     effect(() => {
       const selectedIds = this.ctx.selectedItemsIds();
       this.onChange(Array.from(selectedIds));
+      this.cdr.markForCheck();
       this.onTouched();
     });
   }
