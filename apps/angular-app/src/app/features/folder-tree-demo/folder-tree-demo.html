@@ -21,6 +21,9 @@
       {{folderSelectionControlOutputBasedTree.value?.join(',')}}
     </div>
     <div class="action-bar">
+      <button (click)="setNewValueOutputBasedTree()" class="action-button">
+        Set new value
+      </button>
       <button (click)="clearSelectionOutputBasedTree()" class="action-button">
         Clear selection
       </button>
@@ -47,6 +50,10 @@
       {{folderSelectionControlViewChildBasedTree.value?.join(',')}}
     </div>
     <div class="action-bar">
+      <button (click)="setNewValueContextBasedTree()" class="action-button">
+        Set new value
+      </button>
+
       <button
         (click)="clearSelectionViewchildBasedTree()"
         class="action-button"
@@ -59,6 +66,14 @@
   <div class="tree-container">
     <h3>Context service based</h3>
     <p>Parent registers and counts children via a context service</p>
+    <p>
+      This a different solution. I am dropping the reactivity from the control
+      and using imperative set via the context service.
+    </p>
+    <p>
+      The writeValue will manually set a 3rd signal to the control the checked
+      state of the node
+    </p>
     <fl-form-folder-tree-ctx
       style="width: auto"
       [formControl]="folderSelectionControlContextServiceBasedTree"
@@ -75,6 +90,9 @@
       {{folderSelectionControlContextServiceBasedTree.value?.join(',')}}
     </div>
     <div class="action-bar">
+      <button (click)="setNewValueContextBasedTree()" class="action-button">
+        Set new value
+      </button>
       <button (click)="clearSelectionContextBasedTree()" class="action-button">
         Clear selection
       </button>

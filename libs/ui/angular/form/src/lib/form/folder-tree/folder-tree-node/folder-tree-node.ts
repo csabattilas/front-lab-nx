@@ -25,6 +25,10 @@ export abstract class BaseFolderTreeNodeComponent {
 
   // @ts-expect-error: TS6133
   private readonly formControlChecked = effect(() => {
+    // we need to only run this when we write value
+    // there are other ways to do this:
+    //      - untracked (but that would kill subsequent writeValue)
+    //      - reading the child. did in the ctx version where i leverage the nodeMap
     if (this.ctx.isFormUpdate() && !this.hasChildren) {
       this.checked.set(this.ctx.selectedItemsIds().has(this.node().id));
     }

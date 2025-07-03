@@ -7,8 +7,10 @@ export interface TreeNode {
 }
 
 export interface NodeState {
+  id: number;
   checked: WritableSignal<boolean>;
   indeterminate: WritableSignal<boolean>;
+  writeValueChecked: WritableSignal<boolean>;
 }
 
 export interface TreeSelectionComponentContext {

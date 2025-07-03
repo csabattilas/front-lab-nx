@@ -45,10 +45,6 @@ While the `nodeMap` based implementation uses a separate context service, which 
 
 The node components share some similarities, so they are extended from a base component: `BaseFolderTreeNodeComponent`.
 
-I realize that there are similarities between the `viewchild` and `nodeMap` based node components (`FolderTreeNodeVcComponent` and `FolderTreeNodeCtxComponent`) as well, which can be further pushed into extension hierarchy, but for now, I decided to keep them separate for clarity.
-
-e.g., the effects checking the state are almost the same, and the state signals implementation can be forced with abstract methods.
-
 ### Checkbox
 
 Custom checkbox component with enhanced functionality and styling. Just to have a nicer checkbox.

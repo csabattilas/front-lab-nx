@@ -47,4 +47,16 @@ export class FolderTreeDemoComponent {
   public clearSelectionContextBasedTree(): void {
     this.folderSelectionControlContextServiceBasedTree.reset();
   }
+
+  public setNewValueOutputBasedTree(): void {
+    this.folderSelectionControlOutputBasedTree.setValue([8]);
+  }
+
+  public setNewValueViewChildBasedTree(): void {
+    this.folderSelectionControlViewChildBasedTree.setValue([8]);
+  }
+
+  public setNewValueContextBasedTree(): void {
+    this.folderSelectionControlContextServiceBasedTree.setValue([8]);
+  }
 }

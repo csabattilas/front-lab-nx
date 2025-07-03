@@ -6,10 +6,12 @@ import {
   inject,
   signal,
   computed,
+  linkedSignal,
+  input,
 } from '@angular/core';
 import { TreeSelectionContextService } from '../folder-tree-context';
-import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
 import { CheckboxComponent } from '../../../checkbox/checkbox';
+import { TreeNode } from '../../model/folder-tree-model';
 
 @Component({
   selector: 'fl-form-folder-tree-node-ctx',
@@ -18,20 +20,24 @@ import { CheckboxComponent } from '../../../checkbox/checkbox';
   styleUrl: './folder-tree-node-ctx.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FolderTreeNodeCtxComponent
-  extends BaseFolderTreeNodeComponent
-  implements OnInit
-{
-  public readonly ctx: TreeSelectionContextService = inject(
-    TreeSelectionContextService
-  );
+export class FolderTreeNodeCtxComponent implements OnInit {
+  public node = input.required<TreeNode>();
+  public inheritedChecked = input<boolean>(false);
+  public expanded = input<boolean>(false);
+  public depth = input<number>(0);
+
+  public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
+
+  public readonly checked = linkedSignal<boolean>(() => {
+    return this.inheritedChecked();
+  });
 
   public readonly indeterminate = signal(false);
 
   private currentChecked = false;
   private indeterminateChecked = false;
+  private readonly ctx = inject(TreeSelectionContextService);
 
-  // todo: this could also be pushed out into a base class with abstract method forced to be implemented for vc and ctx nodes
   private readonly childStates = computed(() => {
     if (!this.hasChildren) return [];
 
@@ -43,14 +49,24 @@ export class FolderTreeNodeCtxComponent
   });
 
   // @ts-expect-error: TS6133
+  private readonly writeValueUpdateEffect = effect(() => {
+    const writeValueChecked = this.ctx
+      .getNode(this.node().id, this.hasChildren)
+      ?.writeValueChecked();
+    this.checked.set(writeValueChecked ?? false);
+  });
+
+  // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
     if (this.checked() !== this.currentChecked) {
       this.currentChecked = this.checked();
+
       this.ctx.updateNodeCheckedSelection(
         this.node().id,
         this.currentChecked,
         this.hasChildren
       );
+
       if (this.currentChecked && !this.hasChildren) {
         this.ctx.addSelectedItems(this.node().id);
       }
@@ -61,17 +77,6 @@ export class FolderTreeNodeCtxComponent
       if (this.currentChecked && this.hasChildren) {
         this.expandedSignal.set(true);
       }
-    }
-  });
-
-  // @ts-expect-error: TS6133
-  private readonly updatedIntermediate = effect(() => {
-    if (this.indeterminate() !== this.indeterminateChecked) {
-      this.indeterminateChecked = this.indeterminate();
-      this.ctx.updateIndeterminateNodeSelection(
-        this.node().id,
-        this.indeterminateChecked
-      );
     }
   });
 
@@ -98,6 +103,33 @@ export class FolderTreeNodeCtxComponent
       indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total)
     );
   });
+
+  // @ts-expect-error: TS6133
+  private readonly updatedIntermediate = effect(() => {
+    if (this.indeterminate() !== this.indeterminateChecked) {
+      this.indeterminateChecked = this.indeterminate();
+      this.ctx.updateIndeterminateNodeSelection(
+        this.node().id,
+        this.indeterminateChecked
+      );
+    }
+  });
+
+  protected get hasChildren(): boolean {
+    return !!this.node().items?.length;
+  }
+
+  public onToggle(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.checked.set(isChecked);
+  }
+
+  public toggleExpanded(): void {
+    if (!this.hasChildren) {
+      return;
+    }
+    this.expandedSignal.update(expanded => !expanded);
+  }
 
   public ngOnInit(): void {
     this.ctx.registerNode(this.node().id, this.hasChildren);

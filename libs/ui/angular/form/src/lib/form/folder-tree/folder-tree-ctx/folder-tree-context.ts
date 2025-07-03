@@ -1,35 +1,14 @@
-import { Injectable } from '@angular/core';
-import { signal } from '@angular/core';
-import {
-  TreeSelectionComponentContext,
-  NodeState,
-} from '../model/folder-tree-model';
+import { Injectable, signal } from '@angular/core';
+import { NodeState } from '../model/folder-tree-model';
 
 @Injectable()
-export class TreeSelectionContextService
-  implements TreeSelectionComponentContext
-{
-  private readonly _selectedItemsIds = signal<Set<number>>(new Set());
+export class TreeSelectionContextService {
+  public readonly nodeStates = new Map<string, NodeState>();
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public readonly selectedItemsIds = this._selectedItemsIds.asReadonly();
+  public selectedItemsIds = new Set<number>();
 
-  private readonly nodeStates = new Map<string, NodeState>();
-
-  private readonly _isFormUpdate = signal(false);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public readonly isFormUpdate = this._isFormUpdate.asReadonly();
-
-  public transaction<T>(fn: () => T): T {
-    this._isFormUpdate.set(true);
-    try {
-      return fn();
-    } finally {
-      setTimeout(() => {
-        this._isFormUpdate.set(false);
-      }, 0);
-    }
+  public registerOnChange(fn: (value: number[]) => void): void {
+    this._onChange = fn;
   }
 
   public registerNode(id: number, hasChildren: boolean): NodeState {
@@ -39,8 +18,10 @@ export class TreeSelectionContextService
 
     if (!existingNode) {
       this.nodeStates.set(this.getMapId(id, hasChildren), {
+        id,
         checked: signal(false),
         indeterminate: signal(false),
+        writeValueChecked: signal(false),
       });
     }
 
@@ -67,34 +48,31 @@ export class TreeSelectionContextService
 
     if (nodeState) {
       nodeState.checked.set(checked);
+      nodeState.writeValueChecked.set(checked);
     }
   }
 
   public updateSelectedItemsIds(ids: number[]): void {
-    this._selectedItemsIds.set(new Set(ids));
+    this.selectedItemsIds = new Set(ids);
   }
 
   public addSelectedItems(id: number): void {
-    if (this._isFormUpdate()) {
+    if (this.selectedItemsIds.has(id)) {
       return;
     }
-    this._selectedItemsIds.update(ids => {
-      ids.add(id);
-      return new Set(ids);
-    });
+    this.selectedItemsIds.add(id);
+    this._onChange(Array.from(this.selectedItemsIds));
   }
 
   public removeSelectedItems(id: number): void {
-    if (this._isFormUpdate()) {
+    if (!this.selectedItemsIds.has(id)) {
       return;
     }
-    this._selectedItemsIds.update(ids => {
-      ids.delete(id);
-      return new Set(ids);
-    });
+    this.selectedItemsIds.delete(id);
+    this._onChange(Array.from(this.selectedItemsIds));
   }
 
-  private getNode(id: number, hasChildren: boolean): NodeState {
+  public getNode(id: number, hasChildren: boolean): NodeState {
     const nodeState = this.nodeStates.get(this.getMapId(id, hasChildren));
     if (!nodeState) {
       throw new Error('Node not found');
@@ -105,7 +83,11 @@ export class TreeSelectionContextService
 
   // i guess it is a mistake that folders and items can have the same id
   // but maybe not so i had to have this little hack here
-  private getMapId(id: number, hasChildren: boolean): string {
+  public getMapId(id: number, hasChildren: boolean): string {
     return `${id}${!hasChildren ? 'I' : 'F'}`;
   }
+
+  private _onChange: (value: number[]) => void = () => {
+    //
+  };
 }

@@ -31,6 +31,9 @@ fl-form-folder-tree-ctx {
 
 .action-bar {
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--spacing-unit) / 2);
 }
 
 .action-button {

@@ -1,10 +1,10 @@
 import {
   Component,
   forwardRef,
-  effect,
   ChangeDetectionStrategy,
   inject,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
@@ -29,23 +29,33 @@ import { TreeSelectionContextService } from './folder-tree-context';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // should we have validation? perhaps next iteration
-export class FolderTreeCtxComponent implements ControlValueAccessor {
+export class FolderTreeCtxComponent implements ControlValueAccessor, OnInit {
   private readonly ctx = inject(TreeSelectionContextService);
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  constructor() {
-    effect(() => {
-      const selectedIds = this.ctx.selectedItemsIds();
-      this.onChange(Array.from(selectedIds));
+  public ngOnInit(): void {
+    this.ctx.registerOnChange((value: number[]) => {
+      this.onChange(value);
       this.cdr.markForCheck();
-      this.onTouched();
     });
   }
 
   public writeValue(value: number[]): void {
-    this.ctx.transaction(() => {
-      this.ctx.updateSelectedItemsIds(value);
+    this.ctx.updateSelectedItemsIds(value);
+
+    queueMicrotask(() => {
+      for (const node of this.ctx.nodeStates.values()) {
+        node.writeValueChecked.set(false);
+      }
+
+      value?.forEach(id => {
+        const nodeState = this.ctx.nodeStates.get(this.ctx.getMapId(id, false));
+
+        if (nodeState) {
+          nodeState.writeValueChecked.set(true);
+        }
+      });
     });
   }
 
@@ -63,7 +73,7 @@ export class FolderTreeCtxComponent implements ControlValueAccessor {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onChange = (value: number[]): void => {
-    //
+    this.cdr.markForCheck();
   };
 
   private onTouched = (): void => {
