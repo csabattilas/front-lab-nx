@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { FolderTreeDemoComponent } from './features/folder-tree-demo/folder-tree-demo';
 import { HomeComponent } from './features/home/home.component';
+import { LionLockedSelectionDemoComponent } from './features/lion-locked-selection-demo/lion-locked-selection-demo.component';
 
 export const appRoutes: Route[] = [
   {
@@ -10,8 +11,13 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
   },
   {
-    path: 'tree',
+    path: 'folder-tree',
     component: FolderTreeDemoComponent,
-    title: 'Tree Demo',
+    title: 'Folder Tree Demo',
+  },
+  {
+    path: 'lion-locked-selection',
+    component: LionLockedSelectionDemoComponent,
+    title: 'Lion Locked Selection Demo',
   },
 ];

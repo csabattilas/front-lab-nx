@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'fl-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
-  imports: [RouterModule],
+  styleUrls: ['./header.component.scss'],
+  imports: [RouterModule, CommonModule],
+  standalone: true,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  public isMenuOpen = false;
+
+  public toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  public closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+}

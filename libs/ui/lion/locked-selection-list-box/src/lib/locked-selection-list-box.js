@@ -1,4 +1,5 @@
 import { LionListbox } from '@lion/ui/listbox.js';
+import { css } from 'lit';
 
 /**
  * LockedSelectionListBox component
@@ -14,11 +15,23 @@ export class LockedSelectionListBox extends LionListbox {
   __lastCheckedIndex = -1;
   __answer = '';
 
+  static styles = css`
+    ::slotted(lion-options) {
+      display: flex;
+      flex-direction: column;
+      width: max-content;
+    }
+  `;
+
   static get properties() {
     return {
       ...super.properties,
       answer: {
         type: String,
+      },
+      direction: {
+        value: 'vertical',
+        type: 'vertical' | 'horizontal',
       },
     };
   }
@@ -42,7 +55,6 @@ export class LockedSelectionListBox extends LionListbox {
       const modelValue =
         this.formElements?.[this.__lastCheckedIndex]?.choiceValue;
       const resolved = this.__answer === modelValue;
-      console.log('modelValue', modelValue, this.__answer, resolved);
       return [
         {
           resolved,
@@ -61,6 +73,13 @@ export class LockedSelectionListBox extends LionListbox {
       this.__answer = value;
     } else {
       throw new Error('answer is already set');
+    }
+  }
+
+  set direction(value) {
+    const options = this.querySelector('lion-options');
+    if (options) {
+      options.style.flexDirection = value === 'horizontal' ? 'row' : 'column';
     }
   }
 
@@ -105,6 +124,7 @@ export class LockedSelectionListBox extends LionListbox {
   __lockFormElement(index) {
     if (!this.formElements?.[index]) return;
     this.formElements[index].setAttribute('disabled', '');
+
     if (this.formElements[index]?.choiceValue === this.__answer) {
       this.formElements[index].setAttribute('data-expected', '');
       this.__lockNotSelectedElements();
@@ -124,6 +144,9 @@ export class LockedSelectionListBox extends LionListbox {
   }
 }
 
-if (!customElements.get('locked-selection-list-box')) {
-  customElements.define('locked-selection-list-box', LockedSelectionListBox);
+if (!customElements.get('fl-lion-locked-selection-list-box')) {
+  customElements.define(
+    'fl-lion-locked-selection-list-box',
+    LockedSelectionListBox
+  );
 }

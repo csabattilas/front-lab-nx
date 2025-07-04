@@ -1,11 +1,47 @@
 <header class="header">
   <div class="header-content">
+    <!-- Hamburger Menu Button on the left -->
+    <button
+      class="menu-button"
+      (click)="toggleMenu()"
+      [class.active]="isMenuOpen"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+
     <div class="logo">
       <h1>Angular space</h1>
     </div>
-    <nav class="main-nav">
-      <a routerLink="/" routerLinkActive="active">Home</a>
-      <a routerLink="/tree" routerLinkActive="active">Tree Demo</a>
+
+    <!-- Empty div to maintain flex spacing -->
+    <div class="spacer"></div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="main-nav" [class.open]="isMenuOpen">
+      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">Home</a>
+      <a
+        routerLink="/folder-tree"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+        >Folder Tree Demo</a
+      >
+      <a
+        routerLink="/lion-locked-selection"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+        >Lion locked selection demo</a
+      >
     </nav>
+
+    <!-- Overlay for mobile menu -->
+    @if (isMenuOpen) {
+    <div
+      class="menu-overlay"
+      (click)="closeMenu()"
+      (keydown)="closeMenu()"
+      tabindex="0"
+    ></div>
+    }
   </div>
 </header>
