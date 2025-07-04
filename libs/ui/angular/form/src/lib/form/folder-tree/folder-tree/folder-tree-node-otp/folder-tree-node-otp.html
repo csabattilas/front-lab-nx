@@ -22,8 +22,8 @@
       [style.display]="expandedSignal() ? 'block' : 'none'"
       [node]="node"
       [inheritedChecked]="checked()"
-      (checkedChange)="onChildSelection($event)"
-      (indeterminateChange)="onIndeterminateChange($event)"
+      (checkedChange)="onChildSelection()"
+      (indeterminateChange)="onIndeterminateChange()"
       [expanded]="expandedSignal()"
       [depth]="depth()+1"
     ></fl-form-folder-tree-node-otp>

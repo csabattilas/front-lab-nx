@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   signal,
   output,
-  linkedSignal,
   effect,
   inject,
+  OnInit,
 } from '@angular/core';
 
 import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
@@ -23,20 +23,16 @@ import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-
  * this approach is based on the idea of children telling (outputting) to their parent their checked and intermediate state
  * then the parent updates their own state based on manually keep counting it's checked and indeterminate children
  */
-export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
+export class FolderTreeNodeOtpComponent
+  extends BaseFolderTreeNodeComponent
+  implements OnInit
+{
   public checkedChange = output<boolean>();
   public indeterminateChange = output<boolean>();
 
   public readonly ctx = inject(FOLDER_TREE_CONTEXT);
 
-  public readonly indeterminate = linkedSignal<boolean>(() => {
-    const childrenCheckedCount = this.childrenCheckedCount() ?? 0;
-
-    return (
-      childrenCheckedCount > 0 &&
-      childrenCheckedCount < (this.node().items?.length ?? 0)
-    );
-  });
+  public readonly indeterminate = signal<boolean>(false);
 
   // side effects to notify the parent about their children checked state
   // I could not use computed/linkedSignals as it is hard design this only declaratively
@@ -45,20 +41,17 @@ export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
 
   // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
-    if (this.currentChecked !== this.checked()) {
-      this.currentChecked = this.checked();
-      this.checkedChange.emit(this.currentChecked);
+    const checked = this.checked();
+    this.node().checked = checked;
+    this.checkedChange.emit(checked);
 
-      const node = this.node();
-
-      if (this.checked() && !this.hasChildren) {
-        this.ctx.addSelectedItems(node.id);
-      } else if (!this.checked() && !this.hasChildren) {
-        this.ctx.removeSelectedItems(node.id);
-      }
+    if (checked && !this.hasChildren) {
+      this.ctx.addSelectedItems(this.node().id);
+    } else if (!checked && !this.hasChildren) {
+      this.ctx.removeSelectedItems(this.node().id);
     }
 
-    if (this.checked() && this.hasChildren) {
+    if (checked && this.hasChildren) {
       this.expandedSignal.set(true);
     }
   });
@@ -68,50 +61,49 @@ export class FolderTreeNodeOtpComponent extends BaseFolderTreeNodeComponent {
   private readonly indeterminateEffect = effect(() => {
     if (!this.hasChildren) return;
 
-    if (this.currentIndeterminate !== this.indeterminate()) {
-      this.currentIndeterminate = this.indeterminate();
-      this.indeterminateChange.emit(this.currentIndeterminate);
-    }
+    this.node().indeterminate = this.indeterminate();
+    this.indeterminateChange.emit(this.indeterminate());
   });
 
-  private readonly childrenCheckedCount = signal<number>(0);
-  private readonly indeterminateCheckedCount = signal<number>(0);
+  private total = 0;
 
-  private currentChecked = false;
-  private currentIndeterminate = false;
+  public onChildSelection(): void {
+    const count =
+      this.node().items?.reduce((acc, item) => {
+        return acc + (item.checked ? 1 : 0);
+      }, 0) ?? 0;
 
-  public onChildSelection($event: boolean): void {
-    const updateCount = $event ? 1 : -1;
-    // counting the checked children
-    this.childrenCheckedCount.update(count => {
-      return count + updateCount;
-    });
+    const indeterminateCheckedCount =
+      this.node().items?.reduce((acc, item) => {
+        return acc + (item.indeterminate ? 1 : 0);
+      }, 0) ?? 0;
 
-    const count = this.childrenCheckedCount();
-    const total = this.node().items?.length ?? 0;
-
-    if (total === count || count === 0) {
-      this.checked.set(total === count);
+    if (this.total === count || count === 0) {
+      this.checked.set(this.total === count);
     }
 
-    if (this.indeterminateCheckedCount() > 0) {
-      this.indeterminate.set(true);
-    }
+    this.indeterminate.set(
+      indeterminateCheckedCount > 0 || (this.total > count && count > 0)
+    );
   }
 
-  public onIndeterminateChange($event: boolean): void {
-    const updateCount = $event ? 1 : -1;
-    // counting the indeterminate children they have a role in defining the indeterminate state of the parent
-    this.indeterminateCheckedCount.update(count => {
-      return count + updateCount;
-    });
+  public onIndeterminateChange(): void {
+    const count =
+      this.node().items?.reduce((acc, item) => {
+        return acc + (item.checked ? 1 : 0);
+      }, 0) ?? 0;
 
-    const allChecked =
-      this.childrenCheckedCount() === this.node().items?.length;
-    const noneChecked = this.childrenCheckedCount() === 0;
+    const indeterminateCheckedCount =
+      this.node().items?.reduce((acc, item) => {
+        return acc + (item.indeterminate ? 1 : 0);
+      }, 0) ?? 0;
 
-    if ($event || allChecked || noneChecked) {
-      this.indeterminate.set($event);
-    }
+    this.indeterminate.set(
+      indeterminateCheckedCount > 0 || (this.total > count && count > 0)
+    );
+  }
+
+  public ngOnInit(): void {
+    this.total = this.node().items?.length ?? 0;
   }
 }

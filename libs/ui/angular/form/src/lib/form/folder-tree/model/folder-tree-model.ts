@@ -4,6 +4,8 @@ export interface TreeNode {
   id: number;
   title: string;
   items?: TreeNode[];
+  checked?: boolean;
+  indeterminate?: boolean;
 }
 
 export interface NodeState {
