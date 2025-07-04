@@ -36,6 +36,8 @@ export class FolderTreeCtxComponent implements ControlValueAccessor, OnInit {
 
   private readonly cdr = inject(ChangeDetectorRef);
 
+  private readonly performanceService = inject(PerformanceService);
+
   public ngOnInit(): void {
     this.ctx.registerOnChange((value: number[]) => {
       this.onChange(value);
@@ -45,6 +47,7 @@ export class FolderTreeCtxComponent implements ControlValueAccessor, OnInit {
 
   public writeValue(value: number[]): void {
     this.ctx.updateSelectedItemsIds(value);
+    this.performanceService.resetCheckedCount();
 
     queueMicrotask(() => {
       for (const node of this.ctx.nodeStates.values()) {

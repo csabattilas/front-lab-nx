@@ -47,8 +47,11 @@ export class FolderTreeComponent
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly isFormUpdate = this._isFormUpdate.asReadonly();
 
+  private readonly performanceService = inject(PerformanceService);
+
   public writeValue(value: number[]): void {
     this.transaction(() => {
+      this.performanceService.resetCheckedCount();
       this._selectedItemsIds.set(new Set(value || []));
     });
   }

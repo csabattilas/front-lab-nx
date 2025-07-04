@@ -10,6 +10,7 @@ import { CheckboxComponent } from '../../../checkbox';
 import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
 import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
 import { PerformanceService } from '../../performance/performance';
+
 @Component({
   selector: 'fl-form-folder-tree-node-vc',
   imports: [CheckboxComponent],
@@ -26,15 +27,8 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
 
   private readonly performanceService = inject(PerformanceService);
 
-  private initialTimeReset = true;
-
   // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
-    if (this.initialTimeReset) {
-      this.performanceService.resetCheckedCount();
-      this.initialTimeReset = false;
-    }
-
     const checked = this.checked();
 
     // just add the items to the context

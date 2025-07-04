@@ -37,8 +37,6 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   private readonly ctx = inject(TreeSelectionContextService);
 
-  private initialTimeReset = true;
-
   private readonly performanceService = inject(PerformanceService);
 
   private readonly childStates = computed(() => {
@@ -61,11 +59,6 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
-    if (this.initialTimeReset) {
-      this.performanceService.resetCheckedCount();
-      this.initialTimeReset = false;
-    }
-
     this.ctx.updateNodeCheckedSelection(
       this.node().id,
       this.checked(),

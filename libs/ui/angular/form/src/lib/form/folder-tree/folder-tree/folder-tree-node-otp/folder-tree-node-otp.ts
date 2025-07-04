@@ -36,7 +36,7 @@ export class FolderTreeNodeOtpComponent
   public readonly indeterminate = signal<boolean>(false);
 
   private readonly performanceService = inject(PerformanceService);
-  private initialTimeReset = true;
+
   // side effects to notify the parent about their children checked state
   // I could not use computed/linkedSignals as it is hard design this only declaratively
   // the checked state depends on the order of the actions. always latest wins
@@ -44,11 +44,6 @@ export class FolderTreeNodeOtpComponent
 
   // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
-    if (this.initialTimeReset) {
-      this.performanceService.resetCheckedCount();
-      this.initialTimeReset = false;
-    }
-
     const checked = this.checked();
     this.node().checked = checked;
     this.checkedChange.emit(checked);
