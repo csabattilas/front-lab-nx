@@ -40,6 +40,13 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
   });
 
   // @ts-expect-error: TS6133
+  private readonly indeterminateChecked = effect(() => {
+    if (this.indeterminate()) {
+      this.expandedSignal.set(true);
+    }
+  });
+
+  // @ts-expect-error: TS6133
   private readonly childrenCheckedEffect = effect(() => {
     if (!this.hasChildren) return;
 

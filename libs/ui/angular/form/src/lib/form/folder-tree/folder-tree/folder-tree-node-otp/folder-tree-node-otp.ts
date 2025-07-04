@@ -63,6 +63,10 @@ export class FolderTreeNodeOtpComponent
 
     this.node().indeterminate = this.indeterminate();
     this.indeterminateChange.emit(this.indeterminate());
+
+    if (this.indeterminate() && this.hasChildren) {
+      this.expandedSignal.set(true);
+    }
   });
 
   private total = 0;

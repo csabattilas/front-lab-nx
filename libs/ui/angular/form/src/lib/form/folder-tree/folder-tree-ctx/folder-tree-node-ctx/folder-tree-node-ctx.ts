@@ -113,6 +113,10 @@ export class FolderTreeNodeCtxComponent implements OnInit {
         this.indeterminateChecked
       );
     }
+
+    if (this.indeterminate()) {
+      this.expandedSignal.set(true);
+    }
   });
 
   protected get hasChildren(): boolean {
