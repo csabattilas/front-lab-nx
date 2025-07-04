@@ -34,8 +34,6 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   public readonly indeterminate = signal(false);
 
-  private currentChecked = false;
-  private indeterminateChecked = false;
   private readonly ctx = inject(TreeSelectionContextService);
 
   private readonly childStates = computed(() => {
@@ -58,25 +56,21 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
-    if (this.checked() !== this.currentChecked) {
-      this.currentChecked = this.checked();
+    this.ctx.updateNodeCheckedSelection(
+      this.node().id,
+      this.checked(),
+      this.hasChildren
+    );
 
-      this.ctx.updateNodeCheckedSelection(
-        this.node().id,
-        this.currentChecked,
-        this.hasChildren
-      );
+    if (this.checked() && !this.hasChildren) {
+      this.ctx.addSelectedItems(this.node().id);
+    }
+    if (!this.checked() && !this.hasChildren) {
+      this.ctx.removeSelectedItems(this.node().id);
+    }
 
-      if (this.currentChecked && !this.hasChildren) {
-        this.ctx.addSelectedItems(this.node().id);
-      }
-      if (!this.currentChecked && !this.hasChildren) {
-        this.ctx.removeSelectedItems(this.node().id);
-      }
-
-      if (this.currentChecked && this.hasChildren) {
-        this.expandedSignal.set(true);
-      }
+    if (this.checked() && this.hasChildren) {
+      this.expandedSignal.set(true);
     }
   });
 
@@ -106,13 +100,10 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   // @ts-expect-error: TS6133
   private readonly updatedIntermediate = effect(() => {
-    if (this.indeterminate() !== this.indeterminateChecked) {
-      this.indeterminateChecked = this.indeterminate();
-      this.ctx.updateIndeterminateNodeSelection(
-        this.node().id,
-        this.indeterminateChecked
-      );
-    }
+    this.ctx.updateIndeterminateNodeSelection(
+      this.node().id,
+      this.indeterminate()
+    );
 
     if (this.indeterminate()) {
       this.expandedSignal.set(true);
