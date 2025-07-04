@@ -10,6 +10,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
 import { signal } from '@angular/core';
 import { TreeSelectionComponentContext } from '../model/folder-tree-model';
+import { PerformanceService } from '../performance/performance';
 
 @Component({
   selector: 'fl-form-folder-tree',
@@ -17,6 +18,7 @@ import { TreeSelectionComponentContext } from '../model/folder-tree-model';
   imports: [],
   template: `<ng-content></ng-content>`,
   providers: [
+    PerformanceService,
     {
       provide: FOLDER_TREE_CONTEXT,
       useExisting: forwardRef(() => FolderTreeComponent),

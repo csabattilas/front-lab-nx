@@ -11,6 +11,7 @@ import {
 import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
 import { CheckboxComponent } from '../../../checkbox/';
 import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
+import { PerformanceService } from '../../performance/performance';
 
 @Component({
   selector: 'fl-form-folder-tree-node-otp',
@@ -34,6 +35,8 @@ export class FolderTreeNodeOtpComponent
 
   public readonly indeterminate = signal<boolean>(false);
 
+  private readonly performanceService = inject(PerformanceService);
+  private initialTimeReset = true;
   // side effects to notify the parent about their children checked state
   // I could not use computed/linkedSignals as it is hard design this only declaratively
   // the checked state depends on the order of the actions. always latest wins
@@ -41,6 +44,11 @@ export class FolderTreeNodeOtpComponent
 
   // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
+    if (this.initialTimeReset) {
+      this.performanceService.resetCheckedCount();
+      this.initialTimeReset = false;
+    }
+
     const checked = this.checked();
     this.node().checked = checked;
     this.checkedChange.emit(checked);
@@ -54,6 +62,8 @@ export class FolderTreeNodeOtpComponent
     if (checked && this.hasChildren) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('otp');
   });
 
   //side effect to notify the parent about their children indeterminate state
@@ -67,6 +77,8 @@ export class FolderTreeNodeOtpComponent
     if (this.indeterminate() && this.hasChildren) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('otp');
   });
 
   private total = 0;
@@ -109,5 +121,10 @@ export class FolderTreeNodeOtpComponent
 
   public ngOnInit(): void {
     this.total = this.node().items?.length ?? 0;
+  }
+
+  public override onToggle(event: Event): void {
+    this.performanceService.resetCheckedCount();
+    super.onToggle(event);
   }
 }

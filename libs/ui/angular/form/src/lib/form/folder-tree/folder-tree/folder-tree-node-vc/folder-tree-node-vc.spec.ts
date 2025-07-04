@@ -5,6 +5,7 @@ import { Component, Input, signal } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { By } from '@angular/platform-browser';
+import { PerformanceService } from '../../performance/performance';
 
 function createCheckboxEvent(checked: boolean): Event {
   const event = new Event('change');
@@ -18,6 +19,7 @@ function createCheckboxEvent(checked: boolean): Event {
   template: '<ng-content></ng-content>',
   standalone: true,
   providers: [
+    PerformanceService,
     {
       provide: FOLDER_TREE_CONTEXT,
       useExisting: MockContextProviderComponent,

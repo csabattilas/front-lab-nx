@@ -9,6 +9,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
 import { TreeSelectionContextService } from './folder-tree-context';
+import { PerformanceService } from '../performance/performance';
 
 @Component({
   selector: 'fl-form-folder-tree-ctx',
@@ -16,6 +17,7 @@ import { TreeSelectionContextService } from './folder-tree-context';
   template: '<ng-content></ng-content>',
   providers: [
     TreeSelectionContextService,
+    PerformanceService,
     {
       provide: FOLDER_TREE_CONTEXT,
       useClass: TreeSelectionContextService,

@@ -12,6 +12,7 @@ import {
 import { TreeSelectionContextService } from '../folder-tree-context';
 import { CheckboxComponent } from '../../../checkbox/checkbox';
 import { TreeNode } from '../../model/folder-tree-model';
+import { PerformanceService } from '../../performance/performance';
 
 @Component({
   selector: 'fl-form-folder-tree-node-ctx',
@@ -36,6 +37,10 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   private readonly ctx = inject(TreeSelectionContextService);
 
+  private initialTimeReset = true;
+
+  private readonly performanceService = inject(PerformanceService);
+
   private readonly childStates = computed(() => {
     if (!this.hasChildren) return [];
 
@@ -56,6 +61,11 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
+    if (this.initialTimeReset) {
+      this.performanceService.resetCheckedCount();
+      this.initialTimeReset = false;
+    }
+
     this.ctx.updateNodeCheckedSelection(
       this.node().id,
       this.checked(),
@@ -72,6 +82,8 @@ export class FolderTreeNodeCtxComponent implements OnInit {
     if (this.checked() && this.hasChildren) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('ctx');
   });
 
   // @ts-expect-error: TS6133
@@ -108,6 +120,8 @@ export class FolderTreeNodeCtxComponent implements OnInit {
     if (this.indeterminate()) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('ctx');
   });
 
   protected get hasChildren(): boolean {
@@ -116,6 +130,7 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
   public onToggle(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
+    this.performanceService.resetCheckedCount();
     this.checked.set(isChecked);
   }
 

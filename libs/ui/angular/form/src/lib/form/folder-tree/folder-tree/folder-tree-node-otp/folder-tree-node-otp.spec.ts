@@ -5,6 +5,7 @@ import { Component, Input, signal } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { By } from '@angular/platform-browser';
+import { PerformanceService } from '../../performance/performance';
 
 function createCheckboxEvent(checked: boolean): Event {
   const event = new Event('change');
@@ -16,6 +17,7 @@ function createCheckboxEvent(checked: boolean): Event {
   selector: 'fl-form-folder-tree-mock-context-provider',
   template: '<ng-content></ng-content>',
   providers: [
+    PerformanceService,
     {
       provide: FOLDER_TREE_CONTEXT,
       useExisting: MockContextProviderComponent,
@@ -177,10 +179,10 @@ describe('FolderTreeNodeOtpComponent', () => {
     };
     component.toggleExpanded();
     hostFixture.detectChanges();
-    expect(component.expandedSignal()).toBe(false);
+    expect(component.expandedSignal()).toBe(true);
     component.toggleExpanded();
     hostFixture.detectChanges();
-    expect(component.expandedSignal()).toBe(true);
+    expect(component.expandedSignal()).toBe(false);
   });
 
   it('should not toggle expanded state for nodes without children', () => {

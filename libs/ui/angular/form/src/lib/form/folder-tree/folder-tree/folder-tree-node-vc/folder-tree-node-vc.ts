@@ -9,6 +9,7 @@ import {
 import { CheckboxComponent } from '../../../checkbox';
 import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
 import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
+import { PerformanceService } from '../../performance/performance';
 @Component({
   selector: 'fl-form-folder-tree-node-vc',
   imports: [CheckboxComponent],
@@ -23,8 +24,17 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
 
   private readonly children = viewChildren(FolderTreeNodeVcComponent);
 
+  private readonly performanceService = inject(PerformanceService);
+
+  private initialTimeReset = true;
+
   // @ts-expect-error: TS6133
   private readonly checkedEffect = effect(() => {
+    if (this.initialTimeReset) {
+      this.performanceService.resetCheckedCount();
+      this.initialTimeReset = false;
+    }
+
     const checked = this.checked();
 
     // just add the items to the context
@@ -37,6 +47,8 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
     if (checked && this.hasChildren) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('vc');
   });
 
   // @ts-expect-error: TS6133
@@ -44,6 +56,8 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
     if (this.indeterminate()) {
       this.expandedSignal.set(true);
     }
+
+    this.performanceService.updateCheckedCount('vc');
   });
 
   // @ts-expect-error: TS6133
@@ -64,7 +78,6 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
     ).length;
 
     if (checkedCount === total || checkedCount === 0) {
-      this.indeterminate.set(false);
       this.checked.set(checkedCount === total);
     }
 
@@ -72,4 +85,9 @@ export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
       indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total)
     );
   });
+
+  public override onToggle(event: Event): void {
+    this.performanceService.resetCheckedCount();
+    super.onToggle(event);
+  }
 }

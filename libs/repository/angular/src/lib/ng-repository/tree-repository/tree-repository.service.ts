@@ -11,11 +11,14 @@ import { deserializeTreeData } from './tree-response-deserializer';
 export class TreeRepositoryService {
   private readonly apiService: NgApiService = inject(NgApiService);
 
-  public getTreeDataResource(): ResourceRef<TreeNode[] | undefined> {
+  public getTreeDataResource(
+    apiEndpoint?: string
+  ): ResourceRef<TreeNode[] | undefined> {
+    const endpoint = apiEndpoint ?? 'tree';
     return resource<TreeNode[] | undefined, void>({
       loader: async () =>
         await firstValueFrom(
-          this.apiService.get<TreeApiResponse>('tree').pipe(
+          this.apiService.get<TreeApiResponse>(endpoint).pipe(
             map(data => deserializeTreeData(data)),
             catchError((error: unknown) => {
               throw new Error(`Cannot fetch data due to error ${error}`);
