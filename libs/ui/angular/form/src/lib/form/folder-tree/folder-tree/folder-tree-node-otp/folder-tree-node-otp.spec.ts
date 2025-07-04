@@ -29,7 +29,7 @@ class MockContextProviderComponent {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly selectedItemsIds = this._selectedItemsIds.asReadonly();
 
-  //eslint-disable-next-line @typescript-eslint/member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly isFormUpdate = this._isFormUpdate.asReadonly();
 
   public addSelectedItems(id: number): void {
@@ -65,7 +65,12 @@ class MockContextProviderComponent {
   imports: [MockContextProviderComponent, FolderTreeNodeOtpComponent],
 })
 class TestHostComponent {
-  @Input() public node: TreeNode = { id: 1, title: 'Test Node' };
+  @Input() public node: TreeNode = {
+    id: 1,
+    title: 'Test Node',
+    checked: false,
+    indeterminate: false,
+  };
   @Input() public expanded = false;
   @Input() public depth = 0;
 
@@ -134,35 +139,28 @@ describe('FolderTreeNodeOtpComponent', () => {
 
   it('should emit checkedChange when checked state changes', () => {
     const event = createCheckboxEvent(true);
-
     component.onToggle(event);
     hostFixture.detectChanges();
-
     expect(hostComponent.checkedChangeValue).toBe(true);
+    expect(component.node().checked).toBe(true);
   });
 
   it('should add selected item to context when leaf node is checked', () => {
     const spy = vi.spyOn(contextProvider, 'addSelectedItems');
-
     const event = createCheckboxEvent(true);
-
     component.onToggle(event);
     hostFixture.detectChanges();
-
     expect(spy).toHaveBeenCalledWith(1);
   });
 
   it('should remove selected item from context when leaf node is unchecked', () => {
     const spy = vi.spyOn(contextProvider, 'removeSelectedItems');
-
     const checkEvent = createCheckboxEvent(true);
     component.onToggle(checkEvent);
     hostFixture.detectChanges();
-
     const uncheckEvent = createCheckboxEvent(false);
     component.onToggle(uncheckEvent);
     hostFixture.detectChanges();
-
     expect(spy).toHaveBeenCalledWith(1);
   });
 
@@ -170,31 +168,32 @@ describe('FolderTreeNodeOtpComponent', () => {
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
-      items: [{ id: 2, title: 'Child Node' }],
+      items: [
+        { id: 2, title: 'Child Node', checked: false, indeterminate: false },
+        { id: 3, title: 'Child Node', checked: false, indeterminate: false },
+      ],
+      checked: false,
+      indeterminate: false,
     };
-    hostFixture.detectChanges();
-
-    expect(component.expandedSignal()).toBe(false);
-
     component.toggleExpanded();
     hostFixture.detectChanges();
-
+    expect(component.expandedSignal()).toBe(false);
+    component.toggleExpanded();
+    hostFixture.detectChanges();
     expect(component.expandedSignal()).toBe(true);
-    component.toggleExpanded();
-    hostFixture.detectChanges();
-
-    expect(component.expandedSignal()).toBe(false);
   });
 
   it('should not toggle expanded state for nodes without children', () => {
-    hostComponent.node = { id: 1, title: 'Leaf Node' };
+    hostComponent.node = {
+      id: 1,
+      title: 'Leaf Node',
+      checked: false,
+      indeterminate: false,
+    };
     hostFixture.detectChanges();
-
     expect(component.expandedSignal()).toBe(false);
-
     component.toggleExpanded();
     hostFixture.detectChanges();
-
     expect(component.expandedSignal()).toBe(false);
   });
 
@@ -202,139 +201,115 @@ describe('FolderTreeNodeOtpComponent', () => {
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
-      items: [{ id: 2, title: 'Child Node' }],
+      items: [
+        { id: 2, title: 'Child Node', checked: false, indeterminate: false },
+      ],
+      checked: false,
+      indeterminate: false,
     };
     hostFixture.detectChanges();
-
-    expect(component.expandedSignal()).toBe(false);
-
     const event = createCheckboxEvent(true);
     component.onToggle(event);
     hostFixture.detectChanges();
-
     expect(component.expandedSignal()).toBe(true);
   });
 
-  it('should update checked state when onChildSelection is called', () => {
+  it('should update indeterminate state when some children are checked', () => {
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
       items: [
-        { id: 2, title: 'Child Node 1' },
-        { id: 3, title: 'Child Node 2' },
+        { id: 2, title: 'Child Node 1', checked: false, indeterminate: false },
+        { id: 3, title: 'Child Node 2', checked: false, indeterminate: false },
       ],
+      checked: false,
+      indeterminate: false,
     };
-    hostFixture.detectChanges();
+    component['total'] = 2; // Simulate total count of children
 
-    expect(component.checked()).toBe(false);
+    hostFixture.detectChanges();
+    component.onChildSelection();
     expect(component.indeterminate()).toBe(false);
 
-    component.onChildSelection(true);
+    if (hostComponent.node?.items?.length) {
+      hostComponent.node.items[0].checked = true;
+    }
+
     hostFixture.detectChanges();
-
-    expect(component.checked()).toBe(false);
-  });
-
-  it('should update indeterminate state when onChildSelection is called', () => {
-    hostComponent.node = {
-      id: 1,
-      title: 'Parent Node',
-      items: [
-        { id: 2, title: 'Child Node 1' },
-        { id: 3, title: 'Child Node 2' },
-      ],
-    };
-    hostFixture.detectChanges();
-
-    const indeterminateChangeSpy = vi.spyOn(
-      component.indeterminateChange,
-      'emit'
-    );
-
-    component.onChildSelection(true);
-    hostFixture.detectChanges();
+    component.onChildSelection();
 
     expect(component.indeterminate()).toBe(true);
-    expect(indeterminateChangeSpy).toHaveBeenCalledWith(true);
   });
 
-  it('should handle unchecking both children correctly', () => {
+  it('should update checked state when all children are checked', () => {
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
       items: [
-        { id: 2, title: 'Child Node 1' },
-        { id: 3, title: 'Child Node 2' },
+        { id: 2, title: 'Child Node 1', checked: true, indeterminate: false },
+        { id: 3, title: 'Child Node 2', checked: true, indeterminate: false },
       ],
+      checked: false,
+      indeterminate: false,
     };
     hostFixture.detectChanges();
-
-    component.onChildSelection(true);
-    component.onChildSelection(true);
-
+    component['total'] = 2; // Simulate total count of children
+    if (hostComponent.node?.items?.length) {
+      // thet get reset
+      hostComponent.node.items[0].checked = true;
+      hostComponent.node.items[1].checked = true;
+    }
+    component.onChildSelection();
+    hostFixture.detectChanges();
     expect(component.checked()).toBe(true);
     expect(component.indeterminate()).toBe(false);
-
-    component.onChildSelection(false);
-    expect(component.checked()).toBe(true);
-    expect(component.indeterminate()).toBe(true);
-
-    component.onChildSelection(false);
-    expect(component.checked()).toBe(false);
-    expect(component.indeterminate()).toBe(false);
-
-    component.onIndeterminateChange(false);
-    expect(component.indeterminate()).toBe(false);
-    expect(component.checked()).toBe(false);
   });
 
-  it('should update indeterminate state when onIndeterminateChange is called', () => {
+  it('should update indeterminate state when child has indeterminate state', () => {
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
       items: [
-        { id: 2, title: 'Child Node 1' },
-        { id: 3, title: 'Child Node 2' },
+        { id: 2, title: 'Child Node 1', checked: false, indeterminate: true },
+        { id: 3, title: 'Child Node 2', checked: false, indeterminate: false },
       ],
+      checked: false,
+      indeterminate: false,
     };
     hostFixture.detectChanges();
-
-    expect(component.indeterminate()).toBe(false);
-
-    const indeterminateChangeSpy = vi.spyOn(
-      component.indeterminateChange,
-      'emit'
-    );
-
-    component.onIndeterminateChange(true);
-    hostFixture.detectChanges();
-
+    component.onIndeterminateChange();
     expect(component.indeterminate()).toBe(true);
-    expect(indeterminateChangeSpy).toHaveBeenCalledWith(true);
-
-    indeterminateChangeSpy.mockReset();
-
-    component.onIndeterminateChange(false);
-    hostFixture.detectChanges();
-
-    expect(component.indeterminate()).toBe(false);
-    expect(indeterminateChangeSpy).toHaveBeenCalledWith(false);
+    expect(hostComponent.indeterminateChangeValue).toBe(true);
   });
 
   it('should emit indeterminateChange when indeterminate state changes', () => {
+    hostFixture.detectChanges();
     hostComponent.node = {
       id: 1,
       title: 'Parent Node',
       items: [
-        { id: 2, title: 'Child Node 1' },
-        { id: 3, title: 'Child Node 2' },
+        { id: 2, title: 'Child Node 1', checked: true, indeterminate: false },
+        { id: 3, title: 'Child Node 2', checked: false, indeterminate: false },
       ],
+      checked: false,
+      indeterminate: false,
     };
+
+    const indeterminateChangeSpy = vi.spyOn(
+      component.indeterminateChange,
+      'emit'
+    );
+
+    component['total'] = 2; // Simulate total count of children
     hostFixture.detectChanges();
 
-    component.onChildSelection(true);
+    if (hostComponent.node?.items?.length) {
+      hostComponent.node.items[0].indeterminate = true;
+    }
+    component.onIndeterminateChange();
     hostFixture.detectChanges();
 
+    expect(indeterminateChangeSpy).toHaveBeenCalledWith(true);
     expect(hostComponent.indeterminateChangeValue).toBe(true);
   });
 });
