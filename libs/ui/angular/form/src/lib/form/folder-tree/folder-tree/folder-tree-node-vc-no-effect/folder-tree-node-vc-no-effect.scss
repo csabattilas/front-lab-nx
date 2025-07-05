@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--spacing-unit) / 2);
+  width: 100%;
+  background-color: var(--color-surface);
+  border: 0;
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+  }
+
+  padding: calc(var(--spacing-unit) / 4 + 2px) calc(var(--spacing-unit) / 4 + 2px) calc(var(--spacing-unit) / 4 + 2px) calc(var(--depth) * var(--spacing-unit));
+
+  &[style*='--depth: 0'] {
+    padding-left: calc(var(--spacing-unit) / 4 + 2px);
+  }
+}
+
+.material-symbols-outlined {
+  cursor: pointer;
+}
+
+.folder {
+  font-weight: bold;
+}
