@@ -34,7 +34,7 @@ export abstract class BaseFolderTreeNodeComponent {
     }
   });
 
-  public abstract readonly ctx: TreeSelectionComponentContext;
+  protected abstract readonly ctx: TreeSelectionComponentContext;
 
   protected get hasChildren(): boolean {
     return !!this.node().items?.length;
