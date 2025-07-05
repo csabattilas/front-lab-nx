@@ -1,0 +1,45 @@
+<h3>Context service based</h3>
+<div class="content">
+  <div>
+    <p>Parent registers and counts children via a context service</p>
+    <p>
+      This a different solution. I am dropping the reactivity from the control
+      and using imperative set via the context service.
+    </p>
+    <p>
+      The writeValue will manually set a 3rd signal to the control the checked
+      state of the node
+    </p>
+    <div>
+      <label for="opt">Select items via input:</label>
+      <input
+        type="text"
+        id="opt"
+        [formControl]="newValueControl"
+        placeholder="Enter new value coma separated IDs"
+      />
+      <small
+        >Update selected items by entering comma separated IDs in the input
+        box</small
+      >
+    </div>
+    <div class="selected-items">
+      Selected item IDs: {{folderTreeControl.value}}
+    </div>
+  </div>
+  <div class="folder-tree-container">
+    <fl-form-folder-tree-ctx [formControl]="folderTreeControl">
+      @for (node of data(); track node.id) {
+      <fl-form-folder-tree-node-ctx
+        [node]="node"
+        [expanded]="true"
+      ></fl-form-folder-tree-node-ctx>
+      }
+    </fl-form-folder-tree-ctx>
+    <div class="action-bar">
+      <button (click)="resetControl()" class="action-button">
+        Clear selection
+      </button>
+    </div>
+  </div>
+</div>

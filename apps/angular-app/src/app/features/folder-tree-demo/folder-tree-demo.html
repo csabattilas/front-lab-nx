@@ -9,97 +9,16 @@
   Switch to large tree
 </button>
 <div class="demo-container">
-  <div class="tree-container">
-    <h3>Output based</h3>
-    <p>The children tell their parent about their checked state</p>
-    <fl-form-folder-tree [formControl]="folderSelectionControlOutputBasedTree">
-      @for (node of data; track node.id) {
-      <fl-form-folder-tree-node-otp
-        [node]="node"
-        [expanded]="true"
-      ></fl-form-folder-tree-node-otp>
-      }
-    </fl-form-folder-tree>
-    <div class="selected-items">
-      Selected item IDs: {{folderSelectionControlOutputBasedTree.value?.join(',
-      ')}}
-    </div>
-    <div class="action-bar">
-      <button (click)="setNewValueOutputBasedTree()" class="action-button">
-        Set new value
-      </button>
-      <button (click)="clearSelectionOutputBasedTree()" class="action-button">
-        Clear selection
-      </button>
-    </div>
-  </div>
+  <fl-folder-tree-opt-demo [data]="data" [isLargeTree]="isLargeTree">
+  </fl-folder-tree-opt-demo>
 
-  <div class="tree-container">
-    <h3>View child based</h3>
-    <p>
-      Parent counts the checked children via <code>viewchildren</code> signal
-    </p>
-    <fl-form-folder-tree
-      [formControl]="folderSelectionControlViewChildBasedTree"
-    >
-      @for (node of data; track node.id) {
-      <fl-form-folder-tree-node-vc
-        [node]="node"
-        [expanded]="true"
-      ></fl-form-folder-tree-node-vc>
-      }
-    </fl-form-folder-tree>
-    <div class="selected-items">
-      Selected item IDs:
-      {{folderSelectionControlViewChildBasedTree.value?.join(', ')}}
-    </div>
-    <div class="action-bar">
-      <button (click)="setNewValueViewChildBasedTree()" class="action-button">
-        Set new value
-      </button>
-      <button
-        (click)="clearSelectionViewchildBasedTree()"
-        class="action-button"
-      >
-        Clear selection
-      </button>
-    </div>
-  </div>
+  <fl-folder-tree-vc-demo [data]="data" [isLargeTree]="isLargeTree">
+  </fl-folder-tree-vc-demo>
 
-  <div class="tree-container">
-    <h3>Context service based</h3>
-    <p>Parent registers and counts children via a context service</p>
-    <p>
-      This a different solution. I am dropping the reactivity from the control
-      and using imperative set via the context service.
-    </p>
-    <p>
-      The writeValue will manually set a 3rd signal to the control the checked
-      state of the node
-    </p>
-    <fl-form-folder-tree-ctx
-      style="width: auto"
-      [formControl]="folderSelectionControlContextServiceBasedTree"
-    >
-      @for (node of data; track node.id) {
-      <fl-form-folder-tree-node-ctx
-        [node]="node"
-        [expanded]="true"
-      ></fl-form-folder-tree-node-ctx>
-      }
-    </fl-form-folder-tree-ctx>
-    <div class="selected-items">
-      Selected item IDs:
-      {{folderSelectionControlContextServiceBasedTree.value?.join(', ')}}
-    </div>
-    <div class="action-bar">
-      <button (click)="setNewValueContextBasedTree()" class="action-button">
-        Set new value
-      </button>
-      <button (click)="clearSelectionContextBasedTree()" class="action-button">
-        Clear selection
-      </button>
-    </div>
-  </div>
+  <fl-folder-tree-vc-no-effect-demo [data]="data" [isLargeTree]="isLargeTree">
+  </fl-folder-tree-vc-no-effect-demo>
+
+  <fl-folder-tree-ctx-demo [data]="data" [isLargeTree]="isLargeTree">
+  </fl-folder-tree-ctx-demo>
 </div>
 }

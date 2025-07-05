@@ -1,0 +1,44 @@
+<h3>Output based</h3>
+<div class="content">
+  <div>
+    <p>The children tell their parent about their checked state</p>
+
+    <p>
+      Uses output event to mark when a checkbox is checked or unchecked. The
+      parent component listens to these events and updates the control, based on
+      the <code>checked/intermediate</code> saved on the node objects
+      (<code>TreeNode</code>)
+    </p>
+    <div>
+      <label for="opt">Select items via input:</label>
+      <input
+        type="text"
+        id="opt"
+        [formControl]="newValueControl"
+        placeholder="Enter new value coma separated IDs"
+      />
+      <small
+        >Update selected items by entering comma separated IDs in the input
+        box</small
+      >
+    </div>
+    <div class="selected-items">
+      Selected item IDs: {{folderTreeControl.value}}
+    </div>
+  </div>
+  <div class="folder-tree-container">
+    <fl-form-folder-tree [formControl]="folderTreeControl">
+      @for (node of data(); track node.id) {
+      <fl-form-folder-tree-node-otp
+        [node]="node"
+        [expanded]="true"
+      ></fl-form-folder-tree-node-otp>
+      }
+    </fl-form-folder-tree>
+    <div class="action-bar">
+      <button (click)="resetControl()" class="action-button">
+        Clear selection
+      </button>
+    </div>
+  </div>
+</div>

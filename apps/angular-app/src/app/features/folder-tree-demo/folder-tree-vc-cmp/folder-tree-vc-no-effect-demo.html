@@ -1,0 +1,40 @@
+<h3>Viewchild based (no effect)</h3>
+<div class="content">
+  <div>
+    <p>
+      Parent counts the checked children via <code>viewchildren</code> signal
+      The checked states are collected declaratively upon user actions
+    </p>
+    <div>
+      <label for="opt">Select items via input:</label>
+      <input
+        type="text"
+        id="opt"
+        [formControl]="newValueControl"
+        placeholder="Enter new value coma separated IDs"
+      />
+      <small
+        >Update selected items by entering comma separated IDs in the input
+        box</small
+      >
+    </div>
+    <div class="selected-items">
+      Selected item IDs: {{folderTreeControl.value}}
+    </div>
+  </div>
+  <div class="folder-tree-container">
+    <fl-form-folder-tree [formControl]="folderTreeControl">
+      @for (node of data(); track node.id) {
+      <fl-form-folder-tree-node-vc-no-effect
+        [node]="node"
+        [expanded]="true"
+      ></fl-form-folder-tree-node-vc-no-effect>
+      }
+    </fl-form-folder-tree>
+    <div class="action-bar">
+      <button (click)="resetControl()" class="action-button">
+        Clear selection
+      </button>
+    </div>
+  </div>
+</div>
