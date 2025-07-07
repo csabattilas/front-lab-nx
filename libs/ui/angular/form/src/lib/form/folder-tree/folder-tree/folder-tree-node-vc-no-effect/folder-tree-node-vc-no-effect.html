@@ -21,7 +21,7 @@
     <fl-form-folder-tree-node-vc-no-effect
       [style.display]="expandedSignal() ? 'block' : 'none'"
       [node]="node"
-      [inheritedChecked]="manualChecked()"
+      [inheritedChecked]="checked()"
       [expanded]="expandedSignal()"
       [depth]="depth()+1"
     ></fl-form-folder-tree-node-vc-no-effect>

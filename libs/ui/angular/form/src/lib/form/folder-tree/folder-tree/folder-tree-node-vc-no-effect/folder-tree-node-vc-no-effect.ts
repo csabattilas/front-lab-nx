@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
+  Input,
   input,
   linkedSignal,
+  signal,
   viewChildren,
 } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
@@ -25,7 +26,9 @@ import { PerformanceService } from '../../performance/performance';
 })
 export class FolderTreeNodeVcNoEffectComponent {
   public node = input<TreeNode>();
-  public inheritedChecked = input<boolean>(false);
+
+  public readonly _inheritedChecked = signal(false);
+
   public expanded = input<boolean>(false);
   public depth = input<number>(0);
 
@@ -33,17 +36,17 @@ export class FolderTreeNodeVcNoEffectComponent {
 
   public readonly checked = linkedSignal<boolean>(() => {
     const childrenBasedChecked = this.childrenBasedChecked();
+    const inheritedChecked = this._inheritedChecked();
 
-    if (!this.hasChildren) {
-      return this.manualChecked();
+    const node = this.node();
+
+    // side effect hack to save the last checked state
+    if (node) {
+      node.checked = childrenBasedChecked ?? inheritedChecked;
     }
 
-    return childrenBasedChecked;
+    return childrenBasedChecked ?? inheritedChecked;
   });
-
-  public readonly manualChecked = linkedSignal((): boolean =>
-    this.inheritedChecked()
-  );
 
   public readonly indeterminate = linkedSignal((): boolean => {
     const childrenChecked = this.children()?.map(
@@ -65,21 +68,27 @@ export class FolderTreeNodeVcNoEffectComponent {
 
   private readonly children = viewChildren(FolderTreeNodeVcNoEffectComponent);
 
-  private readonly childrenBasedChecked = computed((): boolean => {
-    const checkedCount = this.children()
-      ?.map((c: FolderTreeNodeVcNoEffectComponent) => {
-        return c.checked();
-      })
-      .filter(Boolean).length;
+  private readonly childrenBasedChecked = linkedSignal<boolean | null>(
+    (): boolean | null => {
+      if (!this.hasChildren) {
+        return false;
+      }
 
-    const total = this.node()?.items?.length ?? 0;
+      const checkedCount = this.children()
+        ?.map((c: FolderTreeNodeVcNoEffectComponent) => {
+          return c.checked();
+        })
+        .filter(Boolean).length;
 
-    if ((checkedCount === total && checkedCount > 0) || checkedCount === 0) {
-      return checkedCount === total && checkedCount > 0;
+      const total = this.node()?.items?.length ?? 0;
+
+      if ((checkedCount === total && checkedCount > 0) || checkedCount === 0) {
+        return checkedCount === total && checkedCount > 0;
+      }
+
+      return this.node()?.checked ?? null;
     }
-
-    return this.inheritedChecked();
-  });
+  );
 
   private readonly performanceService = inject(PerformanceService);
 
@@ -123,6 +132,13 @@ export class FolderTreeNodeVcNoEffectComponent {
     return !!this.node()?.items?.length;
   }
 
+  @Input()
+  set inheritedChecked(value: boolean) {
+    // side effect to kill children based checked state
+    this.childrenBasedChecked.set(null);
+    this._inheritedChecked.set(value);
+  }
+
   public toggleExpanded(): void {
     if (!this.hasChildren) {
       return;
@@ -133,9 +149,6 @@ export class FolderTreeNodeVcNoEffectComponent {
   public onToggle(event: Event): void {
     this.performanceService.resetCheckedCount();
     const isChecked = (event.target as HTMLInputElement).checked;
-    // this will break the racing cycle
-    setTimeout(() => {
-      this.manualChecked.set(isChecked);
-    }, 0);
+    this.checked.set(isChecked);
   }
 }

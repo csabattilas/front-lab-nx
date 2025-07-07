@@ -1,15 +1,17 @@
 import {
-  Component,
-  forwardRef,
-  untracked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
+  forwardRef,
   inject,
+  signal,
+  untracked,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
-import { signal } from '@angular/core';
-import { TreeSelectionComponentContext } from '../model/folder-tree-model';
+import {
+  FOLDER_TREE_CONTEXT,
+  TreeSelectionComponentContext,
+} from '../model/folder-tree-model';
 import { PerformanceService } from '../performance/performance';
 
 @Component({
@@ -105,7 +107,7 @@ export class FolderTreeComponent
   };
 
   // transactional update. the writeValue will cascade back otherwise.
-  // it's a trick i tried to avoid (without having reference to each item from here), but no luck so far
+  // it's a trick to separate the writeValue updates from interactive updates
   private transaction<T>(fn: () => T): T {
     this._isFormUpdate.set(true);
     try {
