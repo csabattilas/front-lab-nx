@@ -31,19 +31,87 @@ Other usages can be found in the `apps/angular-app/src/app/features/folder-tree-
 
 The `node` data will be provided by the tree repository lib, which builds the tree structure based on the provided endpoint.
 
-I am trying to research the performance of various implementations of the folder tree component, hence there are three different implementations:
+I am trying to research the performance of various implementations of the folder tree component, hence there are multiple different implementations:
 
-- **Output-based tree**: This implementation uses an output-based approach to render the tree nodes. Each child will tell its parent when its checked or intermediate state is changing.
-- **ViewChild-based tree**: This implementation uses the new `viewchildren` signal to query the checked or intermediate state of the children.
-- **Custom nodeMap-based tree**: This implementation registers the checked or intermediate (signal-based) state of each node into a Map based on a custom id (the folders and items can have the same id).
+Ultimately there were 4 variations implemented
 
-In order to link the tree node to the form control, we use a context object. For the `output` and `viewchild` based implementations, the context object is provided by the `FolderTreeComponent`, which implements the `ControlValueAccessor` interface.
+#### Transactional writeValue
 
-While the `nodeMap` based implementation uses a separate context service, which is also responsible for registering the nodes in the custom nodemap. The context-based implementation has its own custom control (`FolderTreeCtxComponent`) too.
+The two oldest variants are based on effects and imperative interaction (check/uncheck) handling.
 
-#### Component extensions
+These two variants are also using a so called "transactional" `writeValue` update to handle the selected item ids `selectedItemsIds` from which the value of the folder tree control is derived.
 
-The node components share some similarities, so they are extended from a base component: `BaseFolderTreeNodeComponent`.
+The need for this transactional update is due to the following:
+
+- the `selectedItemsIds` is a signal, which is updated when the `writeValue` is called
+- the `selectedItemsIds` only needs to be listened to when the `writeValue` is called from outside the control (e.g. when the form control is updated)
+
+One of the variants is output based using output events from the children and the node object to count the children checked/unchecked/intermediate state.
+
+The other variant is using the `viewChildren` signal to query the checked/unchecked/intermediate state of the children.
+
+The components usage:
+
+```html
+<fl-form-folder-tree-transactional>
+  @for (node of data; track node.id) {
+  <fl-form-folder-tree-node-otp [node]="node"></fl-form-folder-tree-node-otp>
+  }
+</fl-form-folder-tree-transactional>
+```
+
+or
+
+```html
+<fl-form-folder-tree-transactional>
+  @for (node of data; track node.id) {
+  <fl-form-folder-tree-node-vc [node]="node"></fl-form-folder-tree-node-vc>
+  }
+</fl-form-folder-tree-transactional>
+```
+
+#### Context service
+
+Each of the variants are using a contex to update the selected item ids (`selectedItemsIds`).
+
+For the first two variants the context will be the folder tree control (component) itself.
+
+But in order to eliminate the transactional `writeValue` update the third variant is implementing an external context service and drops the selectedItemsIds as signal. Instead it updates the selectedItemsIds directly.
+
+The components usage:
+
+```html
+<fl-form-folder-tree-ctx>
+  @for (node of data; track node.id) {
+  <fl-form-folder-tree-node-ctx [node]="node"></fl-form-folder-tree-node-ctx>
+  }
+</fl-form-folder-tree-ctx>
+```
+
+#### Finding the cleanest solution
+
+The 4th variant uses a different approach in order to eliminate the transactional `writeValue` update.
+
+This variant drops the effect based imperative updates of the nodes and embraces an almost full declarative approach while still using the `viewChildren` signal to query the checked/unchecked/intermediate state of the children.
+
+The `selectedItemsIds` can remain a signal and its changes are processed together with the signals constructed from the user interactions (parent and children initiated node updates).
+
+Ultimately we still need some minimal amount of effects for the following purposes:
+
+- to update the selected item ids (folder-tree control value) based on user interaction
+- to update the performance mark
+- to save the last checked/unchecked state of a node in case we do not have to update it
+- to cut the update cycle. The parent node updates will be prioritized over `viewChildren`-based and `writeValue`-based updates (parent and children initiated node updates).
+
+The components usage:
+
+```html
+<fl-form-folder-tree>
+  @for (node of data; track node.id) {
+  <fl-form-folder-tree-node [node]="node"></fl-form-folder-tree-node>
+  }
+</fl-form-folder-tree>
+```
 
 ### Checkbox
 
