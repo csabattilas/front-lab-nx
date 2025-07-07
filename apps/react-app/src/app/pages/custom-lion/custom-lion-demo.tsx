@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import '@front-lab/locked-selection-list-box';
+import '@front-lab-nx/lion-form/locked-selection';
 import '@lion/ui/define/lion-option.js';
 
-import { LockedSelectionListBox } from '@front-lab/locked-selection-list-box';
+import { LockedSelection } from '@front-lab-nx/lion-form/locked-selection';
 
 import './custom-lion-demo.scss';
 // Web Component demo using Lion components
 const CustomLionDemo = () => {
-  const listboxRef = React.useRef<LockedSelectionListBox>(null);
+  const listboxRef = React.useRef<LockedSelection>(null);
 
   const [modelValue, setModelValue] =
     useState<{ resolved: boolean; selectedValue: string }[]>();
@@ -25,7 +25,7 @@ const CustomLionDemo = () => {
       <div className="mb-6">
         <h3>locked selection list box</h3>
         {modelValue?.[0]?.selectedValue}
-        <locked-selection-list-box
+        <locked-selection
           ref={listboxRef}
           answer="option1"
           onmodel-value-changed={handleExclusiveChange}
@@ -42,7 +42,7 @@ const CustomLionDemo = () => {
           <lion-option value="option4" choiceValue="option4">
             Option 4
           </lion-option>
-        </locked-selection-list-box>
+        </locked-selection>
       </div>
     </div>
   );

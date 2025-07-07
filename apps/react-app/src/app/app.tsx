@@ -1,41 +1,25 @@
 import '../styles.css';
+import './app.scss';
 
-import { Route, Routes, Link } from 'react-router-dom';
-import CustomLionDemo from './pages/custom-lion/custom-lion-demo.tsx';
+import { Route, Routes } from 'react-router-dom';
+import Header from './components/shared/header/Header';
+import Footer from './components/shared/footer/Footer';
+import Home from './pages/home/Home';
+import LockedSelectionPage from './pages/locked-selection/LockedSelection';
+import CustomLionDemo from './pages/custom-lion/custom-lion-demo';
 
 export function App() {
   return (
-    <div>
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/custom-lion">Custom Lion</Link>
-          </li>
-        </ul>
-      </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-        <Route path="/custom-lion" element={<CustomLionDemo />} />
-      </Routes>
+    <div className="app-container">
+      <Header />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/locked-selection" element={<LockedSelectionPage />} />
+          <Route path="/custom-lion" element={<CustomLionDemo />} />
+        </Routes>
+      </main>
+      <Footer />
     </div>
   );
 }

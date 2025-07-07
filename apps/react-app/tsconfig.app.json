@@ -22,14 +22,5 @@
     "vitest.config.ts",
     "vitest.config.mts"
   ],
-  "include": [
-    "src/**/*.js", 
-    "src/**/*.jsx", 
-    "src/**/*.ts", 
-    "src/**/*.tsx"
-  ],
-  "files": [
-    "../../libs/ui/lion/locked-selection-list-box/src/index.js",
-    "../../libs/ui/lion/locked-selection-list-box/src/index.d.ts"
-  ]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }

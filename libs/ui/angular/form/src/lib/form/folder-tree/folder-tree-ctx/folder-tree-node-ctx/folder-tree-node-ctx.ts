@@ -44,7 +44,7 @@ export class FolderTreeNodeCtxComponent implements OnInit {
 
     return (
       this.node().items?.map(item => {
-        return this.ctx.registerNode(item.id, !!item.items?.length);
+        return this.ctx.registerNode(item.id);
       }) ?? []
     );
   });
@@ -52,7 +52,7 @@ export class FolderTreeNodeCtxComponent implements OnInit {
   // @ts-expect-error: TS6133
   private readonly writeValueUpdateEffect = effect(() => {
     const writeValueChecked = this.ctx
-      .getNode(this.node().id, this.hasChildren)
+      .getNode(this.node().id)
       ?.writeValueChecked();
     this.checked.set(writeValueChecked ?? false);
   });
@@ -135,6 +135,6 @@ export class FolderTreeNodeCtxComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.ctx.registerNode(this.node().id, this.hasChildren);
+    this.ctx.registerNode(this.node().id);
   }
 }

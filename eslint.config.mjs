@@ -1,11 +1,9 @@
-import nx from '@nx/eslint-plugin';
+import baseConfig from './eslint.base.config.mjs';
 import prettier from 'eslint-plugin-prettier';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
+  ...baseConfig,
   eslintPluginPrettierRecommended,
   {
     ignores: [
@@ -33,18 +31,21 @@ export default [
           ],
         },
       ],
-      'prettier/prettier': ['error', {
-        singleQuote: true,
-        printWidth: 80,
-        tabWidth: 2,
-        useTabs: false,
-        semi: true,
-        bracketSpacing: true,
-        trailingComma: 'es5',
-        arrowParens: 'avoid',
-        htmlWhitespaceSensitivity: 'css',
-        endOfLine: 'lf'
-      }]
+      'prettier/prettier': [
+        'error',
+        {
+          singleQuote: true,
+          printWidth: 80,
+          tabWidth: 2,
+          useTabs: false,
+          semi: true,
+          bracketSpacing: true,
+          trailingComma: 'es5',
+          arrowParens: 'avoid',
+          htmlWhitespaceSensitivity: 'css',
+          endOfLine: 'lf',
+        },
+      ],
     },
   },
   {

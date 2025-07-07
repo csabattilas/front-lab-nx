@@ -3,7 +3,7 @@ import { NodeState } from '../model/folder-tree-model';
 
 @Injectable()
 export class TreeSelectionContextService {
-  public readonly nodeStates = new Map<string, NodeState>();
+  public readonly nodeStates = new Map<number, NodeState>();
 
   public selectedItemsIds = new Set<number>();
 
@@ -11,13 +11,9 @@ export class TreeSelectionContextService {
     this._onChange = fn;
   }
 
-  public registerNode(id: number, hasChildren: boolean): NodeState {
-    const existingNode = hasChildren
-      ? this.nodeStates.has(this.getMapId(id, true))
-      : this.nodeStates.has(this.getMapId(id, false));
-
-    if (!existingNode) {
-      this.nodeStates.set(this.getMapId(id, hasChildren), {
+  public registerNode(id: number): NodeState {
+    if (!this.nodeStates.has(id)) {
+      this.nodeStates.set(id, {
         id,
         checked: signal(false),
         indeterminate: signal(false),
@@ -25,14 +21,14 @@ export class TreeSelectionContextService {
       });
     }
 
-    return this.getNode(id, hasChildren);
+    return this.getNode(id);
   }
 
   public updateIndeterminateNodeSelection(
     id: number,
     isIntermediate: boolean
   ): void {
-    const nodeState = this.nodeStates.get(this.getMapId(id, true));
+    const nodeState = this.nodeStates.get(id);
 
     if (nodeState) {
       nodeState.indeterminate.set(isIntermediate);
@@ -44,7 +40,7 @@ export class TreeSelectionContextService {
     checked: boolean,
     hasChildren: boolean
   ): void {
-    const nodeState = this.nodeStates.get(this.getMapId(id, hasChildren));
+    const nodeState = this.nodeStates.get(id);
 
     if (nodeState) {
       nodeState.checked.set(checked);
@@ -72,8 +68,8 @@ export class TreeSelectionContextService {
     this._onChange(Array.from(this.selectedItemsIds));
   }
 
-  public getNode(id: number, hasChildren: boolean): NodeState {
-    const nodeState = this.nodeStates.get(this.getMapId(id, hasChildren));
+  public getNode(id: number): NodeState {
+    const nodeState = this.nodeStates.get(id);
     if (!nodeState) {
       throw new Error('Node not found');
     }

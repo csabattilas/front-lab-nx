@@ -2,14 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  effect,
   ElementRef,
   signal,
   viewChild,
-  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import '@lion/ui/define/lion-option.js';
-import '@front-lab/locked-selection-list-box';
+import '@front-lab-nx/lion-form/locked-selection';
 
 @Component({
   selector: 'fl-lion-locked-selection-demo',

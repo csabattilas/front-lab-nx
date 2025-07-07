@@ -55,7 +55,7 @@ export class FolderTreeCtxComponent implements ControlValueAccessor, OnInit {
       }
 
       value?.forEach(id => {
-        const nodeState = this.ctx.nodeStates.get(this.ctx.getMapId(id, false));
+        const nodeState = this.ctx.nodeStates.get(id);
 
         if (nodeState) {
           nodeState.writeValueChecked.set(true);

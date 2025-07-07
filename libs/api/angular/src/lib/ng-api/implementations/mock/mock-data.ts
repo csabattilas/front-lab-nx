@@ -52,7 +52,7 @@ export const MOCK_DATA: Record<string, unknown> = {
         2
       ],
       [
-        8,
+        18,
         "Truss item 2",
         6
       ],
@@ -72,12 +72,12 @@ export const MOCK_DATA: Record<string, unknown> = {
         10
       ],
       [
-        4,
+        14,
         "A Speaker item 2",
         4
       ],
       [
-        6,
+        16,
         "Truss item 1",
         6
       ]
@@ -383,7 +383,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1018, "Item 13-2", 13],
       [1019, "Item 14-1", 14],
       [1020, "Item 14-2", 14],
-      
+
       [1021, "Item 20-1", 20],
       [1022, "Item 20-2", 20],
       [1023, "Item 30-1", 30],
@@ -394,7 +394,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1028, "Item 50-2", 50],
       [1029, "Item 60-1", 60],
       [1030, "Item 60-2", 60],
-      
+
       [1031, "Item 70-1", 70],
       [1032, "Item 70-2", 70],
       [1033, "Item 80-1", 80],
@@ -405,19 +405,19 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1038, "Item 100-2", 100],
       [1039, "Item 110-1", 110],
       [1040, "Item 110-2", 110],
-      
+
       [1041, "Item 120-1", 120],
       [1042, "Item 120-2", 120],
       [1043, "Item 130-1", 130],
       [1044, "Item 130-2", 130],
       [1045, "Item 135-1", 135],
       [1046, "Item 135-2", 135],
-      
-    
+
+
       [1047, "Item 1-1-1", 10],
       [1048, "Item 1-2-1", 11],
       [1049, "Item 1-3-1", 12],
-      
+
       [1050, "Item 1-A-1", 200],
       [1051, "Item 1-A-2", 200],
       [1052, "Item 1-A-3", 200],
@@ -428,26 +428,26 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1057, "Item 1-C-1", 202],
       [1058, "Item 1-C-2", 202],
       [1059, "Item 1-C-3", 202],
-      
+
       [1060, "Item 2-1-1", 20],
       [1061, "Item 2-2-1", 21],
       [1062, "Item 2-3-1", 22],
-      
+
       [1065, "Item 2-A-1", 207],
       [1066, "Item 2-A-2", 207],
       [1067, "Item 2-A-3", 207],
       [1068, "Item 2-B-1", 208],
       [1069, "Item 2-B-2", 208],
-      [1070, "Item 2-C-1", 209],  
+      [1070, "Item 2-C-1", 209],
       [1071, "Item 2-C-2", 209],
       [1072, "Item 2-D-1", 210],
       [1073, "Item 2-D-2", 210],
-      
+
       [1074, "Item 3-1-1", 32],
       [1075, "Item 3-2-1", 33],
       [1076, "Item 3-3-1", 34],
       [1077, "Item 3-4-1", 35],
-      
+
       [1080, "Item 3-A-1", 217],
       [1081, "Item 3-A-2", 217],
       [1082, "Item 3-A-3", 217],
@@ -457,12 +457,12 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1086, "Item 3-C-2", 219],
       [1087, "Item 3-D-1", 220],
       [1088, "Item 3-D-2", 220],
-      
+
       [1089, "Item 4-1-1", 45],
       [1090, "Item 4-2-1", 46],
       [1091, "Item 4-3-1", 47],
       [1092, "Item 4-4-1", 48],
-      
+
       [1095, "Item 4-A-1", 229],
       [1096, "Item 4-A-2", 229],
       [1097, "Item 4-B-1", 230],
@@ -471,13 +471,13 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1100, "Item 4-C-2", 231],
       [1101, "Item 4-D-1", 232],
       [1102, "Item 4-D-2", 232],
-      
+
       [1103, "Item 5-1-1", 58],
       [1104, "Item 5-2-1", 59],
       [1105, "Item 5-3-1", 60],
       [1106, "Item 5-4-1", 61],
       [1107, "Item 5-5-1", 62],
-      
+
       [1110, "Item 5-A-1", 242],
       [1111, "Item 5-A-2", 242],
       [1112, "Item 5-B-1", 243],
@@ -486,14 +486,14 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1115, "Item 5-C-2", 244],
       [1116, "Item 5-D-1", 245],
       [1117, "Item 5-D-2", 245],
-      
+
       [1118, "Item 6-1-1", 71],
       [1119, "Item 6-2-1", 72],
       [1120, "Item 6-3-1", 73],
       [1121, "Item 6-4-1", 74],
       [1122, "Item 6-5-1", 75],
       [1123, "Item 6-6-1", 76],
-      
+
       [1130, "Item 6-A-1", 255],
       [1131, "Item 6-A-2", 255],
       [1132, "Item 6-B-1", 256],
@@ -502,7 +502,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1135, "Item 6-C-2", 257],
       [1136, "Item 6-D-1", 258],
       [1137, "Item 6-D-2", 258],
-      
+
       [1138, "Item 7-1-1", 84],
       [1139, "Item 7-2-1", 85],
       [1140, "Item 7-3-1", 86],
@@ -510,7 +510,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1142, "Item 7-5-1", 88],
       [1143, "Item 7-6-1", 89],
       [1144, "Item 7-7-1", 90],
-      
+
       [1150, "Item 7-A-1", 268],
       [1151, "Item 7-A-2", 268],
       [1152, "Item 7-B-1", 269],
@@ -519,7 +519,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1155, "Item 7-C-2", 270],
       [1156, "Item 7-D-1", 271],
       [1157, "Item 7-D-2", 271],
-      
+
       [1158, "Item 8-1-1", 97],
       [1159, "Item 8-2-1", 98],
       [1160, "Item 8-3-1", 99],
@@ -528,7 +528,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1163, "Item 8-6-1", 102],
       [1164, "Item 8-7-1", 103],
       [1165, "Item 8-8-1", 104],
-      
+
       [1170, "Item 8-A-1", 281],
       [1171, "Item 8-A-2", 281],
       [1172, "Item 8-B-1", 282],
@@ -537,7 +537,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1175, "Item 8-C-2", 283],
       [1176, "Item 8-D-1", 284],
       [1177, "Item 8-D-2", 284],
-      
+
       [1178, "Item 9-1-1", 110],
       [1179, "Item 9-2-1", 111],
       [1180, "Item 9-3-1", 112],
@@ -547,7 +547,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1184, "Item 9-7-1", 116],
       [1185, "Item 9-8-1", 117],
       [1186, "Item 9-9-1", 118],
-      
+
       [1190, "Item 9-A-1", 294],
       [1191, "Item 9-A-2", 294],
       [1192, "Item 9-B-1", 295],
@@ -556,7 +556,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1195, "Item 9-C-2", 296],
       [1196, "Item 9-D-1", 297],
       [1197, "Item 9-D-2", 297],
-      
+
       [1198, "Item 10-1-1", 123],
       [1199, "Item 10-2-1", 124],
       [1200, "Item 10-3-1", 125],
@@ -567,7 +567,7 @@ export const MOCK_DATA: Record<string, unknown> = {
       [1205, "Item 10-8-1", 130],
       [1206, "Item 10-9-1", 131],
       [1207, "Item 10-10-1", 132],
-      
+
       [1210, "Item 10-A-1", 307],
       [1211, "Item 10-A-2", 307],
       [1212, "Item 10-B-1", 308],

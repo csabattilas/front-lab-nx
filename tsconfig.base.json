@@ -17,12 +17,10 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@front-lab-nx/lion-form/*": ["libs/ui/lion/form/src/*"],
       "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
       "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
-      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"],
-      "@front-lab/locked-selection-list-box": [
-        "libs/ui/lion/locked-selection-list-box/src/index.js"
-      ]
+      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

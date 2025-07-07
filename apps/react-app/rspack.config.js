@@ -7,7 +7,7 @@ module.exports = {
     path: join(__dirname, '../../dist/apps/react-app'),
   },
   devServer: {
-    port: 4200,
+    port: 4201,
     historyApiFallback: {
       index: '/index.html',
       disableDotRule: true,
