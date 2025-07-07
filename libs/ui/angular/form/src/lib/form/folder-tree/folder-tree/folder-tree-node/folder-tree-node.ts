@@ -32,17 +32,9 @@ export class FolderTreeNodeComponent {
   public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
 
   public readonly checked = linkedSignal<boolean>(() => {
-    const childrenBasedChecked = this.childrenBasedChecked();
-    const inheritedChecked = this._inheritedChecked();
-    const writeValueChecked = this.writeValueChecked();
-
-    const node = this.node();
-
-    // side effect hack to save the last checked state
-    if (node) {
-      node.checked =
-        writeValueChecked ?? childrenBasedChecked ?? inheritedChecked;
-    }
+    const writeValueChecked = this.writeValueCheckedSignal();
+    const childrenBasedChecked = this.childrenBasedCheckedSignal();
+    const inheritedChecked = this.inheritedCheckedSignal();
 
     return writeValueChecked ?? childrenBasedChecked ?? inheritedChecked;
   });
@@ -65,9 +57,28 @@ export class FolderTreeNodeComponent {
     return indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total);
   });
 
+  private readonly performanceService = inject(PerformanceService);
+
+  private readonly ctx: TreeSelectionComponentContext =
+    inject(FOLDER_TREE_CONTEXT);
+
   private readonly children = viewChildren(FolderTreeNodeComponent);
 
-  private readonly childrenBasedChecked = linkedSignal<boolean | null>(
+  // collect the checked state from the writeValue from the folder tree control.
+  private readonly writeValueCheckedSignal = linkedSignal<boolean | null>(
+    (): boolean | null => {
+      const id = this.node()?.id;
+
+      if (id && !this.hasChildren) {
+        return this.ctx.selectedItemsIds().has(id);
+      } else {
+        return null;
+      }
+    }
+  );
+
+  // computes the checked state from the children.
+  private readonly childrenBasedCheckedSignal = linkedSignal<boolean | null>(
     (): boolean | null => {
       if (!this.hasChildren) {
         return false;
@@ -89,45 +100,35 @@ export class FolderTreeNodeComponent {
     }
   );
 
-  private readonly performanceService = inject(PerformanceService);
-
-  private readonly ctx: TreeSelectionComponentContext =
-    inject(FOLDER_TREE_CONTEXT);
-
-  private readonly writeValueChecked = linkedSignal<boolean | null>(
-    (): boolean | null => {
-      const node = this.node();
-
-      if (node && !this.hasChildren) {
-        return this.ctx.selectedItemsIds().has(node.id);
-      } else {
-        return null;
-      }
-    }
-  );
+  private readonly inheritedCheckedSignal = signal(false);
 
   // @ts-expect-error: TS6133
   // this one we need, as we push towards the context
   private readonly checkedEffect = effect(() => {
-    const checked = this.checked();
+    const node = this.node();
 
-    const id = this.node()?.id ?? 0;
+    if (node) {
+      // save the latest checked state
+      node.checked = this.checked();
 
-    // just add the items to the context
-    if (checked && !this.hasChildren) {
-      this.ctx.addSelectedItems(id);
-    } else if (!checked && !this.hasChildren) {
-      this.ctx.removeSelectedItems(id);
+      const id = this.node()?.id ?? 0;
+
+      // update selected items in the context
+      if (node.checked && !this.hasChildren) {
+        this.ctx.addSelectedItems(id);
+      } else if (!node.checked && !this.hasChildren) {
+        this.ctx.removeSelectedItems(id);
+      }
+
+      // manage expanded state
+      if (node.checked && this.hasChildren) {
+        this.expandedSignal.set(true);
+      }
+
+      // update performance mark
+      this.performanceService.updateCheckedCount('vc-no-effect');
     }
-
-    if (checked && this.hasChildren) {
-      this.expandedSignal.set(true);
-    }
-
-    this.performanceService.updateCheckedCount('vc-no-effect');
   });
-
-  private readonly _inheritedChecked = signal(false);
 
   public get hasChildren(): boolean {
     return !!this.node()?.items?.length;
@@ -135,10 +136,11 @@ export class FolderTreeNodeComponent {
 
   @Input()
   set inheritedChecked(value: boolean) {
-    // side effect to kill children based checked state
-    this.childrenBasedChecked.set(null);
-    this.writeValueChecked.set(null);
-    this._inheritedChecked.set(value);
+    // side effect to kill children and writeValue based checked state
+    this.childrenBasedCheckedSignal.set(null);
+    this.writeValueCheckedSignal.set(null);
+
+    this.inheritedCheckedSignal.set(value);
   }
 
   public toggleExpanded(): void {

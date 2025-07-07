@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
-  FOLDER_TREE_CONTEXT,
-  TreeSelectionComponentContext,
+  FOLDER_TREE_TRANSACTIONAL_CONTEXT,
+  TreeSelectionComponentTransactionalContext,
 } from '../model/folder-tree-model';
 import { PerformanceService } from '../performance/performance';
 
@@ -22,7 +22,7 @@ import { PerformanceService } from '../performance/performance';
   providers: [
     PerformanceService,
     {
-      provide: FOLDER_TREE_CONTEXT,
+      provide: FOLDER_TREE_TRANSACTIONAL_CONTEXT,
       useExisting: forwardRef(() => FolderTreeTransactionalComponent),
     },
     {
@@ -35,7 +35,7 @@ import { PerformanceService } from '../performance/performance';
 })
 // should we have validation? perhaps next iteration
 export class FolderTreeTransactionalComponent
-  implements ControlValueAccessor, TreeSelectionComponentContext
+  implements ControlValueAccessor, TreeSelectionComponentTransactionalContext
 {
   private readonly _selectedItemsIds = signal<Set<number>>(new Set());
 

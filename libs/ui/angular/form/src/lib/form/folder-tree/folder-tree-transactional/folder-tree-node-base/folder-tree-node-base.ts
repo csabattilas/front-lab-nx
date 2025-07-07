@@ -1,7 +1,7 @@
 import { Component, effect, input, linkedSignal } from '@angular/core';
 import {
   TreeNode,
-  TreeSelectionComponentContext,
+  TreeSelectionComponentTransactionalContext,
 } from '../../model/folder-tree-model';
 
 @Component({
@@ -34,7 +34,7 @@ export abstract class BaseFolderTreeNodeComponent {
     }
   });
 
-  protected abstract readonly ctx: TreeSelectionComponentContext;
+  protected abstract readonly ctx: TreeSelectionComponentTransactionalContext;
 
   protected get hasChildren(): boolean {
     return !!this.node().items?.length;

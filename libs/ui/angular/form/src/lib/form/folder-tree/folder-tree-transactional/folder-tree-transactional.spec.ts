@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FolderTreeTransactionalComponent } from './folder-tree-transactional';
-import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
+import { FOLDER_TREE_TRANSACTIONAL_CONTEXT } from '../model/folder-tree-model';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { FolderTreeComponent } from '@front-lab-nx/ng-form';
 
 // test the component as a form control
 @Component({
@@ -24,16 +23,16 @@ class TestHostComponent {
   });
 }
 
-describe('FolderTreeComponent', () => {
-  let component: FolderTreeComponent;
-  let fixture: ComponentFixture<FolderTreeComponent>;
+describe('FolderTreeTransactionalComponent', () => {
+  let component: FolderTreeTransactionalComponent;
+  let fixture: ComponentFixture<FolderTreeTransactionalComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FolderTreeComponent, ReactiveFormsModule],
+      imports: [FolderTreeTransactionalComponent, ReactiveFormsModule],
     });
 
-    fixture = TestBed.createComponent(FolderTreeComponent);
+    fixture = TestBed.createComponent(FolderTreeTransactionalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -48,7 +47,9 @@ describe('FolderTreeComponent', () => {
 
   it('should provide FOLDER_TREE_CONTEXT', () => {
     // the component itself provides is the context
-    const context = fixture.debugElement.injector.get(FOLDER_TREE_CONTEXT);
+    const context = fixture.debugElement.injector.get(
+      FOLDER_TREE_TRANSACTIONAL_CONTEXT
+    );
     expect(context).toBe(component);
   });
 
@@ -128,7 +129,7 @@ describe('FolderTreeComponent', () => {
 describe('FolderTreeComponent as FormControl', () => {
   let hostFixture: ComponentFixture<TestHostComponent>;
   let hostComponent: TestHostComponent;
-  let folderTreeComponent: FolderTreeComponent;
+  let folderTreeTransactional: FolderTreeTransactionalComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -140,8 +141,9 @@ describe('FolderTreeComponent as FormControl', () => {
     vi.useFakeTimers();
     hostFixture.detectChanges();
     vi.runAllTimers();
-    folderTreeComponent = hostFixture.debugElement.query(
-      selector => selector.componentInstance instanceof FolderTreeComponent
+    folderTreeTransactional = hostFixture.debugElement.query(
+      selector =>
+        selector.componentInstance instanceof FolderTreeTransactionalComponent
     ).componentInstance;
   });
 
@@ -150,8 +152,8 @@ describe('FolderTreeComponent as FormControl', () => {
   });
 
   it('should update form value when selectedItemsIds changes', () => {
-    folderTreeComponent.addSelectedItems(1);
-    folderTreeComponent.addSelectedItems(2);
+    folderTreeTransactional.addSelectedItems(1);
+    folderTreeTransactional.addSelectedItems(2);
 
     hostFixture.detectChanges();
 
@@ -159,12 +161,12 @@ describe('FolderTreeComponent as FormControl', () => {
   });
 
   it('should update selectedItemsIds when form value changes', () => {
-    expect(folderTreeComponent.selectedItemsIds().size).toBe(0);
+    expect(folderTreeTransactional.selectedItemsIds().size).toBe(0);
     hostComponent.form.get('folders')?.setValue([3, 4]);
     hostFixture.detectChanges();
 
-    expect(folderTreeComponent.selectedItemsIds().size).toBe(2);
-    expect(Array.from(folderTreeComponent.selectedItemsIds())).toEqual(
+    expect(folderTreeTransactional.selectedItemsIds().size).toBe(2);
+    expect(Array.from(folderTreeTransactional.selectedItemsIds())).toEqual(
       expect.arrayContaining([3, 4])
     );
   });
@@ -173,18 +175,18 @@ describe('FolderTreeComponent as FormControl', () => {
     hostComponent.form.get('folders')?.setValue(null);
     hostFixture.detectChanges();
 
-    expect(folderTreeComponent.selectedItemsIds().size).toBe(0);
+    expect(folderTreeTransactional.selectedItemsIds().size).toBe(0);
   });
 
   it('should use transaction to prevent feedback loops', () => {
     vi.useFakeTimers();
-    const spy = vi.spyOn(folderTreeComponent as never, 'transaction');
+    const spy = vi.spyOn(folderTreeTransactional as never, 'transaction');
     hostComponent.form.get('folders')?.setValue([5]);
     hostFixture.detectChanges();
     expect(spy).toHaveBeenCalled();
     vi.runAllTimers();
-    expect(folderTreeComponent.selectedItemsIds().size).toBe(1);
-    expect(Array.from(folderTreeComponent.selectedItemsIds())).toEqual(
+    expect(folderTreeTransactional.selectedItemsIds().size).toBe(1);
+    expect(Array.from(folderTreeTransactional.selectedItemsIds())).toEqual(
       expect.arrayContaining([5])
     );
   });
@@ -195,9 +197,9 @@ describe('FolderTreeComponent as FormControl', () => {
     hostComponent.form.get('folders')?.setValue([5]);
     hostFixture.detectChanges();
 
-    expect(folderTreeComponent.isFormUpdate()).toBe(true);
+    expect(folderTreeTransactional.isFormUpdate()).toBe(true);
 
     vi.runAllTimers();
-    expect(folderTreeComponent.isFormUpdate()).toBe(false);
+    expect(folderTreeTransactional.isFormUpdate()).toBe(false);
   });
 });

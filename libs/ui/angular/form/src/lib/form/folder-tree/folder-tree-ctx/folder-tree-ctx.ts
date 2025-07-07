@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
+import { FOLDER_TREE_TRANSACTIONAL_CONTEXT } from '../model/folder-tree-model';
 import { TreeSelectionContextService } from './folder-tree-context';
 import { PerformanceService } from '../performance/performance';
 
@@ -19,7 +19,7 @@ import { PerformanceService } from '../performance/performance';
     TreeSelectionContextService,
     PerformanceService,
     {
-      provide: FOLDER_TREE_CONTEXT,
+      provide: FOLDER_TREE_TRANSACTIONAL_CONTEXT,
       useClass: TreeSelectionContextService,
     },
     {

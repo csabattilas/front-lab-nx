@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
+import { FOLDER_TREE_TRANSACTIONAL_CONTEXT } from '../../model/folder-tree-model';
 import { CheckboxComponent } from '../../../checkbox/';
 import { BaseFolderTreeNodeComponent } from '../folder-tree-node-base/folder-tree-node-base';
 import { PerformanceService } from '../../performance/performance';
@@ -31,7 +31,7 @@ export class FolderTreeNodeOtpComponent
   public checkedChange = output<boolean>();
   public indeterminateChange = output<boolean>();
 
-  public readonly ctx = inject(FOLDER_TREE_CONTEXT);
+  public readonly ctx = inject(FOLDER_TREE_TRANSACTIONAL_CONTEXT);
 
   public readonly indeterminate = signal<boolean>(false);
 

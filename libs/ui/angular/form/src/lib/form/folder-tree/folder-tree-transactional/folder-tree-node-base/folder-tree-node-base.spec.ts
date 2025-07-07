@@ -1,15 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseFolderTreeNodeComponent } from './folder-tree-node-base';
 import {
-  FOLDER_TREE_CONTEXT,
-  TreeSelectionComponentContext,
+  FOLDER_TREE_TRANSACTIONAL_CONTEXT,
+  TreeSelectionComponentTransactionalContext,
 } from '../../model/folder-tree-model';
 import { Component, Injectable, signal } from '@angular/core';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 // Mock context service for testing
 @Injectable()
-class MockTreeSelectionContext implements TreeSelectionComponentContext {
+class MockTreeSelectionContext
+  implements TreeSelectionComponentTransactionalContext
+{
   private readonly _selectedItemsIds = signal<Set<number>>(new Set());
   private readonly _isFormUpdate = signal<boolean>(false);
 
@@ -72,7 +74,9 @@ class MockTreeSelectionContext implements TreeSelectionComponentContext {
   standalone: true,
 })
 class TestFolderTreeNodeComponent extends BaseFolderTreeNodeComponent {
-  public override readonly ctx = TestBed.inject(FOLDER_TREE_CONTEXT);
+  public override readonly ctx = TestBed.inject(
+    FOLDER_TREE_TRANSACTIONAL_CONTEXT
+  );
 
   public override get hasChildren(): boolean {
     return super.hasChildren;
@@ -97,7 +101,9 @@ describe('BaseFolderTreeNodeComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [TestFolderTreeNodeComponent],
-      providers: [{ provide: FOLDER_TREE_CONTEXT, useValue: mockContext }],
+      providers: [
+        { provide: FOLDER_TREE_TRANSACTIONAL_CONTEXT, useValue: mockContext },
+      ],
     });
 
     fixture = TestBed.createComponent(TestFolderTreeNodeComponent);

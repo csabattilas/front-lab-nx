@@ -15,12 +15,23 @@ export interface NodeState {
   writeValueChecked: WritableSignal<boolean>;
 }
 
-export interface TreeSelectionComponentContext {
+export interface TreeSelectionComponentTransactionalContext {
   selectedItemsIds: Signal<Set<number>>;
   isFormUpdate: Signal<boolean>;
   addSelectedItems(id: number): void;
   removeSelectedItems(id: number): void;
 }
 
+export interface TreeSelectionComponentContext {
+  selectedItemsIds: Signal<Set<number>>;
+  addSelectedItems(id: number): void;
+  removeSelectedItems(id: number): void;
+}
+
 export const FOLDER_TREE_CONTEXT =
   new InjectionToken<TreeSelectionComponentContext>('FOLDER_TREE_CONTEXT');
+
+export const FOLDER_TREE_TRANSACTIONAL_CONTEXT =
+  new InjectionToken<TreeSelectionComponentTransactionalContext>(
+    'FOLDER_TREE_TRANSACTIONAL_CONTEXT'
+  );

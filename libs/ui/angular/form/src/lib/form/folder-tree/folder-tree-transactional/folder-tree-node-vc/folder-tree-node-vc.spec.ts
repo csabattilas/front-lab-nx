@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FolderTreeNodeVcComponent } from './folder-tree-node-vc';
-import { FOLDER_TREE_CONTEXT, TreeNode } from '../../model/folder-tree-model';
+import {
+  FOLDER_TREE_TRANSACTIONAL_CONTEXT,
+  TreeNode,
+} from '../../model/folder-tree-model';
 import { Component, Input, signal } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -15,13 +18,13 @@ function createCheckboxEvent(checked: boolean): Event {
 
 // mock context provider for testing
 @Component({
-  selector: 'fl-form-folder-tree-transactional-mock-context-provider',
+  selector: 'fl-form-folder-tree-mock-context-provider',
   template: '<ng-content></ng-content>',
   standalone: true,
   providers: [
     PerformanceService,
     {
-      provide: FOLDER_TREE_CONTEXT,
+      provide: FOLDER_TREE_TRANSACTIONAL_CONTEXT,
       useExisting: MockContextProviderComponent,
     },
   ],
@@ -61,7 +64,7 @@ class MockContextProviderComponent {
     </fl-form-folder-tree-mock-context-provider>
   `,
   standalone: true,
-  imports: [],
+  imports: [MockContextProviderComponent, FolderTreeNodeVcComponent],
 })
 class TestHostComponent {
   @Input() public node: TreeNode = { id: 1, title: 'Test Node' };
@@ -79,7 +82,7 @@ class TestHostComponent {
     </fl-form-folder-tree-mock-context-provider>
   `,
   standalone: true,
-  imports: [],
+  imports: [FolderTreeNodeVcComponent, MockContextProviderComponent],
 })
 class NestedTestHostComponent {
   public parentNode: TreeNode = {
@@ -113,21 +116,19 @@ describe('FolderTreeNodeVcComponent', () => {
     hostFixture.detectChanges();
 
     const nodeElement = hostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-transactional-node-vc')
+      By.css('fl-form-folder-tree-node-vc')
     );
     if (!nodeElement) {
-      throw new Error(
-        'fl-form-folder-tree-transactional-node-vc element not found'
-      );
+      throw new Error('fl-form-folder-tree-node-vc element not found');
     }
     component = nodeElement.componentInstance;
 
     const contextElement = hostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-transactional-mock-context-provider')
+      By.css('fl-form-folder-tree-mock-context-provider')
     );
     if (!contextElement) {
       throw new Error(
-        'fl-form-folder-tree-transactional-mock-context-provider element not found'
+        'fl-form-folder-tree-mock-context-provider element not found'
       );
     }
     contextProvider = contextElement.componentInstance;
@@ -247,7 +248,7 @@ describe('FolderTreeNodeVcComponent - Parent-Child Relationship', () => {
     nestedHostFixture.detectChanges();
 
     const parentElement = nestedHostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-transactional-node-vc')
+      By.css('fl-form-folder-tree-node-vc')
     );
     if (!parentElement) {
       throw new Error('Parent node element not found');
@@ -255,7 +256,7 @@ describe('FolderTreeNodeVcComponent - Parent-Child Relationship', () => {
     parentComponent = parentElement.componentInstance;
 
     const contextElement = nestedHostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-transactional-mock-context-provider')
+      By.css('fl-form-folder-tree-mock-context-provider')
     );
     if (!contextElement) {
       throw new Error('Context provider element not found');
@@ -266,9 +267,7 @@ describe('FolderTreeNodeVcComponent - Parent-Child Relationship', () => {
 
   it('should update parent state when all children are checked', () => {
     const childElements = nestedHostFixture.debugElement.queryAll(
-      By.css(
-        'fl-form-folder-tree-transactional-node-vc fl-form-folder-tree-transactional-node-vc'
-      )
+      By.css('fl-form-folder-tree-node-vc fl-form-folder-tree-node-vc')
     );
     expect(childElements.length).toBe(2);
     childElements.forEach(childEl => {
@@ -286,9 +285,7 @@ describe('FolderTreeNodeVcComponent - Parent-Child Relationship', () => {
 
   it('should set parent to indeterminate when some children are checked', () => {
     const childElements = nestedHostFixture.debugElement.queryAll(
-      By.css(
-        'fl-form-folder-tree-transactional-node-vc fl-form-folder-tree-transactional-node-vc'
-      )
+      By.css('fl-form-folder-tree-node-vc fl-form-folder-tree-node-vc')
     );
 
     const firstChildComponent = childElements[0]
@@ -308,9 +305,7 @@ describe('FolderTreeNodeVcComponent - Parent-Child Relationship', () => {
     nestedHostFixture.detectChanges();
 
     const childElements = nestedHostFixture.debugElement.queryAll(
-      By.css(
-        'fl-form-folder-tree-transactional-node-vc fl-form-folder-tree-transactional-node-vc'
-      )
+      By.css('fl-form-folder-tree-node-vc fl-form-folder-tree-node-vc')
     );
     childElements.forEach(childEl => {
       const childComponent =

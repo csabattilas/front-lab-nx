@@ -42,12 +42,7 @@ export class FolderTreeComponent
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly selectedItemsIds = this._selectedItemsIds.asReadonly();
 
-  private readonly _isFormUpdate = signal(false);
-
   private readonly cdr = inject(ChangeDetectorRef);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public readonly isFormUpdate = this._isFormUpdate.asReadonly();
 
   private readonly performanceService = inject(PerformanceService);
 
@@ -70,10 +65,6 @@ export class FolderTreeComponent
   }
 
   public addSelectedItems(id: number): void {
-    if (this._isFormUpdate()) {
-      return;
-    }
-
     this._selectedItemsIds.update(ids => {
       ids.add(id);
       return new Set(ids);
@@ -83,10 +74,6 @@ export class FolderTreeComponent
   }
 
   public removeSelectedItems(id: number): void {
-    if (this._isFormUpdate()) {
-      return;
-    }
-
     this._selectedItemsIds.update(ids => {
       ids.delete(id);
       return new Set(ids);

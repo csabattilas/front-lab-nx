@@ -7,7 +7,7 @@ import {
   viewChildren,
 } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
-import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
+import { FOLDER_TREE_TRANSACTIONAL_CONTEXT } from '../../model/folder-tree-model';
 import { BaseFolderTreeNodeComponent } from '../folder-tree-node-base/folder-tree-node-base';
 import { PerformanceService } from '../../performance/performance';
 
@@ -21,7 +21,7 @@ import { PerformanceService } from '../../performance/performance';
 export class FolderTreeNodeVcComponent extends BaseFolderTreeNodeComponent {
   public readonly indeterminate = signal<boolean>(false);
 
-  public readonly ctx = inject(FOLDER_TREE_CONTEXT);
+  public readonly ctx = inject(FOLDER_TREE_TRANSACTIONAL_CONTEXT);
 
   private readonly children = viewChildren(FolderTreeNodeVcComponent);
 
