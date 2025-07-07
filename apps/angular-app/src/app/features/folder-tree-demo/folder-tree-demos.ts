@@ -2,24 +2,25 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TreeRepositoryService } from '@front-lab-nx/ng-repository';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { FolderTreeVcNoEffectDemoComponent } from './folder-tree-vc-cmp/folder-tree-vc-no-effect-demo';
+import { FolderTreeDemoComponent } from './folder-tree/folder-tree-demo';
+import { FolderTreeOptDemoComponent } from './folder-tree-transactional/folder-tree-otp/folder-tree-opt-demo';
+import { FolderTreeVcDemoComponent } from './folder-tree-transactional/folder-tree-vc/folder-tree-vc-demo';
 import { FolderTreeCtxDemoComponent } from './folder-tree-ctx/folder-tree-ctx-demo';
-import { FolderTreeVcDemoComponent } from './folder-tree-vc/folder-tree-vc-demo';
-import { FolderTreeOptDemoComponent } from './folder-tree-otp/folder-tree-opt-demo';
 
 @Component({
   selector: 'fl-tree-demo',
   imports: [
-    FolderTreeOptDemoComponent,
-    FolderTreeVcNoEffectDemoComponent,
-    FolderTreeCtxDemoComponent,
     ReactiveFormsModule,
+    FolderTreeDemoComponent,
+    FolderTreeOptDemoComponent,
     FolderTreeVcDemoComponent,
+    FolderTreeCtxDemoComponent,
   ],
-  templateUrl: './folder-tree-demo.html',
+  templateUrl: './folder-tree-demos.html',
+  styleUrl: './folder-tree-demos.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FolderTreeDemoComponent {
+export class FolderTreeDemosComponent {
   public treeData = inject(TreeRepositoryService).getTreeDataResource();
   public largeTreeData = inject(TreeRepositoryService).getTreeDataResource(
     'largeTree'

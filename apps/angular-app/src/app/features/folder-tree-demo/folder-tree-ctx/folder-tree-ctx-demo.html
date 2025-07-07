@@ -3,12 +3,9 @@
   <div>
     <p>Parent registers and counts children via a context service</p>
     <p>
-      This a different solution. I am dropping the reactivity from the control
-      and using imperative set via the context service.
-    </p>
-    <p>
-      The writeValue will manually set a 3rd signal to the control the checked
-      state of the node
+      The <code>folder-tree</code> control is not using signals, but
+      imperatively sets each child via the nodeMap created by the context
+      service.
     </p>
     <div>
       <label for="opt">Select items via input:</label>

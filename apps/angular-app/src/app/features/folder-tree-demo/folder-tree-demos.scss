@@ -1,0 +1,8 @@
+.action-button {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  padding: calc(var(--spacing-unit) / 2);
+  border-radius: var(--radius-base);
+  border: none;
+  margin-bottom: 1rem;
+}

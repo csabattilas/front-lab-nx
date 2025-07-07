@@ -1,10 +1,16 @@
-<h3>Viewchild based (no effect)</h3>
+<h3>Output based</h3>
 <div class="content">
   <div>
+    <p>The children tell their parent about their checked state</p>
+
     <p>
-      Parent counts the checked children via <code>viewchildren</code> signal
-      The checked states are collected declaratively upon user actions
+      Uses output event to mark when a checkbox is checked or unchecked. The
+      parent component listens to these events and updates the control, based on
+      the <code>checked/intermediate</code> saved on the node objects
+      (<code>TreeNode</code>)
     </p>
+
+    <p>The checked states are set imperatively via effects.</p>
     <div>
       <label for="opt">Select items via input:</label>
       <input
@@ -23,14 +29,14 @@
     </div>
   </div>
   <div class="folder-tree-container">
-    <fl-form-folder-tree [formControl]="folderTreeControl">
+    <fl-form-folder-tree-transactional [formControl]="folderTreeControl">
       @for (node of data(); track node.id) {
-      <fl-form-folder-tree-node-vc-no-effect
+      <fl-form-folder-tree-node-otp
         [node]="node"
         [expanded]="true"
-      ></fl-form-folder-tree-node-vc-no-effect>
+      ></fl-form-folder-tree-node-otp>
       }
-    </fl-form-folder-tree>
+    </fl-form-folder-tree-transactional>
     <div class="action-bar">
       <button (click)="resetControl()" class="action-button">
         Clear selection

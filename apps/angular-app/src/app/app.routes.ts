@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { FolderTreeDemoComponent } from './features/folder-tree-demo/folder-tree-demo';
+import { FolderTreeDemosComponent } from './features/folder-tree-demo/folder-tree-demos';
 import { HomeComponent } from './features/home/home.component';
 import { LionLockedSelectionDemoComponent } from './features/lion-locked-selection-demo/lion-locked-selection-demo.component';
 
@@ -12,7 +12,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'folder-tree',
-    component: FolderTreeDemoComponent,
+    component: FolderTreeDemosComponent,
     title: 'Folder Tree Demo',
   },
   {

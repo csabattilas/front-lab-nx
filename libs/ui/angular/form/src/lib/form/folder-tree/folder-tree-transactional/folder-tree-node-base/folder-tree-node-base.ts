@@ -1,11 +1,11 @@
-import { Component, input, linkedSignal, effect } from '@angular/core';
+import { Component, effect, input, linkedSignal } from '@angular/core';
 import {
   TreeNode,
   TreeSelectionComponentContext,
-} from '../model/folder-tree-model';
+} from '../../model/folder-tree-model';
 
 @Component({
-  selector: 'fl-form-folder-tree-node',
+  selector: 'fl-form-folder-tree-transactional-node',
   template: '',
 })
 /**

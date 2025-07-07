@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   forwardRef,
-  ChangeDetectionStrategy,
   inject,
-  ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';

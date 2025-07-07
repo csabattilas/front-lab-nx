@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseFolderTreeNodeComponent } from './folder-tree-node';
+import { BaseFolderTreeNodeComponent } from './folder-tree-node-base';
 import {
   FOLDER_TREE_CONTEXT,
   TreeSelectionComponentContext,
-} from '../model/folder-tree-model';
+} from '../../model/folder-tree-model';
 import { Component, Injectable, signal } from '@angular/core';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 // Mock context service for testing
 @Injectable()
@@ -44,7 +44,7 @@ class MockTreeSelectionContext implements TreeSelectionComponentContext {
 
 // be able to extend and test the component functionalities
 @Component({
-  selector: 'fl-form-folder-tree-node-test',
+  selector: 'fl-form-folder-tree-transactional-node-test',
   template: `
     <div class="node" [attr.data-depth]="depth()">
       <div class="node-content">

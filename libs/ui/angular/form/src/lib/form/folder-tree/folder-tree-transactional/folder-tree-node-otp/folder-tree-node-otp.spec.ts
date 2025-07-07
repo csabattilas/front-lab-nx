@@ -3,7 +3,7 @@ import { FolderTreeNodeOtpComponent } from './folder-tree-node-otp';
 import { FOLDER_TREE_CONTEXT, TreeNode } from '../../model/folder-tree-model';
 import { Component, Input, signal } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { By } from '@angular/platform-browser';
 import { PerformanceService } from '../../performance/performance';
 
@@ -14,7 +14,7 @@ function createCheckboxEvent(checked: boolean): Event {
 }
 
 @Component({
-  selector: 'fl-form-folder-tree-mock-context-provider',
+  selector: 'fl-form-folder-tree-transactional-mock-context-provider',
   template: '<ng-content></ng-content>',
   providers: [
     PerformanceService,
@@ -64,7 +64,7 @@ class MockContextProviderComponent {
       ></fl-form-folder-tree-node-otp>
     </fl-form-folder-tree-mock-context-provider>
   `,
-  imports: [MockContextProviderComponent, FolderTreeNodeOtpComponent],
+  imports: [],
 })
 class TestHostComponent {
   @Input() public node: TreeNode = {
@@ -109,19 +109,21 @@ describe('FolderTreeNodeOtpComponent', () => {
     hostFixture.detectChanges();
 
     const nodeElement = hostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-node-otp')
+      By.css('fl-form-folder-tree-transactional-node-otp')
     );
     if (!nodeElement) {
-      throw new Error('fl-form-folder-tree-node-otp element not found');
+      throw new Error(
+        'fl-form-folder-tree-transactional-node-otp element not found'
+      );
     }
     component = nodeElement.componentInstance;
 
     const contextElement = hostFixture.debugElement.query(
-      By.css('fl-form-folder-tree-mock-context-provider')
+      By.css('fl-form-folder-tree-transactional-mock-context-provider')
     );
     if (!contextElement) {
       throw new Error(
-        'fl-form-folder-tree-mock-context-provider element not found'
+        'fl-form-folder-tree-transactional-mock-context-provider element not found'
       );
     }
     contextProvider = contextElement.componentInstance;

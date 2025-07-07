@@ -18,17 +18,14 @@ import {
 import { PerformanceService } from '../../performance/performance';
 
 @Component({
-  selector: 'fl-form-folder-tree-node-vc-no-effect',
+  selector: 'fl-form-folder-tree-node',
   imports: [CheckboxComponent],
-  styleUrl: './folder-tree-node-vc-no-effect.scss',
-  templateUrl: './folder-tree-node-vc-no-effect.html',
+  styleUrl: './folder-tree-node.scss',
+  templateUrl: './folder-tree-node.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FolderTreeNodeVcNoEffectComponent {
+export class FolderTreeNodeComponent {
   public node = input<TreeNode>();
-
-  public readonly _inheritedChecked = signal(false);
-
   public expanded = input<boolean>(false);
   public depth = input<number>(0);
 
@@ -37,20 +34,22 @@ export class FolderTreeNodeVcNoEffectComponent {
   public readonly checked = linkedSignal<boolean>(() => {
     const childrenBasedChecked = this.childrenBasedChecked();
     const inheritedChecked = this._inheritedChecked();
+    const writeValueChecked = this.writeValueChecked();
 
     const node = this.node();
 
     // side effect hack to save the last checked state
     if (node) {
-      node.checked = childrenBasedChecked ?? inheritedChecked;
+      node.checked =
+        writeValueChecked ?? childrenBasedChecked ?? inheritedChecked;
     }
 
-    return childrenBasedChecked ?? inheritedChecked;
+    return writeValueChecked ?? childrenBasedChecked ?? inheritedChecked;
   });
 
   public readonly indeterminate = linkedSignal((): boolean => {
     const childrenChecked = this.children()?.map(
-      (c: FolderTreeNodeVcNoEffectComponent) => ({
+      (c: FolderTreeNodeComponent) => ({
         checked: c.checked(),
         indeterminate: c.indeterminate(),
       })
@@ -66,7 +65,7 @@ export class FolderTreeNodeVcNoEffectComponent {
     return indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total);
   });
 
-  private readonly children = viewChildren(FolderTreeNodeVcNoEffectComponent);
+  private readonly children = viewChildren(FolderTreeNodeComponent);
 
   private readonly childrenBasedChecked = linkedSignal<boolean | null>(
     (): boolean | null => {
@@ -75,7 +74,7 @@ export class FolderTreeNodeVcNoEffectComponent {
       }
 
       const checkedCount = this.children()
-        ?.map((c: FolderTreeNodeVcNoEffectComponent) => {
+        ?.map((c: FolderTreeNodeComponent) => {
           return c.checked();
         })
         .filter(Boolean).length;
@@ -95,17 +94,17 @@ export class FolderTreeNodeVcNoEffectComponent {
   private readonly ctx: TreeSelectionComponentContext =
     inject(FOLDER_TREE_CONTEXT);
 
-  // @ts-expect-error: TS6133
-  private readonly formControlChecked = effect(() => {
-    // we need to only run this when we write value
-    // there are other ways to do this:
-    //      - untracked (but that would kill subsequent writeValue)
-    //      - reading the child. did in the ctx version where I leverage the nodeMap
-    if (this.ctx.isFormUpdate() && !this.hasChildren) {
-      const id = this.node()?.id ?? 0;
-      this.checked.set(this.ctx.selectedItemsIds().has(id));
+  private readonly writeValueChecked = linkedSignal<boolean | null>(
+    (): boolean | null => {
+      const node = this.node();
+
+      if (node && !this.hasChildren) {
+        return this.ctx.selectedItemsIds().has(node.id);
+      } else {
+        return null;
+      }
     }
-  });
+  );
 
   // @ts-expect-error: TS6133
   // this one we need, as we push towards the context
@@ -128,6 +127,8 @@ export class FolderTreeNodeVcNoEffectComponent {
     this.performanceService.updateCheckedCount('vc-no-effect');
   });
 
+  private readonly _inheritedChecked = signal(false);
+
   public get hasChildren(): boolean {
     return !!this.node()?.items?.length;
   }
@@ -136,6 +137,7 @@ export class FolderTreeNodeVcNoEffectComponent {
   set inheritedChecked(value: boolean) {
     // side effect to kill children based checked state
     this.childrenBasedChecked.set(null);
+    this.writeValueChecked.set(null);
     this._inheritedChecked.set(value);
   }
 

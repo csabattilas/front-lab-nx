@@ -1,21 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FolderTreeComponent } from './folder-tree';
+import { FolderTreeTransactionalComponent } from './folder-tree-transactional';
 import { FOLDER_TREE_CONTEXT } from '../model/folder-tree-model';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { FolderTreeComponent } from '@front-lab-nx/ng-form';
 
 // test the component as a form control
 @Component({
   template: `
     <form [formGroup]="form">
-      <fl-form-folder-tree formControlName="folders">
+      <fl-form-folder-tree-transactional formControlName="folders">
         <div>Tree content</div>
-      </fl-form-folder-tree>
+      </fl-form-folder-tree-transactional>
     </form>
   `,
   standalone: true,
-  imports: [ReactiveFormsModule, FolderTreeComponent],
+  imports: [ReactiveFormsModule, FolderTreeTransactionalComponent],
 })
 class TestHostComponent {
   public form = new FormGroup({

@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
+  computed,
   effect,
   inject,
-  signal,
-  computed,
-  linkedSignal,
   input,
+  linkedSignal,
+  OnInit,
+  signal,
 } from '@angular/core';
 import { TreeSelectionContextService } from '../folder-tree-context';
 import { CheckboxComponent } from '../../../checkbox/checkbox';

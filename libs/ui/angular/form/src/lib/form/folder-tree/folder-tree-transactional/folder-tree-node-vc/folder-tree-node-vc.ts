@@ -1,14 +1,14 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  signal,
-  viewChildren,
+  Component,
   effect,
   inject,
+  signal,
+  viewChildren,
 } from '@angular/core';
 import { CheckboxComponent } from '../../../checkbox';
 import { FOLDER_TREE_CONTEXT } from '../../model/folder-tree-model';
-import { BaseFolderTreeNodeComponent } from '../../folder-tree-node/folder-tree-node';
+import { BaseFolderTreeNodeComponent } from '../folder-tree-node-base/folder-tree-node-base';
 import { PerformanceService } from '../../performance/performance';
 
 @Component({

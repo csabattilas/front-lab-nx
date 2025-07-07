@@ -15,7 +15,7 @@ import {
 import { PerformanceService } from '../performance/performance';
 
 @Component({
-  selector: 'fl-form-folder-tree',
+  selector: 'fl-form-folder-tree-transactional',
   standalone: true,
   imports: [],
   template: `<ng-content></ng-content>`,
@@ -23,18 +23,18 @@ import { PerformanceService } from '../performance/performance';
     PerformanceService,
     {
       provide: FOLDER_TREE_CONTEXT,
-      useExisting: forwardRef(() => FolderTreeComponent),
+      useExisting: forwardRef(() => FolderTreeTransactionalComponent),
     },
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FolderTreeComponent),
+      useExisting: forwardRef(() => FolderTreeTransactionalComponent),
       multi: true,
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // should we have validation? perhaps next iteration
-export class FolderTreeComponent
+export class FolderTreeTransactionalComponent
   implements ControlValueAccessor, TreeSelectionComponentContext
 {
   private readonly _selectedItemsIds = signal<Set<number>>(new Set());
@@ -52,8 +52,10 @@ export class FolderTreeComponent
   private readonly performanceService = inject(PerformanceService);
 
   public writeValue(value: number[]): void {
-    this.performanceService.resetCheckedCount();
-    this._selectedItemsIds.set(new Set(value || []));
+    this.transaction(() => {
+      this.performanceService.resetCheckedCount();
+      this._selectedItemsIds.set(new Set(value || []));
+    });
   }
 
   public registerOnChange(fn: (value: number[]) => void): void {
@@ -103,6 +105,19 @@ export class FolderTreeComponent
   private onTouched = (): void => {
     //
   };
+
+  // transactional update. the writeValue will cascade back otherwise.
+  // it's a trick to separate the writeValue updates from interactive updates
+  private transaction<T>(fn: () => T): T {
+    this._isFormUpdate.set(true);
+    try {
+      return fn();
+    } finally {
+      setTimeout(() => {
+        this._isFormUpdate.set(false);
+      }, 0);
+    }
+  }
 
   private emitChange(): void {
     const selectedIds = untracked(() => this.selectedItemsIds());

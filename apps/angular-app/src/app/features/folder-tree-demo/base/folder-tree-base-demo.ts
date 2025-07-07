@@ -4,7 +4,7 @@ import { FormControl, ValueChangeEvent } from '@angular/forms';
 import { filter } from 'rxjs';
 
 @Component({
-  selector: 'fl-folder-tree-opt-demo',
+  selector: 'fl-folder-tree-transactional-opt-demo',
   template: '',
 })
 export class FolderTreeBaseDemo implements OnInit {

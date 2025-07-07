@@ -18,13 +18,13 @@
   @if (hasChildren) { @for (node of node()?.items; track node.id) {
   <li>
     <!-- cannot fully hide them cause they will reset on expand/collapse -->
-    <fl-form-folder-tree-node-vc-no-effect
+    <fl-form-folder-tree-node
       [style.display]="expandedSignal() ? 'block' : 'none'"
       [node]="node"
       [inheritedChecked]="checked()"
       [expanded]="expandedSignal()"
       [depth]="depth()+1"
-    ></fl-form-folder-tree-node-vc-no-effect>
+    ></fl-form-folder-tree-node>
   </li>
   } }
 </ul>
