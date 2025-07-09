@@ -4,24 +4,19 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
+    "target": "es2022",
+    "module": "NodeNext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
     "lib": ["es2020", "dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "strict": true,
     "baseUrl": ".",
-    "paths": {
-      "@front-lab-nx/lion-form/*": ["libs/ui/lion/form/src/*"],
-      "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
-      "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
-      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"]
-    }
+    "typeRoots": ["./node_modules/@types", "./"]
   },
   "exclude": ["node_modules", "tmp"]
 }

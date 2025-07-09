@@ -1,5 +1,6 @@
 import { LionListbox } from '@lion/ui/listbox.js';
 import { css } from 'lit';
+import { LionInput } from '@lion/ui/input.js';
 
 /**
  * LockedSelection component
@@ -14,7 +15,6 @@ export class LockedSelection extends LionListbox {
   __lockedIndexes = new Set();
   __lastCheckedIndex = -1;
   __answer = '';
-
   static styles = css`
     ::slotted(lion-options) {
       display: flex;
@@ -39,7 +39,7 @@ export class LockedSelection extends LionListbox {
   constructor() {
     super();
     this.multipleChoice = true;
-
+    console.log(LionInput);
     this.addEventListener(
       'model-value-changed',
       this.__onModelValueChanged.bind(this)

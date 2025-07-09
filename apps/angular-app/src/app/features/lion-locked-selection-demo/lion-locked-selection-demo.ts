@@ -7,15 +7,13 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import '@lion/ui/define/lion-option.js';
 import '@front-lab-nx/lion-form/locked-selection';
 
 @Component({
   selector: 'fl-lion-locked-selection-demo',
-  imports: [CommonModule],
-  templateUrl: './lion-locked-selection-demo.component.html',
-  styleUrl: './lion-locked-selection-demo.component.scss',
+  templateUrl: './lion-locked-selection-demo.html',
+  styleUrl: './lion-locked-selection-demo.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
