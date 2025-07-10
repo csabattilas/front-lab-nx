@@ -1,6 +1,5 @@
 import { LionListbox } from '@lion/ui/listbox.js';
 import { css } from 'lit';
-import { LionInput } from '@lion/ui/input.js';
 
 /**
  * LockedSelection component
@@ -30,8 +29,7 @@ export class LockedSelection extends LionListbox {
         type: String,
       },
       direction: {
-        value: 'vertical',
-        type: 'vertical' | 'horizontal',
+        type: String,
       },
     };
   }
@@ -39,7 +37,6 @@ export class LockedSelection extends LionListbox {
   constructor() {
     super();
     this.multipleChoice = true;
-    console.log(LionInput);
     this.addEventListener(
       'model-value-changed',
       this.__onModelValueChanged.bind(this)

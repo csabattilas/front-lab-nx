@@ -5,8 +5,8 @@ export declare class IntegerDigitMatch extends MultiInputMixin(LionInput) {
   static get properties(): Record<string, unknown>;
   constructor();
 
-  get modelValue(): Array<{ resolved: boolean; selectedValue: string }>;
-  set modelValue(value: Array<string>);
+  get modelValue(): string;
+  set modelValue(value: string);
   set target(value: string);
 }
 

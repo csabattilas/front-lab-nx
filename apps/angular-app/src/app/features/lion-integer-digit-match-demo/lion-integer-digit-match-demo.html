@@ -5,7 +5,7 @@
 <div class="documentation">
   <p>
     The <code>fl-lion-integer-digit-match</code> component is a custom web
-    component that extends Lion's <code>LionInput</code>
+    component that extends Lion's <code>LionField</code>
     to create a multi-input field for matching individual digits of a target
     number.
   </p>
@@ -20,7 +20,7 @@
 </div>
 
 <div class="container">
-  <h2>Example 1: Basic Usage</h2>
+  <h2>Basic Usage</h2>
   <div class="example-card">
     <div class="example-description">
       <p>This example shows the basic usage with a 4-digit target number:</p>
@@ -32,6 +32,16 @@
       </ul>
     </div>
 
+    <h3>Left to right</h3>
+    <div class="example-demo">
+      <p class="question">Enter the number: 4829</p>
+      <fl-lion-integer-digit-match
+        direction="rtl"
+        [target]="'4829'"
+      ></fl-lion-integer-digit-match>
+    </div>
+
+    <h3>Right to left</h3>
     <div class="example-demo">
       <p class="question">Enter the number: 4829</p>
       <fl-lion-integer-digit-match

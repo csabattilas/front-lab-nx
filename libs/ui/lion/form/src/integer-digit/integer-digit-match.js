@@ -1,20 +1,28 @@
 import { css, html } from 'lit';
 import { MultiInputMixin } from './multi-input-mixin.js';
-import { LionInput } from '@lion/ui/input.js';
+import { LionField, Validator } from '@lion/ui/form-core.js';
 import '@lion/ui/define/lion-input.js';
 
-export class IntegerDigitMatch extends MultiInputMixin(LionInput) {
+export class IntegerDigitMatch extends MultiInputMixin(LionField) {
   static get styles() {
     return css`
-      :host {
-        --lion-input-width: 1rem;
-        --lion-input-height: 1rem;
+      input {
+        padding: 0;
+        width: var(--integer-digit-match-digit-width);
+        text-align: center;
+        border: 0;
+        border-bottom-width: var(--integer-digit-match-border-width);
+        border-bottom-style: solid;
+        border-bottom-color: var(--integer-digit-match-border-color);
       }
 
-      input {
-        width: var(--lion-input-width);
-        height: var(--lion-input-height);
-        text-align: center;
+      input:focus-visible {
+        outline: 0;
+      }
+
+      input[data-invalid] {
+        border-color: var(--integer-digit-match-border-invalid-color);
+        color: var(--integer-digit-match-border-invalid-color);
       }
     `;
   }
@@ -25,15 +33,41 @@ export class IntegerDigitMatch extends MultiInputMixin(LionInput) {
   static get properties() {
     return {
       ...super.properties,
-      /** the “target” number as a string, e.g. '4829' */
       target: { type: String },
+      direction: { type: String },
     };
+  }
+
+  get slots() {
+    return {
+      ...super.slots,
+      input: function () {
+        return html`<input type="hidden" />`;
+      },
+    };
+  }
+
+  get __digitInputs() {
+    return Array.from(this.shadowRoot.querySelectorAll('input'));
+  }
+
+  get _focusableNode() {
+    if (!this.__digitInputs?.length) {
+      return this._inputNode;
+    }
+
+    const length = this.__digitInputs.length;
+
+    return this.direction === 'ltr'
+      ? this.__digitInputs[0]
+      : this.__digitInputs[length - 1];
   }
 
   constructor() {
     super();
     console.log('constructor');
     this.target = '';
+    this.direction = 'ltr';
     // internal array of target digits: ['4','8','2','9']
     /** @type {string[]} */
     this.segments = [];
@@ -45,11 +79,68 @@ export class IntegerDigitMatch extends MultiInputMixin(LionInput) {
    */
   updated(changed) {
     if (changed.has('target')) {
-      // whenever target changes, rebuild segments and reset the value
       this.segments = Array.from(this.target);
+
       /** @ts-expect-error - type */
       this.modelValue = ''; // clear previous inputs
-      // this.setValidity({}); // reset validity
+
+      this.updateComplete.then(() => {
+        if (this._focusableNode) {
+          this._focusableNode.focus();
+        }
+      });
+
+      this.validators = [
+        new (class extends Validator {
+          static get validatorName() {
+            return 'digits';
+          }
+
+          execute(modelValue, params) {
+            if (!modelValue?.length) {
+              return false;
+            }
+
+            if (params.direction === 'rtl') {
+              console.log(
+                'slice >',
+                params.target.slice(-modelValue.length),
+                modelValue
+              );
+
+              console.log(
+                'isvalid',
+                modelValue === params.target.slice(-modelValue.length)
+                  ? false
+                  : 'mismatch'
+              );
+
+              return modelValue === params.target.slice(-modelValue.length)
+                ? false
+                : 'mismatch';
+            } else if (params.direction === 'ltr') {
+              console.log(
+                'slice <',
+                params.target.slice(0, modelValue.length),
+                modelValue
+              );
+
+              console.log(
+                'isvalid',
+                modelValue === params.target.slice(0, modelValue.length)
+                  ? false
+                  : 'mismatch'
+              );
+
+              return modelValue === params.target.slice(0, modelValue.length)
+                ? false
+                : 'mismatch';
+            }
+
+            return false;
+          }
+        })({ target: this.target, direction: this.direction }),
+      ];
     }
   }
 
@@ -63,15 +154,18 @@ export class IntegerDigitMatch extends MultiInputMixin(LionInput) {
    */
   _renderSingleInput(i) {
     // @ts-expect-error - type
+    console.log('render Single input');
+
     return html`
-      <lion-input
-        .modelValue=${this.modelValue[i] || ''}
+      <input
+        type="text"
+        tabindex="0"
+        id="${i}--integer-digit-match"
         placeholder=""
-        @model-value-changed=${
-          /** @param {*} e */ e => this._onDigit(i, e.detail.modelValue)
-        }
-        @blur=${() => this._validate()}
-      ></lion-input>
+        @input=${e => this._onInput(i, e.target.value)}
+        @focus=${e => this._onFocus(i)}
+        @keydown=${e => this._onKeyDown(i)}
+      />
     `;
   }
 
@@ -81,28 +175,72 @@ export class IntegerDigitMatch extends MultiInputMixin(LionInput) {
    * @param {string} char
    * @ts-expect-error - type
    */
-  _onDigit(index, char) {
+  _onInput(index, char) {
+    // Only keep the first digit if any
+
     const cleaned = (char.match(/\d/) || [''])[0];
-    /** @ts-expect-error - type */
-    const arr = Array.from(this.modelValue.padEnd(this.segments.length, ''));
-    arr[index] = cleaned;
-    this.modelValue = arr.join('');
-    //this.setValidity({});
+
+    console.log(char);
+
+    if (!this.__digitInputs || this.__digitInputs.length === 0) return;
+
+    this.modelValue = this.__digitInputs.map(i => i.value).join('');
+
+    if (this.validationStates.error.digits === 'mismatch') {
+      this.__digitInputs[index].setAttribute('data-invalid', '');
+    } else {
+      this.__digitInputs[index].removeAttribute('data-invalid');
+    }
+
+    if (cleaned && this.validationStates.error.digits !== 'mismatch') {
+      const nextIndex =
+        this.direction === 'ltr'
+          ? Math.min(index + 1, this.__digitInputs.length - 1)
+          : Math.max(index - 1, 0);
+
+      // Only move focus if we're not already at the edge
+      if (nextIndex !== index) {
+        this.updateComplete.then(() => {
+          this.__digitInputs[nextIndex].focus();
+        });
+      }
+    }
   }
 
-  /**
-   * Validates the input value.
-   */
-  _validate() {
-    const allMatch = this.modelValue === this.target;
-    console.log(allMatch);
-    // this.setValidity(
-    //   { customError: !allMatch },
-    //   allMatch ? '' : `Must match ${this.target}`
-    // );
+  _onFocus(index) {
+    //if(this.direction === 'ltr' && i === ) {}
+    const currentDigits = this.__digitInputs.map(input => input.value);
+    const isInvalid = this.validationStates.error.digits === 'mismatch';
+
+    console.log(isInvalid);
+
+    if (
+      index > 0 &&
+      this.direction === 'ltr' &&
+      (!currentDigits[index - 1] || isInvalid)
+    ) {
+      this.__digitInputs[index - 1].focus();
+    }
+
+    if (
+      index < currentDigits.length - 1 &&
+      this.direction === 'rtl' &&
+      (!currentDigits[index + 1] || isInvalid)
+    ) {
+      this.__digitInputs[index + 1].focus();
+    }
+  }
+
+  _onKeyDown(index) {
+    console.log('keydown', this.validationStates.error.digits);
+
+    if (this.validationStates.error.digits === 'mismatch') {
+      this.__digitInputs[index].value = '';
+    }
   }
 }
 
+// todo clean this up
 if (!customElements.get('fl-lion-integer-digit-match')) {
   customElements.define('fl-lion-integer-digit-match', IntegerDigitMatch);
 }

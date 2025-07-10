@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 
 /**
  *
@@ -35,8 +36,12 @@ export const MultiInputMixin = superclass => {
 
     render() {
       return html`
-        <div part="input-group">
-          ${this.segments.map((_, i) => this._renderSingleInput(i))}
+         <div part="input-group">
+          ${repeat(
+            this.segments,
+            (_seg, i) => i,               // use the index as a stable key
+            (_seg, i) => this._renderSingleInput(i)
+          )}
         </div>
       `;
     }
