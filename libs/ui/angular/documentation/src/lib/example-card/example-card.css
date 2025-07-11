@@ -1,0 +1,8 @@
+:host {
+  padding: 1rem;
+  border-radius: var(--radius-base);
+  box-shadow: 0 2px 3px var(--color-primary);
+  margin-bottom: var(--spacing-unit);
+  overflow: hidden;
+  display: block;
+}

@@ -16,7 +16,12 @@
     "noUnusedLocals": true,
     "strict": true,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "./"]
+    "typeRoots": ["./node_modules/@types", "./"],
+    "paths": {
+      "@front-lab-nx/ng-documentation": [
+        "libs/ui/angular/documentation/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

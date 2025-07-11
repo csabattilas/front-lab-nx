@@ -1,152 +1,56 @@
-<h1>Lion UI Locked Selection Component</h1>
-<div class="documentation">
-  <p>
-    The <code>fl-lion-locked-selection</code> component is a custom web
-    component that extends Lion's <code>LionListbox</code>
-    to implement locked selection functionality, similar to a quiz or test
-    interface.
-  </p>
-  <p>Key features:</p>
-  <ul>
-    <li>
-      Once an option is selected, it becomes locked, preventing further changes
-    </li>
-    <li>Validates answers against a correct answer</li>
-    <li>Provides resolved state for each selection</li>
-    <li>Supports both vertical and horizontal layouts</li>
-    <li>Visually indicates correct answers</li>
-  </ul>
-</div>
-
-<div class="container">
-  <h2>Example 1: Vertical Layout (Default)</h2>
-  <div class="example-card">
-    <div class="example-description">
-      <p>
-        This example shows the default vertical layout with validation feedback:
-      </p>
-      <ul>
-        <li>The <code>answer</code> property is set to "32"</li>
-        <li>
-          The <code>model-value-changed</code> event is used to track changes
-        </li>
-        <li>Visual feedback shows if the answer is correct or incorrect</li>
-      </ul>
-    </div>
-
-    <div class="example-demo">
-      <p class="question">How much is 17 + 15?</p>
-      <fl-lion-locked-selection
-        #lls
-        (model-value-changed)="onChange()"
-        [answer]="'32'"
-      >
-        @for(option of ['32','31','33','42']; track $index) {
-        <lion-option [choiceValue]="option">{{ option }}</lion-option>
-        }
-      </fl-lion-locked-selection>
-
-      @if(isSolved() === true) {
-      <span class="success">✓ Correct answer!</span>
-      } @if(isSolved() === false) {
-      <span class="error">✗ Wrong answer! Try again.</span>
-      }
-    </div>
-  </div>
-
-  <h2>Example 2: Horizontal Layout</h2>
-  <div class="example-card">
-    <div class="example-description">
-      <p>This example demonstrates the horizontal layout option:</p>
-      <ul>
-        <li>The <code>direction</code> property is set to "horizontal"</li>
-        <li>Options are displayed in a row instead of a column</li>
-        <li>Same validation functionality as the vertical layout</li>
-      </ul>
-    </div>
-
-    <div class="example-demo">
-      <p class="question">How much is 18 + 15?</p>
-      <fl-lion-locked-selection
-        #lls2
-        (model-value-changed)="onChange2()"
-        answer="33"
-        [direction]="'horizontal'"
-      >
-        @for(option of ['32','31','33','42']; track $index) {
-        <lion-option [choiceValue]="option">{{ option }}</lion-option>
-        }
-      </fl-lion-locked-selection>
-
-      @if(isSolved2() === true) {
-      <span class="success">✓ Correct answer!</span>
-      } @if(isSolved2() === false) {
-      <span class="error">✗ Wrong answer! Try again.</span>
-      }
-    </div>
-  </div>
-</div>
-
-<div class="api-documentation">
-  <h2>Component API</h2>
-
-  <h3>Properties</h3>
-  <div class="table-container">
-    <table class="api-table">
-      <thead>
-        <tr>
-          <th>Property</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>answer</code></td>
-          <td><span class="type-string">String</span></td>
-          <td>The correct answer value</td>
-        </tr>
-        <tr>
-          <td><code>direction</code></td>
-          <td><span class="type-enum">'vertical'|'horizontal'</span></td>
-          <td>Layout direction of options (default: 'vertical')</td>
-        </tr>
-        <tr>
-          <td><code>modelValue</code></td>
-          <td><span class="type-array">Array</span></td>
-          <td>
-            Array of objects with <code>resolved</code> and
-            <code>selectedValue</code> properties
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Events</h3>
-  <div class="table-container">
-    <table class="api-table">
-      <thead>
-        <tr>
-          <th>Event</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>model-value-changed</code></td>
-          <td>Fired when the selection changes</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Implementation Details</h3>
-  <p>
-    This component extends the Lion UI listbox component to create a selection
-    that becomes locked after the user makes a choice. It validates the
-    selection against a correct answer and provides visual feedback. The
-    component supports both vertical and horizontal layouts for different UI
-    requirements.
-  </p>
-</div>
+<h2>Lion UI Locked Selection Component</h2>
+UPDATE IN PROGRESS!
+<lion-tabs>
+  <button slot="tab">Overview</button>
+  <section slot="panel">
+    <h3>Overview</h3>
+    <p>
+      The <code>fl-lion-locked-selection</code> component is a custom web
+      component that extends Lion's <code>LionListbox</code>
+      to implement locked selection functionality, similar to a quiz or test
+      interface.
+    </p>
+    <h3>Key features:</h3>
+    <ul>
+      <li>
+        Once an option is selected, it becomes locked, preventing further changes
+      </li>
+      <li>Validates answers against a correct answer</li>
+      <li>Provides resolved state for each selection</li>
+      <li>Supports both vertical and horizontal layouts</li>
+      <li>Visually indicates correct answers</li>
+    </ul>
+    <h3>Further enhancements:</h3>
+    <ul>
+      <li>
+        Disable selection after maximum failed selection
+      </li>
+    </ul>
+    <h3>Implementation Details</h3>
+    <p>
+      This component extends the Lion UI listbox component to create a selection
+      that becomes locked after the user makes a choice. It validates the
+      selection against a correct answer and provides visual feedback. The
+      component supports both vertical and horizontal layouts for different UI
+      requirements.
+    </p>
+  </section>
+  <button slot="tab">Api</button>
+  <section slot="panel">
+    <h3>Component api</h3>
+    <fl-doc-api [apiDocumentation]="apiDocumentation"></fl-doc-api>
+  </section>
+  <button slot="tab">Styling</button>
+  <section slot="panel">tbd...</section>
+  <button slot="tab">Examples</button>
+  <section slot="panel">
+    <h3>Vertical Layout (Default)</h3>
+    <fl-doc-example-card>
+      <fl-locked-selection-example></fl-locked-selection-example>
+    </fl-doc-example-card>
+    <h3>Horizontal Layout</h3>
+    <fl-doc-example-card>
+      <fl-locked-selection-example direction="horizontal"></fl-locked-selection-example>
+    </fl-doc-example-card>
+  </section>
+</lion-tabs>

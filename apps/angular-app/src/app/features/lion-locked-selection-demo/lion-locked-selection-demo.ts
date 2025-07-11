@@ -2,13 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
-  effect,
-  ElementRef,
-  signal,
-  viewChild,
 } from '@angular/core';
 import '@lion/ui/define/lion-option.js';
+import '@lion/ui/define/lion-tabs.js';
 import '@front-lab-nx/lion-form/locked-selection';
+import {
+  ApiDocumentationBlock,
+  ApiDocumentationComponent,
+} from '@front-lab-nx/ng-documentation';
+import { LockedSelectionHorizontalComponent } from './locked-selection-example/locked-selection-example';
+import { ExampleCardComponent } from '../../../../../../libs/ui/angular/documentation/src/lib/example-card/example-card';
 
 @Component({
   selector: 'fl-lion-locked-selection-demo',
@@ -16,67 +19,43 @@ import '@front-lab-nx/lion-form/locked-selection';
   styleUrl: './lion-locked-selection-demo.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    ApiDocumentationComponent,
+    LockedSelectionHorizontalComponent,
+    ExampleCardComponent,
+  ],
 })
 export class LionLockedSelectionDemoComponent {
-  public isSolved = signal<boolean | null>(null);
-  public isSolved2 = signal<boolean | null>(null);
-
-  private readonly listboxRef = viewChild<ElementRef>('lls');
-  private readonly listboxRef2 = viewChild<ElementRef>('lls2');
-
-  private readonly modelValue = signal<
+  public apiDocumentation: ApiDocumentationBlock[] = [
     {
-      resolved: boolean;
-      selectedValue: string;
-    }[]
-  >([]);
-  private readonly modelValue2 = signal<
+      name: 'Properties',
+      entries: [
+        {
+          name: 'answer',
+          type: 'string',
+          description: 'The correct answer value',
+        },
+        {
+          name: 'modelValue',
+          type: 'string',
+          description: 'The correct answer value',
+        },
+        {
+          name: 'direction',
+          type: `'vertical' | 'horizonta'`,
+          description: "Layout direction of options (default: 'vertical')",
+        },
+      ],
+    },
     {
-      resolved: boolean;
-      selectedValue: string;
-    }[]
-  >([]);
-
-  // @ts-expect-error: TS6133
-  private readonly solvedEffect = effect(() => {
-    if (!this.modelValue()?.length) {
-      this.isSolved.set(null);
-      return;
-    }
-
-    const solved = this.modelValue()?.[0].resolved;
-    this.isSolved.set(solved);
-
-    if (!solved) {
-      setTimeout(() => {
-        this.modelValue.set([]);
-      }, 1000); // 1 second delay
-    }
-  });
-
-  // @ts-expect-error: TS6133
-  private readonly solved2Effect = effect(() => {
-    if (!this.modelValue2()?.length) {
-      this.isSolved2.set(null);
-      return;
-    }
-
-    const solved = this.modelValue2()?.[0].resolved;
-    this.isSolved2.set(solved);
-
-    if (!solved) {
-      setTimeout(() => {
-        this.modelValue2.set([]);
-      }, 1000); // 1 second delay
-    }
-  });
-
-  public onChange(): void {
-    this.modelValue.set(this.listboxRef()?.nativeElement?.modelValue);
-    this.modelValue2.set(this.listboxRef2()?.nativeElement?.modelValue);
-  }
-
-  public onChange2(): void {
-    this.modelValue2.set(this.listboxRef2()?.nativeElement?.modelValue);
-  }
+      name: 'Events',
+      entries: [
+        {
+          name: 'model-value-changed',
+          type: 'Event',
+          description: 'Fired when the selection changes',
+        },
+      ],
+    },
+  ];
 }

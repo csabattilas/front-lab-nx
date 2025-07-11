@@ -16,7 +16,8 @@
       "@front-lab-nx/lion-form/*": ["libs/ui/lion/form/src/*"],
       "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
       "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
-      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"]
+      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"],
+      "@front-lab-nx/ng-documentation": ["libs/ui/angular/documentation/src/index.ts"]
     }
   },
   "files": [],
@@ -32,8 +33,8 @@
       "path": "./tsconfig.spec.json"
     },
     {
-      "path": "../../libs/ui/lion/form/tsconfig.lib.json"
-    }
+      "path": "../../libs/ui/lion/form/tsconfig.json"
+    },
   ],
   "extends": "../../tsconfig.base.json",
   "angularCompilerOptions": {

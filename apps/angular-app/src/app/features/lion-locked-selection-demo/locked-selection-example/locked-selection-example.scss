@@ -1,0 +1,31 @@
+:host {
+  p {
+    margin: 0;
+  }
+}
+
+// style the component
+lion-option {
+  background-color: var(--color-surface);
+  margin: calc(var(--spacing-unit) / 8);
+  width: 100%;
+  border: 2px solid var(--color-surface);
+  text-align: center;
+  border-radius: var(--radius-base);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-primary);
+  }
+
+  &[checked] {
+    color: var(--color-surface);
+    border: 2px solid var(--color-error);
+    background-color: color-mix(in srgb, var(--color-error) 50%, white);
+
+    &[data-expected] {
+      border-color: var(--color-success);
+      background-color: color-mix(in srgb, var(--color-success) 50%, white);
+    }
+  }
+}

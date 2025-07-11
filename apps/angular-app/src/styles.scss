@@ -1,23 +1,26 @@
-// theme setup, this is usually based on a much more complex theming setup, angular-material, tailwing following
-
-:root {
+:root { // design token implementation
+  // colors
   --color-surface: hsl(0, 0%, 100%);
   --color-surface-hover: hsl(0, 0%, 96%);
   --color-text-on-surface: hsl(195, 3%, 24%);
   --color-border: hsl(210, 0%, 89%);
-  --color-primary: hsl(213, 97%, 53%);
+  --color-primary: hsl(210, 97%, 25%);
+  --color-secondary: hsl(28, 87%, 53%);
   --color-error: hsl(0, 86%, 36%);
   --color-success: hsl(120, 100%, 25%);
 
+  // font
   --font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, sans-serif;
   --font-size-base: 14px;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
 
+  // spacing
   --spacing-unit: 16px;
   --max-width: 1200px;
 
+  // other
   --radius-base: 3px;
   --shadow-surface: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -40,4 +43,14 @@ body {
   overflow: hidden;
   display: flex;
   justify-content: center;
+}
+
+code {
+  background-color: color-mix(in srgb, var(--color-primary) 5%, white);;
+  padding: calc(var(--spacing-unit)/8) calc(var(--spacing-unit)/4);
+  border-radius: 4px;
+  font-family:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 0.9em;
+  color: var(--color-primary);
 }
