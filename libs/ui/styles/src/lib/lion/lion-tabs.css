@@ -1,0 +1,9 @@
+button[slot="tab"] {
+  border-bottom: 2px solid white;
+  padding: calc(var(--spacing-unit) / 2);
+  cursor: pointer;
+}
+
+button[slot="tab"][selected="true"] {
+  border-bottom: 2px solid var(--color-primary);
+}

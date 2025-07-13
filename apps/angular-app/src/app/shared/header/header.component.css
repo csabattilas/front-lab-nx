@@ -1,0 +1,56 @@
+:host {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+.main-nav {
+  position: fixed;
+  top: 54px;
+  left: -201px;
+  width: 200px;
+  height: calc(100vh - 54px);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  transition: left 0.3s ease;
+  box-shadow: none;
+  z-index: 1000;
+}
+
+.main-nav a {
+  display: none;
+}
+
+.main-nav.open {
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add shadow only when open */
+}
+
+.main-nav.open a {
+  display: block;
+}
+
+.main-nav a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.main-nav a.active {
+  color: var(--color-primary);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 54px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 54px);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+h1 small {
+  font-size: 0.5rem;
+}

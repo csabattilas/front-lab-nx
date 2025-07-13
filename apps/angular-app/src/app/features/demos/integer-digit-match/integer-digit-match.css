@@ -1,0 +1,18 @@
+:host {
+  --fl-lion-integer-digit-match-input-width: 7px;
+  --fl-lion-integer-digit-match-input-invalid-color: red;
+  --fl-lion-integer-digit-match-input-color: black;
+  --fl-lion-integer-digit-match-border-input-width: 1px;
+}
+
+fl-lion-integer-digit-match {
+  display: block;
+  margin: 1rem 0;
+}
+
+fl-lion-integer-digit-match::part(input-group) {
+  display: flex;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+}

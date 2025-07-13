@@ -1,0 +1,44 @@
+<div class="home-container">
+  <section class="text-center">
+    <img src="lab.png" alt="Front lab" class="w-24 h-24 inline-block mt-4" />
+    <h2 class="mb-4">Welcome to my frontend lab!</h2>
+    <p class="mb-2">
+      This project explores unusual reusable components made with various
+      frontend frameworks/libraries.
+    </p>
+    <p class="flex items-center gap-2 justify-center mb-4">
+      <span>Current frameworks: </span>
+      @for(framework of frameworks; track framework.name) {
+      <span class="flex items-center gap-0.5">
+        <img
+          src="{{framework.logo}}"
+          alt="{{framework.name}} logo"
+          class="w-6 h-6 object-contain"
+        />
+        {{framework.name}} (v{{framework.version}})
+      </span>
+      }
+    </p>
+  </section>
+
+  <section>
+    <div class="flex gap-4 justify-center flex-wrap">
+      @for(feature of features; track feature.route) {
+      <div class="rounded shadow p-4 max-w-xs feature-card">
+        <h3 class="mb-3 text-lg">
+          {{feature.title}}
+          <small class="block font-normal text-xs">{{feature.subtitle}}</small>
+        </h3>
+        <p class="mb-6 text-sm">{{ feature.description }}</p>
+        <p class="text-right">
+          <a
+            routerLink="{{'/' + feature.route}}"
+            class="bg-primary text-white px-4 py-2 rounded"
+            >View</a
+          >
+        </p>
+      </div>
+      }
+    </div>
+  </section>
+</div>

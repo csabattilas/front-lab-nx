@@ -1,0 +1,30 @@
+<ul>
+  <button (click)="toggleExpanded()" [style.--depth]="depth()">
+    <fl-form-checkbox
+      [checked]="checked()"
+      [indeterminate]="indeterminate()"
+      (change)="onToggle($event)"
+    >
+      <span [class.has-children]="hasChildren">{{ node()?.title }}</span>
+    </fl-form-checkbox>
+    @if (hasChildren) {
+    <span class="chevron" [class.expanded]="expandedSignal()">
+      <span class="material-symbols-outlined">
+        {{ expandedSignal() ? 'expand_less' : 'expand_more' }}
+      </span>
+    </span>
+    }
+  </button>
+  @if (hasChildren) { @for (node of node()?.items; track node.id) {
+  <li>
+    <!-- cannot fully hide them cause they will reset on expand/collapse -->
+    <fl-form-checkbox-tree-node
+      [style.display]="expandedSignal() ? 'block' : 'none'"
+      [node]="node"
+      [inheritedChecked]="checked()"
+      [expanded]="expandedSignal()"
+      [depth]="depth()+1"
+    ></fl-form-checkbox-tree-node>
+  </li>
+  } }
+</ul>

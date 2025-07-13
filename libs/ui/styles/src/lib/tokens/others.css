@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+@theme {
+  --radius-base: 3px;
+  --shadow-surface: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

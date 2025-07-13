@@ -1,1 +1,36 @@
-<ng-content></ng-content>
+
+<style>
+  pre code.hljs {
+    padding: 0
+  }
+</style>
+<fl-lion-tabs>
+  <button slot="tab" class="p-2">Live</button>
+  <section slot="panel">
+    <ng-content></ng-content>
+  </section>
+  <button slot="tab" class="p-2">TS</button>
+  <section slot="panel">
+    @if(exampleTsCode(); as exampleTsCode) {
+      <pre class="language-html">
+        <code [highlight]="exampleTsCode" language="ts"></code>
+      </pre>
+    }
+  </section>
+  <button slot="tab" class="p-2">CSS</button>
+  <section slot="panel">
+    @if(exampleCssCode(); as exampleCssCode) {
+      <pre class="language-html">
+        <code [highlight]="exampleCssCode" language="css"></code>
+      </pre>
+    }
+  </section>
+  <button slot="tab" class="p-2">HTML</button>
+  <section slot="panel">
+    @if(exampleHtmlCode(); as exampleHtmlCode) {
+      <pre class="language-html">
+        <div [highlight]="exampleHtmlCode" language="xml"></div>
+      </pre>
+    }
+  </section>
+</fl-lion-tabs>

@@ -1,53 +1,34 @@
-<header class="header">
-  <div class="header-content">
-    <!-- Hamburger Menu Button on the left -->
-    <button
-      class="menu-button"
-      (click)="toggleMenu()"
-      [class.active]="isMenuOpen"
-      aria-label="Toggle navigation menu"
-    >
-      <span class="material-symbols-outlined">menu</span>
-    </button>
+<div class="flex justify-between p-4 items-center">
+  <button
+    class="border-1 p-1 rounded cursor-pointer hover:bg-gray-200"
+    (click)="toggleMenu()"
+    [class.active]="isMenuOpen"
+    aria-label="Toggle navigation menu"
+  >
+    <span class="material-symbols-outlined">menu</span>
+  </button>
 
-    <div class="logo">
-      <h1>Front lab</h1>
-    </div>
+  <h1 class="text-xl m-0">
+    <a href="/">Front lab<small class="block text-right">(beta)</small></a>
+  </h1>
 
-    <!-- Empty div to maintain flex spacing -->
-    <div class="spacer"></div>
-
-    <!-- Mobile Navigation Menu -->
-    <nav class="main-nav" [class.open]="isMenuOpen">
-      <a routerLink="/" routerLinkActive="active" (click)="closeMenu()">Home</a>
-      <a
-        routerLink="/folder-tree"
-        routerLinkActive="active"
-        (click)="closeMenu()"
-        >Folder Tree</a
-      >
-      <a
-        routerLink="/lion-locked-selection"
-        routerLinkActive="active"
-        (click)="closeMenu()"
-        >Lion locked selection</a
-      >
-      <a
-        routerLink="/lion-integer-digit-match"
-        routerLinkActive="active"
-        (click)="closeMenu()"
-      >Lion integer digit match</a
-      >
-    </nav>
-
-    <!-- Overlay for mobile menu -->
-    @if (isMenuOpen) {
-    <div
-      class="menu-overlay"
+  <nav class="main-nav" [class.open]="isMenuOpen">
+    @for(navItem of nav; track navItem.route) {
+    <a
+      class="hover:color-primary hover:underline p-2 text-xs"
+      routerLink="{{'/' + navItem.route}}"
+      routerLinkActive="active"
       (click)="closeMenu()"
-      (keydown)="closeMenu()"
-      tabindex="0"
-    ></div>
+      >{{navItem.navItemText}}</a
+    >
     }
-  </div>
-</header>
+  </nav>
+  @if (isMenuOpen) {
+  <div
+    class="menu-overlay"
+    (click)="closeMenu()"
+    (keydown)="closeMenu()"
+    tabindex="0"
+  ></div>
+  }
+</div>

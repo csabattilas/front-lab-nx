@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
@@ -17,5 +18,4 @@
     "vitest.config.mts",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"]
 }

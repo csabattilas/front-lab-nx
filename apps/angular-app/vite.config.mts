@@ -1,27 +1,37 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
-import angular from '@analogjs/vite-plugin-angular';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { defineConfig, mergeConfig, UserConfig } from 'vite';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import angular from '@analogjs/vite-plugin-angular';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(() => ({
+import { tailwindConfig } from '../../libs/ui/styles/vite.config.mts';
+
+const mainConfig: UserConfig = {
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/angular-app',
-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  cacheDir: '../../.vite/apps/angular-app',
+  server: {
+    port: 4200,
+    host: 'localhost',
+    hmr: {
+      overlay: true,
+    },
+  },
+  preview: {
+    port: 4300,
+    host: 'localhost',
+  },
+  plugins: [tsconfigPaths(), angular(), nxCopyAssetsPlugin(['*.md'])],
   test: {
     watch: false,
     globals: true,
     environment: 'jsdom',
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    setupFiles: ['src/test-setup.ts'],
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/apps/angular-app',
       provider: 'v8' as const,
     },
   },
-}));
+};
+
+export default mergeConfig(tailwindConfig, defineConfig(mainConfig));

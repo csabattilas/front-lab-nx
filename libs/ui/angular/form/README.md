@@ -81,11 +81,11 @@ But in order to eliminate the transactional `writeValue` update the third varian
 The components usage:
 
 ```html
-<fl-form-folder-tree-ctx>
+<fl-form-checkbox-tree-ctx>
   @for (node of data; track node.id) {
   <fl-form-folder-tree-node-ctx [node]="node"></fl-form-folder-tree-node-ctx>
   }
-</fl-form-folder-tree-ctx>
+</fl-form-checkbox-tree-ctx>
 ```
 
 #### Finding the cleanest solution

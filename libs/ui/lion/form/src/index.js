@@ -1,2 +1,2 @@
-export * from './locked-selection';
-export * from './integer-digit';
+export * from './lock-select';
+export * from './integer-digit-match';

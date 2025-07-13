@@ -1,0 +1,100 @@
+<h2>Lion-UI Integer digit match component</h2>
+<fl-lion-tabs>
+  <button slot="tab">Overview</button>
+  <section slot="panel">
+    <h3 class="mt-3 mb-6">Overview</h3>
+    <p class="mb-6">
+      The <code>fl-lion-integer-digit-match</code> component is a custom web
+      component that extends Lion's <code>LionField</code>
+      to create a multi-input field for matching individual digits of a target
+      digit list (not only integer number).
+    </p>
+    <div class="mb-6">
+      <h4>Key features:</h4>
+      <ul class="pl-2">
+        <li>Creates individual input fields for each digit</li>
+        <li>Supports left to right and right to left input order</li>
+        <li>Validates input against a target number</li>
+        <li>Restricts input to numeric values only</li>
+        <li>Provides visual feedback on validation</li>
+        <li>Supports dynamic target numbers</li>
+      </ul>
+    </div>
+    <h4>Further enhancements</h4>
+    <p class="mb-6">Add more css variables to customize the input fields.</p>
+    <h4>Implementation Details</h4>
+    <p>
+      This component uses the <code>MultiInputMixin</code> to create multiple
+      input fields from a single component.
+    </p>
+    <p>
+      The <code>integer-digit-match</code> is implementing and extended class
+      with input fields, each accepting a single digit and automatically
+      focusing on the next field when a digit is entered.
+    </p>
+    <p>
+      The component validates the entire input against the target number and
+      provides feedback.
+    </p>
+  </section>
+  <button slot="tab">Api</button>
+  <section slot="panel">
+    <h3 class="mt-3 mb-6">Component api</h3>
+    <fl-doc-api [apiDocumentation]="apiDocumentation"></fl-doc-api>
+  </section>
+  <button slot="tab">Styling</button>
+  <section slot="panel">
+    <h3 class="mt-3 mb-6">Styling</h3>
+    <p>
+      Styling this component is done via a set of css variables and via
+      <code>::part(input-group)</code> pseudo-class
+    </p>
+    <p>The list of css variables are as follows:</p>
+    <ul class="p-2 mb-4">
+      <li><code>--fl-lion-integer-digit-match-digit-input-width</code></li>
+      <li><code>--fl-lion-integer-digit-match-input-invalid-color</code></li>
+      <li><code>--fl-lion-integer-digit-match-input-border-width</code></li>
+      <li><code>--fl-lion-integer-digit-match-input-color</code></li>
+    </ul>
+  </section>
+  <button slot="tab">Examples</button>
+  <section slot="panel">
+    <h3 class="mt-3 mb-6">Examples</h3>
+    <p>
+      The following examples show the basic usage with a 4-digit target number:
+    </p>
+    <ul class="p-2 mb-4">
+      <li>The <code>target</code> property is set to "4829"</li>
+      <li>Four individual input fields are automatically created</li>
+      <li>Each input field accepts only a single digit</li>
+      <li>Input is validated against the target number</li>
+    </ul>
+    <h4>Right to left</h4>
+    <fl-doc-example-card
+      [exampleCssCode]="exampleCssCode"
+      [exampleHtmlCode]="exampleHtmlCode"
+      [exampleTsCode]="exampleTsCode"
+    >
+      <div class="flex gap-2 items-center">
+        <p>Enter the number 4829:</p>
+        <fl-lion-integer-digit-match
+          [target]="'4829'"
+        ></fl-lion-integer-digit-match>
+      </div>
+    </fl-doc-example-card>
+    <h4>Left to right</h4>
+    <fl-doc-example-card
+      [exampleCssCode]="exampleCssCode"
+      [exampleHtmlCode]="exampleHtmlCodeLtr"
+      [exampleTsCode]="exampleTsCode"
+    >
+      <div class="flex gap-2 items-center">
+        <p>Enter the number 4829:</p>
+        <fl-lion-integer-digit-match
+          [target]="'4829'"
+          direction="ltr"
+        ></fl-lion-integer-digit-match>
+      </div>
+    </fl-doc-example-card>
+  </section>
+</fl-lion-tabs>

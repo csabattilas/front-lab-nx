@@ -1,6 +1,5 @@
-import { TreeDataDto } from './tree-repository-dto.model';
-import { TreeApiResponse } from './tree-repository-dto.model';
-import { TreeNode } from '@front-lab-nx/ng-form';
+import { TreeApiResponse, TreeDataDto } from './tree-repository-dto.model';
+import { CheckboxTreeNode } from '@front-lab-nx/ng-form';
 
 export interface RawNode {
   id: number;
@@ -47,7 +46,7 @@ function mapRawNode(
 }
 
 // comparison function for sorting nodes - folders first, then alphabetically
-function compareNodes(a: TreeNode, b: TreeNode): number {
+function compareNodes(a: CheckboxTreeNode, b: CheckboxTreeNode): number {
   // folders first, then items
   const aIsFolder = !!a.items;
   const bIsFolder = !!b.items;
@@ -64,7 +63,7 @@ function compareNodes(a: TreeNode, b: TreeNode): number {
 }
 
 // also this could go to a util file, but currently this is tree data specific
-function sortNodeItems(node: TreeNode): void {
+function sortNodeItems(node: CheckboxTreeNode): void {
   if (node.items && node.items.length > 0) {
     node.items.sort(compareNodes);
 
@@ -77,7 +76,7 @@ function sortNodeItems(node: TreeNode): void {
 }
 
 // build the tree data
-export function deserializeTreeData(data: TreeApiResponse): TreeNode[] {
+export function deserializeTreeData(data: TreeApiResponse): CheckboxTreeNode[] {
   // get indices for folders and items
   const folderIndices = getIndicies(
     data.folders,
@@ -101,7 +100,7 @@ export function deserializeTreeData(data: TreeApiResponse): TreeNode[] {
   );
 
   // this map is used to create the folder, item relationships
-  const nodeMap = new Map<number, TreeNode>();
+  const nodeMap = new Map<number, CheckboxTreeNode>();
 
   // create folder nodes
   folders.forEach(folder => {
@@ -129,7 +128,7 @@ export function deserializeTreeData(data: TreeApiResponse): TreeNode[] {
   items.forEach(item => {
     if (item.folder_id) {
       const parent = nodeMap.get(item.folder_id);
-      const itemNode: TreeNode = {
+      const itemNode: CheckboxTreeNode = {
         id: item.id,
         title: item.title,
       };
@@ -151,7 +150,7 @@ export function deserializeTreeData(data: TreeApiResponse): TreeNode[] {
   // get root nodes
   const rootNodes = folders
     .filter(f => f.folder_id === null)
-    .map(f => nodeMap.get(f.id) as TreeNode);
+    .map(f => nodeMap.get(f.id) as CheckboxTreeNode);
 
   // sort the root level
   rootNodes.sort(compareNodes);

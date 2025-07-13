@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+@import './tokens/colors.css';
+@import './tokens/fonts.css';
+@import './tokens/spacing.css';
+@import './tokens/others.css';
+
+@import './base.css';
+
+@import './global.css';

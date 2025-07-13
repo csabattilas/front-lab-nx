@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+@theme {
+  --spacing-unit: 1rem;
+  --max-width: 1200px;
+}

@@ -7,51 +7,21 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/angular-app",
-        "index": "apps/angular-app/src/index.html",
-        "browser": "apps/angular-app/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "apps/angular-app/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "apps/angular-app/public"
-          }
-        ],
-        "styles": ["apps/angular-app/src/styles.scss"],
-        "scripts": []
+        "configFile": "apps/angular-app/vite.config.mts",
+        "outputPath": "dist/apps/angular-app"
       },
       "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
-            }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true
-        }
+        "production": { "mode": "production" },
+        "development": { "mode": "development" }
       },
       "defaultConfiguration": "production"
     },
     "serve": {
       "continuous": true,
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nx/vite:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "angular-app:build:production"
@@ -71,14 +41,11 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
-    "serve-static": {
-      "continuous": true,
-      "executor": "@nx/web:file-server",
+    "preview": {
+      "executor": "@nx/vite:preview-server",
       "options": {
-        "buildTarget": "angular-app:build",
-        "port": 4200,
-        "staticFilePath": "dist/apps/angular-app/browser",
-        "spa": true
+        "buildTarget": "angular-app:build:production",
+        "port": 4200
       }
     }
   }

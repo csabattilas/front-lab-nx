@@ -1,5 +1,5 @@
 {
-  "name": "form",
+  "name": "lion-form",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ui/lion/form/src",
   "projectType": "library",

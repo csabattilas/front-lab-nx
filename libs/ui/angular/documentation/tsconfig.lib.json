@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
@@ -16,5 +17,4 @@
     "vitest.config.ts",
     "vitest.config.mts",
   ],
-  "include": ["src/**/*.ts"]
 }

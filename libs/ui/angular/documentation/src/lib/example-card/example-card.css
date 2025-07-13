@@ -1,8 +1,15 @@
 :host {
   padding: 1rem;
   border-radius: var(--radius-base);
-  box-shadow: 0 2px 3px var(--color-primary);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
   margin-bottom: var(--spacing-unit);
   overflow: hidden;
   display: block;
+  position: relative;
+
+  --fl-lion-tabs-tabs-group-justify-content: flex-end
+}
+
+[slot="panel"] {
+  padding: var(--spacing-unit);
 }

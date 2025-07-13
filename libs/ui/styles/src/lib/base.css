@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+@layer base {
+  h1 {
+    @apply text-5xl font-extrabold leading-tight mb-10;
+  }
+  h2 {
+    @apply text-3xl font-bold leading-snug mb-8;
+  }
+  h3 {
+    @apply text-2xl font-semibold leading-snug mb-6;
+  }
+  h4 {
+    @apply text-lg font-semibold mb-2;
+  }
+  h5 {
+    @apply font-medium;
+  }
+}

@@ -5,17 +5,18 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "module": "es2020",
+    "target": "es2022",
+    "moduleResolution": "bundler"
   },
   "files": [],
-  "include": [],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
   ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,5 +1,5 @@
 declare namespace CustomLion {
-  interface LockedSelection extends HTMLElement {
+  interface LockSelect extends HTMLElement {
     modelValue?: { resolved: boolean; selectedValue: string }[];
     answer?: string;
     onmodelValueChanged?: (event: CustomEvent) => void;
@@ -16,7 +16,7 @@ declare namespace CustomLion {
 // Declare the custom elements for Angular
 declare global {
   interface HTMLElementTagNameMap {
-    'fl-lion-locked-selection': CustomLion.LockedSelection;
+    'fl-lion-lock-select': CustomLion.LockSelect;
     'fl-lion-integer-digit-match': CustomLion.IntegerDigitMatch;
   }
 }

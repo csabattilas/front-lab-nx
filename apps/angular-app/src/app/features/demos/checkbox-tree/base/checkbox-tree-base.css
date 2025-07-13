@@ -1,0 +1,31 @@
+:host {
+  --item-selector-width: 275px;
+}
+
+.content > div {
+  flex: 1;
+}
+
+.tree-container {
+  flex: 0;
+  flex-basis: var(--item-selector-width);
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: calc(var(--spacing-unit) / 2);
+  border: 1px solid var(--color-hover);
+}
+
+label {
+  font-weight: bold;
+}
+
+fl-form-checkbox-tree, fl-form-checkbox-tree-ctx {
+  width: 100%;
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--color-hover);
+}

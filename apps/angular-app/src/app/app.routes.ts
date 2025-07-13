@@ -1,29 +1,35 @@
 import { Route } from '@angular/router';
-import { FolderTreeDemosComponent } from './features/folder-tree-demo/folder-tree-demos';
-import { HomeComponent } from './features/home/home.component';
-import { LionLockedSelectionDemoComponent } from './features/lion-locked-selection-demo/lion-locked-selection-demo';
-import { LionIntegerDigitMatchDemoComponent } from './features/lion-integer-digit-match-demo/lion-integer-digit-match-demo';
+import { HomeComponent } from './features/home/home';
+import { LockSelectComponent } from './features/demos/lock-select/lock-select';
+import { IntegerDigitMatchComponent } from './features/demos/integer-digit-match/integer-digit-match';
+import { CheckboxTreeDemoComponent } from './features/demos/checkbox-tree/checkbox-tree/checkbox-tree';
+import { CheckboxTreeCtxDemoComponent } from './features/demos/checkbox-tree/checkbox-tree-ctx/checkbox-tree-ctx';
 
 export const appRoutes: Route[] = [
   {
     path: '',
     component: HomeComponent,
-    title: 'Angular Component Experiments',
+    title: 'Frontend Lab',
     pathMatch: 'full',
   },
   {
-    path: 'folder-tree',
-    component: FolderTreeDemosComponent,
-    title: 'Folder Tree Demo',
+    path: 'checkbox-tree',
+    component: CheckboxTreeDemoComponent,
+    title: 'Checkbox Tree Demo',
   },
   {
-    path: 'lion-locked-selection',
-    component: LionLockedSelectionDemoComponent,
+    path: 'checkbox-tree-ctx',
+    component: CheckboxTreeCtxDemoComponent,
+    title: 'Checkbox Tree Demo',
+  },
+  {
+    path: 'lock-select',
+    component: LockSelectComponent,
     title: 'Lion Locked Selection Demo',
   },
   {
-    path: 'lion-integer-digit-match',
-    component: LionIntegerDigitMatchDemoComponent,
+    path: 'integer-digit-match',
+    component: IntegerDigitMatchComponent,
     title: 'Lion Integer Digit Match Demo',
   },
 ];

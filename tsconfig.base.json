@@ -16,11 +16,13 @@
     "noUnusedLocals": true,
     "strict": true,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "./"],
     "paths": {
-      "@front-lab-nx/ng-documentation": [
-        "libs/ui/angular/documentation/src/index.ts"
-      ]
+      "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
+      "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
+      "@front-lab-nx/ng-documentation": ["libs/ui/angular/documentation/src/index.ts"],
+      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"],
+      "@front-lab-nx/lion-form": ["libs/ui/lion/form/src/index.js"],
+      "@front-lab-nx/lion-form/*": ["libs/ui/lion/form/src/*"],
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -6,6 +6,14 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/ui/angular/form",
+        "config": "libs/ui/angular/form/vite.config.mts"
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "options": {
