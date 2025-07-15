@@ -1,0 +1,11 @@
+lion-option[checked] {
+  border: 2px solid var(--color-error);
+  background-color: color-mix(in srgb, var(--color-error) 30%, white);
+}
+
+lion-option[data-expected] {
+  border-color: var(--color-success);
+  background-color: color-mix(in srgb, var(--color-success) 30%, white);
+}
+
+

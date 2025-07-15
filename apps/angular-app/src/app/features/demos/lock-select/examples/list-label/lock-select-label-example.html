@@ -1,0 +1,25 @@
+<p>What is the capital of the Netherlands</p>
+<fl-lion-lock-select
+  #ls
+  direction="{{direction()}}"
+  (model-value-changed)="onChange()"
+  [answer]="'a'"
+>
+  @for(option of quizData; track $index) {
+  <lion-option class="text-secondary" [choiceValue]="option.value"
+    ><div class="flex gap-1 items-center">
+      <span
+        class="checkbox border-2 rounded m-1 p-1 block hover:text-primary hover:border-primary"
+        >{{ option.value }}</span
+      >
+      <span>{{ option.label }}</span>
+    </div>
+  </lion-option>
+  }
+</fl-lion-lock-select>
+
+@if(isSolved() === true) {
+<span class="success">✓ Correct answer!</span>
+} @if(isSolved() === false) {
+<span class="error">✗ Wrong answer! Try again.</span>
+}

@@ -7,18 +7,35 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import '@front-lab-nx/lion-form/lock-select';
+import '@front-lab-nx/lion-form/lock-select/index';
 
 @Component({
-  selector: 'fl-lock-select-example',
-  templateUrl: './lock-select-example.html',
-  styleUrl: './lock-select-example.scss',
+  selector: 'fl-lock-select-label-example',
+  templateUrl: './lock-select-label-example.html',
+  styleUrl: './lock-select-label-example.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class LockSelectExampleComponent {
+export class LockSelectLabelExampleComponent {
   public direction = input<string>();
   public isSolved = signal<boolean | null>(null);
-
+  public quizData = [
+    {
+      value: 'a',
+      label: 'Amsterdam',
+    },
+    {
+      value: 'b',
+      label: 'Berlin',
+    },
+    {
+      value: 'c',
+      label: 'Brussels',
+    },
+    {
+      value: 'd',
+      label: 'The Hague',
+    },
+  ];
   private readonly listboxRef = viewChild<ElementRef>('ls');
 
   private readonly modelValue = signal<

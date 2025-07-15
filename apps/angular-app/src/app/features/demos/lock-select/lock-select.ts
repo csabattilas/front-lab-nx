@@ -10,7 +10,8 @@ import {
   ApiDocumentationComponent,
   ExampleCardComponent,
 } from '@front-lab-nx/ng-documentation';
-import { LockSelectExampleComponent } from './example/lock-select-example';
+import { LockSelectExampleComponent } from './examples/list-value/lock-select-example';
+import { LockSelectLabelExampleComponent } from './examples/list-label/lock-select-label-example';
 
 @Component({
   selector: 'fl-lion-locked-selection-demo',
@@ -20,6 +21,7 @@ import { LockSelectExampleComponent } from './example/lock-select-example';
   imports: [
     ApiDocumentationComponent,
     LockSelectExampleComponent,
+    LockSelectLabelExampleComponent,
     ExampleCardComponent,
   ],
 })
@@ -92,42 +94,101 @@ export class LockSelectComponent {
   }
 }`;
 
-  public exampleHtmlCode = `<fl-lion-lock-select
-    #ls
-    (model-value-changed)="onChange()"
-    [answer]="'32'"
-  >
+  public exampleHtmlCode = `<p>How much is 17 + 15?</p>
+<fl-lion-lock-select
+  #ls
+  direction="{{direction()}}"
+  (model-value-changed)="onChange()"
+  [answer]="'32'"
+>
   @for(option of ['32','31','33','42']; track $index) {
-    <lion-option
-      class="rounded border-2 m-1 p-1 text-secondary hover:text-primary cursor-pointer hover:border-primary"
-      [choiceValue]="option"
+  <lion-option
+    class="rounded border-2 m-1 p-1 text-secondary hover:text-primary cursor-pointer hover:border-primary"
+    [choiceValue]="option"
     >{{ option }}</lion-option
-    >
+  >
   }
-</fl-lion-lock-select>`;
+</fl-lion-lock-select>
 
-  public exampleHtmlCodeHorizontal = `<fl-lion-lock-select
-    #ls
-    direction="horizontal"
-    (model-value-changed)="onChange()"
-    [answer]="'32'"
-  >
-  @for(option of ['32','31','33','42']; track $index) {
-    <lion-option
-      class="rounded border-2 m-1 p-1 text-secondary hover:text-primary cursor-pointer hover:border-primary"
-      [choiceValue]="option"
-    >{{ option }}</lion-option
-    >
+@if(isSolved() === true) {
+<span class="success">✓ Correct answer!</span>
+} @if(isSolved() === false) {
+<span class="error">✗ Wrong answer! Try again.</span>
+}`;
+
+  public exampleLabelHtmlCode = `<p>What is the capital of the Netherlands</p>
+<fl-lion-lock-select
+  #ls
+  (model-value-changed)="onChange()"
+  [answer]="'a'"
+>
+  @for(option of quizData; track $index) {
+  <lion-option class="text-secondary" [choiceValue]="option.value"
+    ><div class="flex gap-1 items-center">
+      <span
+        class="checkbox border-2 rounded m-1 p-1 block hover:text-primary hover:border-primary"
+        >{{ option.value }}</span
+      >
+      <span>{{ option.label }}</span>
+    </div>
+  </lion-option>
   }
-</fl-lion-lock-select>`;
+</fl-lion-lock-select>
+
+@if(isSolved() === true) {
+<span class="success">✓ Correct answer!</span>
+} @if(isSolved() === false) {
+<span class="error">✗ Wrong answer! Try again.</span>
+}`;
+
+  public exampleHtmlCodeHorizontal = `<p>How much is 17 + 15?</p>
+<fl-lion-lock-select
+  #ls
+  direction="horizontal"
+  (model-value-changed)="onChange()"
+  [answer]="'32'"
+>
+  @for(option of ['32','31','33','42']; track $index) {
+  <lion-option
+    class="rounded border-2 m-1 p-1 text-secondary hover:text-primary cursor-pointer hover:border-primary"
+    [choiceValue]="option"
+    >{{ option }}</lion-option
+  >
+  }
+</fl-lion-lock-select>
+
+@if(isSolved() === true) {
+<span class="success">✓ Correct answer!</span>
+} @if(isSolved() === false) {
+<span class="error">✗ Wrong answer! Try again.</span>
+}`;
 
   public exampleCssCode = `lion-option[checked] {
-  color: var(--color-surface);
   border: 2px solid var(--color-error);
   background-color: color-mix(in srgb, var(--color-error) 50%, white);
 }
 lion-option[data-expected] {
   border-color: var(--color-success);
   background-color: color-mix(in srgb, var(--color-success) 50%, white);
+}`;
+
+  public exampleLabelCssCode = `lion-option[checked] {
+  color: var(--color-error);
+  background-color: transparent;
+}
+
+lion-option[checked] .checkbox {
+  color: var(--color-surface);
+  border: 2px solid var(--color-error);
+  background-color: color-mix(in srgb, var(--color-error) 30%, white);
+}
+
+lion-option[data-expected] {
+  color: var(--color-success);
+}
+
+lion-option[data-expected] .checkbox {
+  border-color: var(--color-success);
+  background-color: color-mix(in srgb, var(--color-success) 30%, white);
 }`;
 }

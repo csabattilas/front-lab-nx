@@ -1,0 +1,20 @@
+lion-option[checked] {
+  color: var(--color-error);
+  background-color: transparent;
+}
+
+lion-option[checked] .checkbox {
+  color: var(--color-surface);
+  border: 2px solid var(--color-error);
+  background-color: color-mix(in srgb, var(--color-error) 30%, white);
+}
+
+lion-option[data-expected] {
+  color: var(--color-success);
+}
+
+lion-option[data-expected] .checkbox {
+  border-color: var(--color-success);
+  background-color: color-mix(in srgb, var(--color-success) 30%, white);
+}
+

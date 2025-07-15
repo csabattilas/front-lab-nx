@@ -52,7 +52,7 @@
   <button slot="tab">Examples</button>
   <section slot="panel">
     <h3 class="mt-3 mb-6">Examples</h3>
-    <h4>Vertical Layout (Default)</h4>
+    <h4>Vertical layout (Default)</h4>
     <fl-doc-example-card
       [exampleTsCode]="exampleTsCode"
       [exampleCssCode]="exampleCssCode"
@@ -65,8 +65,16 @@
       [exampleCssCode]="exampleCssCode"
       [exampleHtmlCode]="exampleHtmlCodeHorizontal"
     >
-      <h4>Horizontal Layout</h4>
+      <h4>Horizontal layout</h4>
       <fl-lock-select-example direction="horizontal"></fl-lock-select-example>
+    </fl-doc-example-card>
+    <fl-doc-example-card
+      [exampleTsCode]="exampleTsCode"
+      [exampleCssCode]="exampleLabelCssCode"
+      [exampleHtmlCode]="exampleLabelHtmlCode"
+    >
+      <h4>Vertical layout with labels</h4>
+      <fl-lock-select-label-example></fl-lock-select-label-example>
     </fl-doc-example-card>
   </section>
 </fl-lion-tabs>
