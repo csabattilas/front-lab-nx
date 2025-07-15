@@ -1,13 +1,18 @@
 <ul>
   <button (click)="toggleExpanded()" [style.--depth]="depth()">
-    <fl-form-checkbox
-      [checked]="checked()"
-      [indeterminate]="indeterminate()"
-      (change)="onToggle($event)"
-    >
+    @if (checkboxComponent()) {
+    <ng-container #checkboxHost></ng-container>
+    } @else {
+    <div class="default-checkbox">
+      <input
+        type="checkbox"
+        [checked]="checked()"
+        [indeterminate]="indeterminate()"
+        (change)="onToggle($event)"
+      />
       <span [class.has-children]="hasChildren">{{ node()?.title }}</span>
-    </fl-form-checkbox>
-    @if (hasChildren) {
+    </div>
+    } @if (hasChildren) {
     <span class="chevron" [class.expanded]="expandedSignal()">
       <span class="material-symbols-outlined">
         {{ expandedSignal() ? 'expand_less' : 'expand_more' }}
@@ -24,7 +29,12 @@
       [inheritedChecked]="checked()"
       [expanded]="expandedSignal()"
       [depth]="depth()+1"
+      [checkboxComponent]="checkboxComponent()"
     ></fl-form-checkbox-tree-node>
   </li>
   } }
 </ul>
+
+<ng-template #titleTemplate let-node="node">
+  <span [class.has-children]="hasChildren">{{ node.title }}</span>
+</ng-template>

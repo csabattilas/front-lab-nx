@@ -51,7 +51,7 @@ public ngOnInit(): void {
 }`;
 
   // @ts-expect-error TS6133
-  private readonly treeEffec = effect(() => {
+  private readonly treeEffect = effect(() => {
     const value = `11, 12, 13, 14`;
     this.newValueControl.setValue(value);
   });

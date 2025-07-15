@@ -4,21 +4,20 @@
       (click)="forwardKey($event, native)"
       (keydown.space)="forwardKey($event, native)"
       (keydown.enter)="forwardKey($event, native)"
-      [class.checked]="checked"
+      [class.checked]="checkedSignal()"
       [class.indeterminate]="indeterminate()"
       tabindex="0"
       class="checkbox"
       role="checkbox"
-      [attr.aria-checked]="indeterminate() ? 'mixed' : checked"
+      [attr.aria-checked]="indeterminate() ? 'mixed' : checkedSignal()"
       [attr.aria-labelledby]="id"
     >
-      @if (checked && !indeterminate()) {
+      @if (checkedSignal() && !indeterminate()) {
       <span class="material-symbols-outlined checkmark">check</span>
       } @if (indeterminate()) {
       <span class="material-symbols-outlined indeterminate-mark">remove</span>
       }
     </div>
-
     <ng-content></ng-content>
   </label>
   <!-- would have been better to keep accessibility on the native checkbox but then programatical focus handling would be a bit more complex-->
@@ -27,7 +26,7 @@
     type="checkbox"
     [id]="id"
     (click)="stopEvent($event)"
-    [checked]="checked"
+    [checked]="checkedSignal()"
     [indeterminate]="indeterminate()"
     (change)="onNativeChange($event)"
     class="native-checkbox"

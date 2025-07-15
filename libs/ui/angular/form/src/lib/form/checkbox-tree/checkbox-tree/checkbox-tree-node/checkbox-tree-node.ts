@@ -1,25 +1,34 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Type,
   effect,
+  EnvironmentInjector,
   inject,
   Input,
   input,
+  inputBinding,
   linkedSignal,
   signal,
+  viewChild,
   viewChildren,
+  createComponent,
+  ElementRef,
+  ViewContainerRef,
+  TemplateRef,
+  EventEmitter,
 } from '@angular/core';
-import { CheckboxComponent } from '../../../checkbox';
 import {
   CHECKBOX_TREE_CONTEXT,
+  CheckboxLike,
   CheckboxTreeContext,
   CheckboxTreeNode,
 } from '../../model/model';
-import { PerformanceService } from '../../performance/performance';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { projectableNodesFrom } from '../../../utils/projectable-node-from';
 
 @Component({
   selector: 'fl-form-checkbox-tree-node',
-  imports: [CheckboxComponent],
   styleUrl: './checkbox-tree-node.scss',
   templateUrl: './checkbox-tree-node.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +37,7 @@ export class CheckboxTreeNodeComponent {
   public node = input<CheckboxTreeNode>();
   public expanded = input<boolean>(false);
   public depth = input<number>(0);
+  public checkboxComponent = input<Type<CheckboxLike>>();
 
   public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
 
@@ -57,11 +67,58 @@ export class CheckboxTreeNodeComponent {
     return indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total);
   });
 
-  private readonly performanceService = inject(PerformanceService);
-
   private readonly ctx: CheckboxTreeContext = inject(CHECKBOX_TREE_CONTEXT);
 
   private readonly children = viewChildren(CheckboxTreeNodeComponent);
+
+  private readonly titleTemplate =
+    viewChild.required<TemplateRef<{ node: CheckboxTreeNode }>>(
+      'titleTemplate'
+    );
+
+  private readonly checkboxHost = viewChild<ElementRef, ViewContainerRef>(
+    'checkbox',
+    { read: ViewContainerRef }
+  );
+
+  private readonly environmentInjector = inject(EnvironmentInjector);
+
+  // @ts-expect-error: TS6133
+  private readonly checkboxCreateEffect = effect(() => {
+    const componentType = this.checkboxComponent();
+    const hostElement = this.checkboxHost();
+    const titleTemplate = this.titleTemplate();
+    const node = this.node();
+
+    if (hostElement && componentType && titleTemplate && node) {
+      hostElement.clear();
+
+      const bindings = [
+        inputBinding('checked', this.checked),
+        inputBinding('indeterminate', this.indeterminate),
+      ];
+
+      const componentRef = createComponent(componentType, {
+        environmentInjector: this.environmentInjector,
+        bindings,
+        projectableNodes: [projectableNodesFrom(titleTemplate, { node })],
+      });
+
+      const accessors = componentRef.injector.get<ControlValueAccessor[]>(
+        NG_VALUE_ACCESSOR,
+        []
+      );
+      if (accessors.length) {
+        accessors[0].registerOnChange((v: boolean) => this.onToggle(v));
+      } else if ('change' in componentRef.instance) {
+        (componentRef.instance.change as EventEmitter<boolean>).subscribe(
+          (v: boolean) => this.onToggle(v)
+        );
+      }
+
+      hostElement.insert(componentRef.hostView);
+    }
+  });
 
   // collect the checked state from the writeValue from the checkbox tree control.
   private readonly writeValueCheckedSignal = linkedSignal<boolean | null>(
@@ -123,9 +180,6 @@ export class CheckboxTreeNodeComponent {
       if (node.checked && this.hasChildren) {
         this.expandedSignal.set(true);
       }
-
-      // update performance mark
-      this.performanceService.updateCheckedCount('vc-no-effect');
     }
   });
 
@@ -149,9 +203,11 @@ export class CheckboxTreeNodeComponent {
     this.expandedSignal.update(expanded => !expanded);
   }
 
-  public onToggle(event: Event): void {
-    this.performanceService.resetCheckedCount();
-    const isChecked = (event.target as HTMLInputElement).checked;
+  public onToggle(event: Event | boolean): void {
+    const isChecked =
+      event instanceof Event
+        ? (event.target as HTMLInputElement).checked
+        : event;
     this.checked.set(isChecked);
   }
 }

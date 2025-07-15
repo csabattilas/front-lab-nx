@@ -31,6 +31,12 @@ button {
   }
 }
 
+.default-checkbox {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) / 2);
+}
+
 .material-symbols-outlined {
   cursor: pointer;
 }

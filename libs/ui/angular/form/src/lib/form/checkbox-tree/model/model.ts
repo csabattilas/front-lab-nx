@@ -1,4 +1,16 @@
-import { InjectionToken, Signal } from '@angular/core';
+import {
+  EventEmitter,
+  InjectionToken,
+  InputSignal,
+  Signal,
+} from '@angular/core';
+
+export interface CheckboxLike {
+  checked: InputSignal<boolean> | boolean;
+  indeterminate: InputSignal<boolean> | boolean;
+  change?: EventEmitter<boolean>;
+  registerOnChange?: (fn: (value: boolean | null) => void) => void;
+}
 
 export interface CheckboxTreeNode {
   id: number;

@@ -1,13 +1,28 @@
 <ul>
   <button (click)="toggleExpanded()" [style.--depth]="depth()">
-    <fl-form-checkbox
-      [checked]="checked()"
-      [indeterminate]="indeterminate()"
-      (change)="onToggle($event)"
-    >
+    @if (checkboxComponent()) {
+    <ng-container
+      *ngTemplateOutlet="
+        genericCheckbox;
+        context: {
+          onToggle,
+          checked,
+          indeterminate,
+          checkboxComponent
+        }
+      "
+    ></ng-container>
+    } @else {
+    <div class="default-checkbox">
+      <input
+        type="checkbox"
+        [checked]="checked()"
+        [indeterminate]="indeterminate()"
+        (change)="onToggle($event)"
+      />
       <span [class.has-children]="hasChildren">{{ node().title }}</span>
-    </fl-form-checkbox>
-    @if (hasChildren) {
+    </div>
+    } @if (hasChildren) {
     <span class="chevron" [class.expanded]="expandedSignal()">
       <span class="material-symbols-outlined">
         {{ expandedSignal() ? 'expand_less' : 'expand_more' }}
@@ -23,8 +38,36 @@
       [node]="node"
       [inheritedChecked]="checked()"
       [expanded]="expandedSignal()"
+      [checkboxComponent]="checkboxComponent()"
       [depth]="depth()+1"
     ></fl-form-checkbox-tree-node-ctx>
   </li>
   } }
 </ul>
+
+<ng-template #titleTemplate let-node="node">
+  <span [class.has-children]="hasChildren">{{ node.title }}</span>
+</ng-template>
+
+<ng-template
+  #genericCheckbox
+  let-checkboxComponent="checkboxComponent"
+  let-onToggle="onToggle"
+  let-checked="checked"
+  let-indeterminate="indeterminate"
+>
+  <ng-container
+    #checkboxComponentRef
+    *ngComponentOutlet="
+      checkboxComponent();
+      inputs: {
+        checked: checked(),
+        indeterminate: indeterminate()
+      }
+      content: [titleNode()];
+      componentRef as checkboxComponentRef
+    "
+    (change)="onToggle($event)"
+  >
+  </ng-container>
+</ng-template>

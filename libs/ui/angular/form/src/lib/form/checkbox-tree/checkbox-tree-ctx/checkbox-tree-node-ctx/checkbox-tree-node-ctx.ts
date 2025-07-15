@@ -1,24 +1,32 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ComponentRef,
   computed,
   effect,
+  ElementRef,
+  EventEmitter,
   inject,
   input,
   linkedSignal,
   OnInit,
   signal,
+  TemplateRef,
+  Type,
+  viewChild,
 } from '@angular/core';
 import { CheckboxTreeSelectionContextService } from '../checkbox-tree-context';
-import { CheckboxComponent } from '../../../checkbox/checkbox';
+import { CheckboxLike } from '../../model/model';
 import { CheckboxTreeNode } from '../../model/model';
-import { PerformanceService } from '../../performance/performance';
+import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
+import { projectableNodesFrom } from '../../../utils/projectable-node-from';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'fl-form-checkbox-tree-node-ctx',
-  imports: [CheckboxComponent],
   templateUrl: './checkbox-tree-node-ctx.html',
   styleUrl: './checkbox-tree-node-ctx.scss',
+  imports: [NgComponentOutlet, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxTreeNodeCtxComponent implements OnInit {
@@ -26,6 +34,7 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
   public inheritedChecked = input<boolean>(false);
   public expanded = input<boolean>(false);
   public depth = input<number>(0);
+  public checkboxComponent = input<Type<CheckboxLike>>();
 
   public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
 
@@ -35,9 +44,38 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
 
   public readonly indeterminate = signal(false);
 
+  public readonly titleNode = computed(() => {
+    return projectableNodesFrom(this.titleTemplate(), { node: this.node() });
+  });
+
   private readonly ctx = inject(CheckboxTreeSelectionContextService);
 
-  private readonly performanceService = inject(PerformanceService);
+  private readonly titleTemplate =
+    viewChild.required<TemplateRef<{ node: CheckboxTreeNode }>>(
+      'titleTemplate'
+    );
+
+  private readonly checkboxOutlet =
+    viewChild<NgComponentOutlet>(NgComponentOutlet);
+
+  // @ts-expect-error: TS6133
+  private readonly checkboxCreateEffect = effect(() => {
+    const checkboxOutlet = this.checkboxOutlet();
+
+    if (checkboxOutlet) {
+      const instance = checkboxOutlet.componentInstance;
+      if (!instance) {
+        return;
+      }
+      if (typeof instance.registerOnChange === 'function') {
+        instance.registerOnChange((v: boolean) => this.onToggle(v));
+      } else if ('change' in instance) {
+        (instance.change as EventEmitter<boolean>).subscribe((v: boolean) =>
+          this.onToggle(v)
+        );
+      }
+    }
+  });
 
   private readonly childStates = computed(() => {
     if (!this.hasChildren) return [];
@@ -59,11 +97,7 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
 
   // @ts-expect-error: TS6133
   private readonly updatedChecked = effect(() => {
-    this.ctx.updateNodeCheckedSelection(
-      this.node().id,
-      this.checked(),
-      this.hasChildren
-    );
+    this.ctx.updateNodeCheckedSelection(this.node().id, this.checked());
 
     if (this.checked() && !this.hasChildren) {
       this.ctx.addSelectedItems(this.node().id);
@@ -75,8 +109,6 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
     if (this.checked() && this.hasChildren) {
       this.expandedSignal.set(true);
     }
-
-    this.performanceService.updateCheckedCount('ctx');
   });
 
   // @ts-expect-error: TS6133
@@ -113,17 +145,17 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
     if (this.indeterminate()) {
       this.expandedSignal.set(true);
     }
-
-    this.performanceService.updateCheckedCount('ctx');
   });
 
   protected get hasChildren(): boolean {
     return !!this.node().items?.length;
   }
 
-  public onToggle(event: Event): void {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    this.performanceService.resetCheckedCount();
+  public onToggle(event: Event | boolean): void {
+    const isChecked =
+      event instanceof Event
+        ? (event.target as HTMLInputElement).checked
+        : event;
     this.checked.set(isChecked);
   }
 

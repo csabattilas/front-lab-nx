@@ -20,6 +20,10 @@ export class HeaderComponent {
       route: 'checkbox-tree',
     },
     {
+      navItemText: 'Checkbox Tree (ctx)',
+      route: 'checkbox-tree-ctx',
+    },
+    {
       navItemText: 'Lock Select',
       route: 'lock-select',
     },

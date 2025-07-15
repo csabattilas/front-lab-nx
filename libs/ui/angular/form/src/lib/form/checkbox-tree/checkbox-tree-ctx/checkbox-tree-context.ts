@@ -35,11 +35,7 @@ export class CheckboxTreeSelectionContextService {
     }
   }
 
-  public updateNodeCheckedSelection(
-    id: number,
-    checked: boolean,
-    hasChildren: boolean
-  ): void {
+  public updateNodeCheckedSelection(id: number, checked: boolean): void {
     const nodeState = this.nodeStates.get(id);
 
     if (nodeState) {
@@ -76,7 +72,7 @@ export class CheckboxTreeSelectionContextService {
 
     return nodeState;
   }
-  
+
   private _onChange: (value: number[]) => void = () => {
     //
   };

@@ -22,11 +22,19 @@ button {
     background-color: var(--color-hover);
   }
 
-  padding: calc(var(--spacing-unit) / 4 + 2px) calc(var(--spacing-unit) / 4 + 2px) calc(var(--spacing-unit) / 4 + 2px) calc(var(--depth) * var(--spacing-unit));
+  padding: calc(var(--spacing-unit) / 4 + 2px)
+    calc(var(--spacing-unit) / 4 + 2px) calc(var(--spacing-unit) / 4 + 2px)
+    calc(var(--depth) * var(--spacing-unit));
 
   &[style*='--depth: 0'] {
     padding-left: calc(var(--spacing-unit) / 4 + 2px);
   }
+}
+
+.default-checkbox {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) / 2);
 }
 
 .material-symbols-outlined {

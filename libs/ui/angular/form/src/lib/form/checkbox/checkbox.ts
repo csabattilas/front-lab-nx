@@ -2,8 +2,8 @@ import {
   Component,
   forwardRef,
   input,
-  Input,
   ChangeDetectionStrategy,
+  linkedSignal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -22,25 +22,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 // have a minimal custom checkbox
 export class CheckboxComponent implements ControlValueAccessor {
-  @Input() public value: boolean | null = null;
+  public checked = input<boolean>(false);
   public indeterminate = input<boolean>(false);
   public readonly id = `checkbox-${Math.random().toString()}`;
 
-  @Input()
-  get checked(): boolean {
-    return this.value === true;
-  }
+  // public value: boolean | null = null;
 
-  set checked(val: boolean) {
-    if (this.value !== val) {
-      this.value = val;
-      this.onChange(this.value);
-      this.onTouched();
-    }
-  }
+  public readonly checkedSignal = linkedSignal<boolean>(() => this.checked());
 
   public writeValue(value: boolean | null): void {
-    this.value = value;
+    this.checkedSignal.set(value === true);
   }
 
   public registerOnChange(fn: (value: boolean | null) => void): void {
@@ -63,8 +54,8 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   public onNativeChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
-    this.value = checkbox.checked;
-    this.onChange(this.value);
+    this.checkedSignal.set(checkbox.checked);
+    this.onChange(this.checkedSignal());
     this.onTouched();
   }
 

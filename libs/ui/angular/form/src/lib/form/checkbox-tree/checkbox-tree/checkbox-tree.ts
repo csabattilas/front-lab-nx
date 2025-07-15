@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CHECKBOX_TREE_CONTEXT, CheckboxTreeContext } from '../model/model';
-import { PerformanceService } from '../performance/performance';
 
 @Component({
   selector: 'fl-form-checkbox-tree',
@@ -17,7 +16,6 @@ import { PerformanceService } from '../performance/performance';
   imports: [],
   template: `<ng-content></ng-content>`,
   providers: [
-    PerformanceService,
     {
       provide: CHECKBOX_TREE_CONTEXT,
       useExisting: forwardRef(() => CheckboxTreeComponent),
@@ -41,11 +39,8 @@ export class CheckboxTreeComponent
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  private readonly performanceService = inject(PerformanceService);
-
   public writeValue(value: number[]): void {
     queueMicrotask(() => {
-      this.performanceService.resetCheckedCount();
       this._selectedItemsIds.set(new Set(value || []));
     });
   }

@@ -9,6 +9,7 @@ import {
   ApiDocumentationComponent,
   ExampleCardComponent,
 } from '@front-lab-nx/ng-documentation';
+import { CheckboxComponent } from '@front-lab-nx/ng-form';
 
 @Component({
   selector: 'fl-folder-tree-ctx-demo',
@@ -24,10 +25,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxTreeCtxDemoComponent extends CheckboxTreeBase {
+  public checkboxComponent = CheckboxComponent;
+
   public exampleHtmlCode = `<fl-form-checkbox-tree-ctx [formControl]="folderTreeControl" class="mb-4">
   @for (node of data.value(); track node.id) {
     <fl-form-checkbox-tree-node-ctx
       [node]="node"
+      [checkboxComponent]="checkboxComponent"
     ></fl-form-checkbox-tree-node-ctx>
   }
 </fl-form-checkbox-tree-ctx>`;

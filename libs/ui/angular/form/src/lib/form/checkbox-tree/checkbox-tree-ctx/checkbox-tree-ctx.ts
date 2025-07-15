@@ -8,14 +8,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CheckboxTreeSelectionContextService } from './checkbox-tree-context';
-import { PerformanceService } from '../performance/performance';
 
 @Component({
   selector: 'fl-form-checkbox-tree-ctx',
   template: '<ng-content></ng-content>',
   providers: [
     CheckboxTreeSelectionContextService,
-    PerformanceService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CheckboxTreeCtxComponent),
@@ -30,8 +28,6 @@ export class CheckboxTreeCtxComponent implements ControlValueAccessor, OnInit {
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  private readonly performanceService = inject(PerformanceService);
-
   public ngOnInit(): void {
     this.ctx.registerOnChange((value: number[]) => {
       this.onChange(value);
@@ -41,7 +37,6 @@ export class CheckboxTreeCtxComponent implements ControlValueAccessor, OnInit {
 
   public writeValue(value: number[]): void {
     this.ctx.updateSelectedItemsIds(value);
-    this.performanceService.resetCheckedCount();
 
     queueMicrotask(() => {
       for (const node of this.ctx.nodeStates.values()) {

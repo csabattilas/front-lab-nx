@@ -75,6 +75,7 @@
             @for (node of data.value(); track node.id) {
             <fl-form-checkbox-tree-node
               [node]="node"
+              [checkboxComponent]="checkboxComponent"
             ></fl-form-checkbox-tree-node>
             }
           </fl-form-checkbox-tree>

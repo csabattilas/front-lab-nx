@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxTreeBase } from '../base/checkbox-tree-base';
 import {
   ApiDocumentationComponent,
   ExampleCardComponent,
 } from '@front-lab-nx/ng-documentation';
 import {
+  CheckboxComponent,
   CheckboxTreeComponent,
   CheckboxTreeNodeComponent,
 } from '@front-lab-nx/ng-form';
@@ -18,16 +19,21 @@ import {
     ExampleCardComponent,
     CheckboxTreeNodeComponent,
     CheckboxTreeComponent,
+    CheckboxComponent,
   ],
   templateUrl: './checkbox-tree.html',
   styleUrl: '../base/checkbox-tree-base.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxTreeDemoComponent extends CheckboxTreeBase {
+  public checkboxComponent = CheckboxComponent;
+  public checkboxControl = new FormControl<boolean>(true);
+
   public exampleHtmlCode = `<fl-form-checkbox-tree [formControl]="folderTreeControl" class="mb-4">
   @for (node of data.value(); track node.id) {
     <fl-form-checkbox-tree-node
       [node]="node"
+      [checkboxComponent]="checkboxComponent"
     ></fl-form-checkbox-tree-node>
   }
 </fl-form-checkbox-tree>`;
