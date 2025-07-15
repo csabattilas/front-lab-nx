@@ -21,6 +21,7 @@ export const MultiInputMixin = superclass => {
      * @param {number} i - The index of the segment.
      * @returns {HTMLElement} - The rendered input element.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _renderSingleInput(i) {
       throw new Error('Implement _renderSingleInput(i) in subclass');
     }

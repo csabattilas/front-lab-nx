@@ -2,8 +2,7 @@ import { LionInput } from '@lion/ui/input.js';
 import { MultiInputMixin } from './multi-input-mixin.js';
 
 export declare class IntegerDigitMatch extends MultiInputMixin(LionInput) {
-  static get properties(): Record<string, unknown>;
-  constructor();
+  static properties: Record<string, unknown>;
 
   get modelValue(): string;
   set modelValue(value: string);

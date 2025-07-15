@@ -13,7 +13,7 @@ const LockedSelectionPage: React.FC = () => {
 
   const handleChange1 = () => {
     const modelValue = listboxRef1?.current?.modelValue;
-    
+
     if (!modelValue?.length) {
       setIsSolved1(null);
       return;
@@ -33,7 +33,7 @@ const LockedSelectionPage: React.FC = () => {
 
   const handleChange2 = () => {
     const modelValue = listboxRef2?.current?.modelValue;
-    
+
     if (!modelValue?.length) {
       setIsSolved2(null);
       return;
@@ -63,13 +63,23 @@ const LockedSelectionPage: React.FC = () => {
             answer="32"
             onmodel-value-changed={handleChange1}
           >
-            <lion-option value="32" choiceValue="32">32</lion-option>
-            <lion-option value="31" choiceValue="31">31</lion-option>
-            <lion-option value="33" choiceValue="33">33</lion-option>
-            <lion-option value="42" choiceValue="42">42</lion-option>
+            <lion-option value="32" choiceValue="32">
+              32
+            </lion-option>
+            <lion-option value="31" choiceValue="31">
+              31
+            </lion-option>
+            <lion-option value="33" choiceValue="33">
+              33
+            </lion-option>
+            <lion-option value="42" choiceValue="42">
+              42
+            </lion-option>
           </locked-selection>
 
-          {isSolved1 === true && <span className="success">Correct answer!</span>}
+          {isSolved1 === true && (
+            <span className="success">Correct answer!</span>
+          )}
           {isSolved1 === false && <span className="error">Wrong answer!</span>}
         </div>
 
@@ -81,13 +91,23 @@ const LockedSelectionPage: React.FC = () => {
             direction="horizontal"
             onmodel-value-changed={handleChange2}
           >
-            <lion-option value="32" choiceValue="32">32</lion-option>
-            <lion-option value="31" choiceValue="31">31</lion-option>
-            <lion-option value="33" choiceValue="33">33</lion-option>
-            <lion-option value="42" choiceValue="42">42</lion-option>
+            <lion-option value="32" choiceValue="32">
+              32
+            </lion-option>
+            <lion-option value="31" choiceValue="31">
+              31
+            </lion-option>
+            <lion-option value="33" choiceValue="33">
+              33
+            </lion-option>
+            <lion-option value="42" choiceValue="42">
+              42
+            </lion-option>
           </locked-selection>
 
-          {isSolved2 === true && <span className="success">Correct answer!</span>}
+          {isSolved2 === true && (
+            <span className="success">Correct answer!</span>
+          )}
           {isSolved2 === false && <span className="error">Wrong answer!</span>}
         </div>
       </div>

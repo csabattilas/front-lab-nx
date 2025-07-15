@@ -28,7 +28,7 @@ export class LockSelectExampleComponent {
     }[]
   >([]);
 
-  // @ts-expect-error
+  // @ts-expect-error not used in the component
   private readonly solvedEffect = effect(() => {
     if (!this.modelValue()?.length) {
       this.isSolved.set(null);

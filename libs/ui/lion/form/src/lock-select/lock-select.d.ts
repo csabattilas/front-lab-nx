@@ -1,8 +1,7 @@
 import { LionListbox } from '@lion/ui/listbox.js';
 
 export declare class LockedSelection extends LionListbox {
-  static get properties(): Record<string, unknown>;
-  constructor();
+  static properties: Record<string, unknown>;
 
   get modelValue(): Array<{ resolved: boolean; selectedValue: string }>;
   set modelValue(value: Array<string>);

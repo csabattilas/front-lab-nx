@@ -128,8 +128,14 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
         id="${i}--integer-digit-match"
         placeholder=""
         @input=${e => this._onInput(i, e.target.value)}
-        @focus=${e => this._onFocus(i)}
-        @keydown=${e => this._onKeyDown(i)}
+        @focus=${
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          e => this._onFocus(i)
+        }
+        @keydown=${
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          e => this._onKeyDown(i)
+        }
       />
     `;
   }

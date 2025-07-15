@@ -1,10 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ComponentRef,
   computed,
   effect,
-  ElementRef,
   EventEmitter,
   inject,
   input,
@@ -20,7 +18,6 @@ import { CheckboxLike } from '../../model/model';
 import { CheckboxTreeNode } from '../../model/model';
 import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import { projectableNodesFrom } from '../../../utils/projectable-node-from';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'fl-form-checkbox-tree-node-ctx',

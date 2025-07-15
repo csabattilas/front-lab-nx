@@ -189,22 +189,27 @@ describe('ChecboxTreeNodeComponent', () => {
       hostComponent.inheritedChecked = true;
       hostFixture.detectChanges();
 
-      // Access the private signal through any to verify it was set
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((component as any).inheritedCheckedSignal()).toBe(true);
     });
 
     it('should reset childrenBasedCheckedSignal and writeValueCheckedSignal when inheritedChecked is set', () => {
       // Spy on the signals
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.spyOn((component as any).childrenBasedCheckedSignal, 'set');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.spyOn((component as any).writeValueCheckedSignal, 'set');
 
       hostComponent.inheritedChecked = true;
       hostFixture.detectChanges();
 
       expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (component as any).childrenBasedCheckedSignal.set
       ).toHaveBeenCalledWith(null);
+
       expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (component as any).writeValueCheckedSignal.set
       ).toHaveBeenCalledWith(null);
     });

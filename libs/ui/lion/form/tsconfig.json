@@ -1,6 +1,7 @@
 {
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
+    "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "noImplicitOverride": true,
@@ -13,10 +14,10 @@
     "moduleResolution": "bundler"
   },
   "files": [],
-  "include": ["src/**/*.ts", "src/**/*.js","src/**/*.html", "src/**/*.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.html", "src/**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
+    }
   ]
 }
