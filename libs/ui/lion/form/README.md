@@ -24,6 +24,7 @@ A custom web component extending Lion's `LionListbox` that implements locked sel
 - Provides resolved state for each selection
 - Supports both vertical and horizontal layouts
 - Visually indicates correct answers
+- Limits the number of allowed selections with `maxAnswer` property
 
 #### Usage
 
@@ -41,11 +42,13 @@ import '@lion/ui/define/lion-option.js';
       #listbox
       (model-value-changed)="onChange()"
       answer="33"
+      [maxAnswer]="2"
       [direction]="'horizontal'"
     >
       <lion-option [choiceValue]="'32'">32</lion-option>
       <lion-option [choiceValue]="'33'">33</lion-option>
       <lion-option [choiceValue]="'34'">34</lion-option>
+      <lion-option [choiceValue]="'35'">35</lion-option>
     </fl-lion-locked-selection>
   `,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -78,11 +81,13 @@ const QuizComponent = () => {
     <fl-lion-locked-selection
       ref={listboxRef}
       answer="33"
+      maxAnswer={2}
       onmodel-value-changed={handleChange}
     >
       <lion-option choiceValue="32">32</lion-option>
       <lion-option choiceValue="33">33</lion-option>
       <lion-option choiceValue="34">34</lion-option>
+      <lion-option choiceValue="35">35</lion-option>
     </fl-lion-locked-selection>
   );
 };
@@ -95,6 +100,7 @@ const QuizComponent = () => {
 | Property     | Type       | Description                                                     |
 | ------------ | ---------- | --------------------------------------------------------------- | ------------------------------------------------- |
 | `answer`     | String     | The correct answer value                                        |
+| `maxAnswer`  | Number     | Maximum number of selections allowed (optional)                 |
 | `direction`  | 'vertical' | 'horizontal'                                                    | Layout direction of options (default: 'vertical') |
 | `modelValue` | Array      | Array of objects with `resolved` and `selectedValue` properties |
 
@@ -181,7 +187,7 @@ npm run test
 
 ## Browser Support
 
-These components are built using standard web components and work in all modern browsers that support the Custom Elements v1 specification.
+These components are built using standard web components and work in all modern browsers that support the Custom Elements specification.
 
 ## Accessibility
 

@@ -34,7 +34,8 @@ export class HomeComponent {
       subtitle:
         'angular, signal, context service, reactive forms, custom control',
 
-      description: 'Checkbox tree implementation using angular signals',
+      description:
+        'Checkbox tree implementation using angular signals and a context service',
       route: 'checkbox-tree-ctx',
     },
     {

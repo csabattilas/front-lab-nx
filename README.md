@@ -4,38 +4,21 @@ A modern frontend development workspace built with Nx, featuring Angular, React,
 
 It includes:
 
-- Angular, React, and Next.js applications
-- Shared libraries providing UI components, repository services, and API interfaces
+- A demo application
+- Shared libraries providing UI components (NOT DOWNLOADABLE YET!!), repository services, and API interfaces
 
 ## Applications
 
 - Angular App: A standalone Angular application showcasing Angular components and services
-  - **Live Demo**: [https://angular-front-lab.web.app](https://angular-front-lab.web.app)
-- React App: A React application with modern React patterns.
-  Currently testing out some custom lion component integration
-- Next.js App: Server-side rendered application using Next.js. Empty for now
+  - **Live Demo**: [https://frontlab.io](https://frontlab.io)
 
 ## Libraries
 
-- UI Components: Reusable UI components for Angular, React, and Web Components
+- UI Components: Reusable UI components built with Angular and Lion
 - Repository Services: Data access layer for backend communication
 - API Interfaces: Shared API models and services
 
-## Getting Started
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start Angular app
-pnpm start:angular-app
-
-# Start React app
-pnpm start:react-app
-
-# Run tests
-pnpm test
-```
+More here: [https://github.com/csabattilas/front-lab-nx/blob/main/libs/ui/lion/form/README.md](https://github.com/csabattilas/front-lab-nx/blob/main/libs/ui/lion/form/README.md) and [https://github.com/csabattilas/front-lab-nx/blob/main/libs/ui/angular/form/README.md](https://github.com/csabattilas/front-lab-nx/blob/main/libs/repository/angular/README.md)
 
 ## Development
 
@@ -50,12 +33,6 @@ pnpm lint:angular-libs
 pnpm test:angular-libs
 pnpm build:angular-app
 ```
-
-## Deployment
-
-The Angular application is automatically deployed to Firebase hosting when changes are pushed to the main branch:
-
-- **Live Demo**: [https://angular-front-lab.web.app](https://angular-front-lab.web.app)
 
 ## Future
 
