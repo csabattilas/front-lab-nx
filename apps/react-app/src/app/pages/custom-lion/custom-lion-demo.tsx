@@ -12,8 +12,7 @@ const CustomLionDemo = () => {
   const [modelValue, setModelValue] =
     useState<{ resolved: boolean; selectedValue: string }[]>();
 
-  const handleExclusiveChange = (e: CustomEvent) => {
-    console.log(listboxRef?.current?.modelValue);
+  const handleExclusiveChange = () => {
     setModelValue(listboxRef?.current?.modelValue || []);
   };
 

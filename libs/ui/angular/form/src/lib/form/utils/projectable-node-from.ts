@@ -6,7 +6,5 @@ export function projectableNodesFrom<T>(
 ): Node[] {
   const viewRef = template.createEmbeddedView(context);
   viewRef.detectChanges();
-  const nodes = viewRef.rootNodes;
-  viewRef.destroy();
-  return nodes;
+  return viewRef.rootNodes;
 }

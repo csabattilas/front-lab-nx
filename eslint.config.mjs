@@ -46,6 +46,7 @@ export default [
           endOfLine: 'lf',
         },
       ],
+      'no-console': 'error',
     },
   },
   {

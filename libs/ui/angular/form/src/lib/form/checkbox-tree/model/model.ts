@@ -12,6 +12,12 @@ export interface CheckboxLike {
   registerOnChange?: (fn: (value: boolean | null) => void) => void;
 }
 
+export interface CheckBoxTitleTemplateContext {
+  node: CheckboxTreeNode;
+  toggleExpanded: () => void;
+  hasChildren: boolean;
+}
+
 export interface CheckboxTreeNode {
   id: number;
   title: string;

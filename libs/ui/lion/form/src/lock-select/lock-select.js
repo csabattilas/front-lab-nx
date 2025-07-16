@@ -136,7 +136,7 @@ export class LockSelect extends LionListbox {
       this.__lockNotSelectedElements();
     }
 
-    if(this.maxAnswers === this.__lockedIndexes.size) {
+    if (this.maxAnswers === this.__lockedIndexes.size) {
       this.__lockNotSelectedElements();
     }
   }

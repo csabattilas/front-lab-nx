@@ -1,36 +1,39 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Type,
+  createComponent,
   effect,
+  ElementRef,
   EnvironmentInjector,
+  EventEmitter,
   inject,
   Input,
   input,
   inputBinding,
   linkedSignal,
   signal,
+  TemplateRef,
+  Type,
   viewChild,
   viewChildren,
-  createComponent,
-  ElementRef,
   ViewContainerRef,
-  TemplateRef,
-  EventEmitter,
 } from '@angular/core';
 import {
   CHECKBOX_TREE_CONTEXT,
   CheckboxLike,
+  CheckBoxTitleTemplateContext,
   CheckboxTreeContext,
   CheckboxTreeNode,
 } from '../../model/model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { projectableNodesFrom } from '../../../utils/projectable-node-from';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'fl-form-checkbox-tree-node',
   styleUrl: './checkbox-tree-node.scss',
   templateUrl: './checkbox-tree-node.html',
+  imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxTreeNodeComponent {
@@ -39,7 +42,9 @@ export class CheckboxTreeNodeComponent {
   public depth = input<number>(0);
   public checkboxComponent = input<Type<CheckboxLike>>();
 
-  public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
+  public readonly expandedSignal = linkedSignal<boolean>(
+    () => this.expandedInputSignal() || this.indeterminate() || this.checked()
+  );
 
   public readonly checked = linkedSignal<boolean>(() => {
     const writeValueChecked = this.writeValueCheckedSignal();
@@ -67,17 +72,21 @@ export class CheckboxTreeNodeComponent {
     return indeterminateCount > 0 || (checkedCount > 0 && checkedCount < total);
   });
 
+  private readonly expandedInputSignal = linkedSignal<boolean>(() =>
+    this.expanded()
+  );
+
   private readonly ctx: CheckboxTreeContext = inject(CHECKBOX_TREE_CONTEXT);
 
   private readonly children = viewChildren(CheckboxTreeNodeComponent);
 
   private readonly titleTemplate =
-    viewChild.required<TemplateRef<{ node: CheckboxTreeNode }>>(
+    viewChild.required<TemplateRef<CheckBoxTitleTemplateContext>>(
       'titleTemplate'
     );
 
   private readonly checkboxHost = viewChild<ElementRef, ViewContainerRef>(
-    'checkbox',
+    'checkboxHost',
     { read: ViewContainerRef }
   );
 
@@ -101,7 +110,13 @@ export class CheckboxTreeNodeComponent {
       const componentRef = createComponent(componentType, {
         environmentInjector: this.environmentInjector,
         bindings,
-        projectableNodes: [projectableNodesFrom(titleTemplate, { node })],
+        projectableNodes: [
+          projectableNodesFrom(titleTemplate, {
+            node,
+            toggleExpanded: this.toggleExpanded.bind(this),
+            hasChildren: this.hasChildren,
+          }),
+        ],
       });
 
       const accessors = componentRef.injector.get<ControlValueAccessor[]>(
@@ -175,11 +190,6 @@ export class CheckboxTreeNodeComponent {
       } else if (!node.checked && !this.hasChildren) {
         this.ctx.removeSelectedItems(id);
       }
-
-      // manage expanded state
-      if (node.checked && this.hasChildren) {
-        this.expandedSignal.set(true);
-      }
     }
   });
 
@@ -196,18 +206,18 @@ export class CheckboxTreeNodeComponent {
     this.inheritedCheckedSignal.set(value);
   }
 
-  public toggleExpanded(): void {
-    if (!this.hasChildren) {
-      return;
-    }
-    this.expandedSignal.update(expanded => !expanded);
-  }
-
   public onToggle(event: Event | boolean): void {
     const isChecked =
       event instanceof Event
         ? (event.target as HTMLInputElement).checked
         : event;
     this.checked.set(isChecked);
+
+    this.expandedInputSignal.set(false);
+  }
+
+  public toggleExpanded(): void {
+    this.expandedSignal.update(value => !value);
+    this.expandedInputSignal.set(false);
   }
 }

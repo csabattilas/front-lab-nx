@@ -34,7 +34,6 @@ export class CheckboxTreeComponent
 {
   private readonly _selectedItemsIds = signal<Set<number>>(new Set());
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public readonly selectedItemsIds = this._selectedItemsIds.asReadonly();
 
   private readonly cdr = inject(ChangeDetectorRef);

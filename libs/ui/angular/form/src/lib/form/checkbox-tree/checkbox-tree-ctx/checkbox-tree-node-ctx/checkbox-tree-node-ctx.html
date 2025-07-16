@@ -1,8 +1,9 @@
 <ul>
-  <button (click)="toggleExpanded()" [style.--depth]="depth()">
-    @if (checkboxComponent()) {
-    <ng-container
-      *ngTemplateOutlet="
+  <li>
+    <div class="checkbox-tree-node" [style.--depth]="depth()">
+      @if (checkboxComponent()) {
+      <ng-container
+        *ngTemplateOutlet="
         genericCheckbox;
         context: {
           onToggle,
@@ -11,42 +12,55 @@
           checkboxComponent
         }
       "
-    ></ng-container>
-    } @else {
-    <div class="default-checkbox">
-      <input
-        type="checkbox"
-        [checked]="checked()"
-        [indeterminate]="indeterminate()"
-        (change)="onToggle($event)"
-      />
-      <span [class.has-children]="hasChildren">{{ node().title }}</span>
-    </div>
-    } @if (hasChildren) {
-    <span class="chevron" [class.expanded]="expandedSignal()">
+      ></ng-container>
+      } @else {
+      <div class="default-checkbox">
+        <input
+          type="checkbox"
+          [checked]="checked()"
+          [indeterminate]="indeterminate()"
+          (change)="onToggle($event)"
+        />
+        <ng-container
+          *ngTemplateOutlet="titleTemplate; context: { node: this.node(), toggleExpanded: toggleExpanded.bind(this), hasChildren }"
+        ></ng-container>
+        @if (hasChildren) {
+        <span class="material-symbols-outlined">
+          {{ expandedSignal() ? 'expand_less' : 'expand_more' }}
+        </span>
+        }
+      </div>
+      } @if (hasChildren) {
       <span class="material-symbols-outlined">
         {{ expandedSignal() ? 'expand_less' : 'expand_more' }}
       </span>
-    </span>
-    }
-  </button>
-  @if (hasChildren) { @for (node of node().items; track node.id) {
-  <li>
-    <!-- cannot fully hide them cause they will reset on expand/collapse -->
+      }
+    </div>
+    @if (hasChildren) { @for (node of node().items; track node.id) {
     <fl-form-checkbox-tree-node-ctx
       [style.display]="expandedSignal() ? 'block' : 'none'"
       [node]="node"
       [inheritedChecked]="checked()"
-      [expanded]="expandedSignal()"
+      [expanded]="expanded()"
       [checkboxComponent]="checkboxComponent()"
       [depth]="depth()+1"
     ></fl-form-checkbox-tree-node-ctx>
+    } }
   </li>
-  } }
 </ul>
 
-<ng-template #titleTemplate let-node="node">
-  <span [class.has-children]="hasChildren">{{ node.title }}</span>
+<ng-template
+  #titleTemplate
+  let-node="node"
+  let-toggleExpanded="toggleExpanded"
+  let-expandedSignal="expandedSignal"
+  let-hasChildren="hasChildren"
+>
+  @if(hasChildren) {
+  <button (click)="toggleExpanded()">{{ node.title }}</button>
+  } @else {
+  <span>{{ node.title }}</span>
+  }
 </ng-template>
 
 <ng-template
@@ -67,7 +81,6 @@
       content: [titleNode()];
       componentRef as checkboxComponentRef
     "
-    (change)="onToggle($event)"
   >
   </ng-container>
 </ng-template>

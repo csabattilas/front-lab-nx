@@ -11,11 +11,15 @@ import {
   signal,
   TemplateRef,
   Type,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { CheckboxTreeSelectionContextService } from '../checkbox-tree-context';
-import { CheckboxLike } from '../../model/model';
-import { CheckboxTreeNode } from '../../model/model';
+import {
+  CheckboxLike,
+  CheckBoxTitleTemplateContext,
+  CheckboxTreeNode,
+} from '../../model/model';
 import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import { projectableNodesFrom } from '../../../utils/projectable-node-from';
 
@@ -33,7 +37,14 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
   public depth = input<number>(0);
   public checkboxComponent = input<Type<CheckboxLike>>();
 
-  public readonly expandedSignal = linkedSignal<boolean>(() => this.expanded());
+  public readonly expandedSignal = linkedSignal<boolean>(() => {
+    console.log(
+      this.expandedInputSignal(),
+      this.indeterminate(),
+      this.checked()
+    );
+    return this.expandedInputSignal() || this.indeterminate() || this.checked();
+  });
 
   public readonly checked = linkedSignal<boolean>(() => {
     return this.inheritedChecked();
@@ -41,14 +52,25 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
 
   public readonly indeterminate = signal(false);
 
-  public readonly titleNode = computed(() => {
-    return projectableNodesFrom(this.titleTemplate(), { node: this.node() });
-  });
+  public readonly titleNode = computed(() =>
+    projectableNodesFrom<CheckBoxTitleTemplateContext>(
+      untracked(() => this.titleTemplate()),
+      {
+        node: this.node(),
+        toggleExpanded: this.toggleExpanded.bind(this),
+        hasChildren: this.hasChildren,
+      }
+    )
+  );
+
+  private readonly expandedInputSignal = linkedSignal<boolean>(() =>
+    this.expanded()
+  );
 
   private readonly ctx = inject(CheckboxTreeSelectionContextService);
 
   private readonly titleTemplate =
-    viewChild.required<TemplateRef<{ node: CheckboxTreeNode }>>(
+    viewChild.required<TemplateRef<CheckBoxTitleTemplateContext>>(
       'titleTemplate'
     );
 
@@ -102,10 +124,6 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
     if (!this.checked() && !this.hasChildren) {
       this.ctx.removeSelectedItems(this.node().id);
     }
-
-    if (this.checked() && this.hasChildren) {
-      this.expandedSignal.set(true);
-    }
   });
 
   // @ts-expect-error: TS6133
@@ -138,10 +156,6 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
       this.node().id,
       this.indeterminate()
     );
-
-    if (this.indeterminate()) {
-      this.expandedSignal.set(true);
-    }
   });
 
   protected get hasChildren(): boolean {
@@ -154,13 +168,14 @@ export class CheckboxTreeNodeCtxComponent implements OnInit {
         ? (event.target as HTMLInputElement).checked
         : event;
     this.checked.set(isChecked);
+
+    // kill the expanded input
+    this.expandedInputSignal.set(false);
   }
 
   public toggleExpanded(): void {
-    if (!this.hasChildren) {
-      return;
-    }
-    this.expandedSignal.update(expanded => !expanded);
+    this.expandedSignal.update(value => !value);
+    this.expandedInputSignal.set(false);
   }
 
   public ngOnInit(): void {

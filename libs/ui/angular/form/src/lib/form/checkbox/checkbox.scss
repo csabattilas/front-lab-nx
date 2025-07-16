@@ -20,9 +20,10 @@
   border-style: solid;
   border-width: 2px;
   border-color: var(--color-border);
-  background-color: var(--color-surface);
   cursor: pointer;
   transition: all 0.2s ease;
+  width: calc(var(--spacing-unit) + 2px);
+  height: calc(var(--spacing-unit) + 2px);
 
   &.checked {
     background-color: var(--color-primary);
@@ -42,7 +43,7 @@
 
 .material-symbols-outlined {
   color: white;
-  font-size: calc(var(--spacing-unit));
+  font-size: calc(var(--spacing-unit) - 2px);
   line-height: 1;
   overflow: hidden;
   display: flex;
