@@ -14,6 +14,7 @@ export class LockSelect extends LionListbox {
   __lockedIndexes = new Set();
   __lastCheckedIndex = -1;
   __answer = '';
+  __locked = false;
   static styles = css`
     ::slotted(lion-options) {
       display: flex;
@@ -28,6 +29,16 @@ export class LockSelect extends LionListbox {
     },
     direction: {
       type: String,
+    },
+    maxAnswers: {
+      type: Number,
+      attribute: 'max-answers',
+      reflect: true,
+    },
+    showAnswer: {
+      type: Boolean,
+      attribute: 'show-answer',
+      reflect: true,
     },
   };
 
@@ -53,6 +64,7 @@ export class LockSelect extends LionListbox {
         {
           resolved,
           selectedValue: modelValue,
+          locked: this.__locked,
         },
       ];
     }
@@ -123,6 +135,10 @@ export class LockSelect extends LionListbox {
       this.formElements[index].setAttribute('data-expected', '');
       this.__lockNotSelectedElements();
     }
+
+    if(this.maxAnswers === this.__lockedIndexes.size) {
+      this.__lockNotSelectedElements();
+    }
   }
 
   /**
@@ -133,8 +149,11 @@ export class LockSelect extends LionListbox {
     this.formElements.forEach((element, index) => {
       if (!this.__lockedIndexes.has(index)) {
         element.style.pointerEvents = 'none';
+        element.setAttribute('disabled', '');
       }
     });
+
+    this.__locked = true;
   }
 }
 

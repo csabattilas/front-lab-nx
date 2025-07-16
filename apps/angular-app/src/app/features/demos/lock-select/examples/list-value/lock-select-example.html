@@ -2,6 +2,7 @@
 <fl-lion-lock-select
   #ls
   direction="{{direction()}}"
+  max-answers="2"
   (model-value-changed)="onChange()"
   [answer]="'32'"
 >
@@ -16,6 +17,10 @@
 
 @if(isSolved() === true) {
 <span class="success">✓ Correct answer!</span>
-} @if(isSolved() === false) {
+} @if(isSolved() === false && !isLocked()) {
 <span class="error">✗ Wrong answer! Try again.</span>
+} @if(isLocked() && !isSolved()) {
+<span class="error"
+  >✗ Wrong answer! You can not change your answer anymore.</span
+>
 }

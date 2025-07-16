@@ -18,6 +18,7 @@ import '@front-lab-nx/lion-form/lock-select/index';
 export class LockSelectExampleComponent {
   public direction = input<string>();
   public isSolved = signal<boolean | null>(null);
+  public isLocked = signal<boolean>(false);
 
   private readonly listboxRef = viewChild<ElementRef>('ls');
 
@@ -25,8 +26,11 @@ export class LockSelectExampleComponent {
     {
       resolved: boolean;
       selectedValue: string;
+      locked: boolean;
     }[]
   >([]);
+
+  private timeoutId = 0;
 
   // @ts-expect-error not used in the component
   private readonly solvedEffect = effect(() => {
@@ -35,13 +39,17 @@ export class LockSelectExampleComponent {
       return;
     }
 
-    const solved = this.modelValue()?.[0].resolved;
-    this.isSolved.set(solved);
+    this.isSolved.set(this.modelValue()?.[0].resolved);
+    this.isLocked.set(this.modelValue()?.[0].locked);
 
-    if (!solved) {
-      setTimeout(() => {
+    if (!this.isSolved() && !this.isLocked()) {
+      this.timeoutId = window.setTimeout(() => {
         this.modelValue.set([]);
       }, 1000);
+    } else if (this.isSolved()) {
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
     }
   });
 

@@ -37,13 +37,19 @@ export class LockSelectComponent {
         },
         {
           name: 'modelValue',
-          type: 'string',
+          type: 'Array<{resolved: boolean; selectedValue: string, locked: boolean}>',
           description: 'The correct answer value',
         },
         {
           name: 'direction',
           type: `'vertical' | 'horizontal'`,
           description: "Layout direction of options (default: 'vertical')",
+        },
+        {
+          name: 'max-answers',
+          type: `number | undefined`,
+          description:
+            'Maximum number of answers to select (default: undefined)',
         },
       ],
     },
