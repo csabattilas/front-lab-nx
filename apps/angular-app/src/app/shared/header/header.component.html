@@ -12,7 +12,11 @@
     <a href="/">Front lab<small class="block text-right">(beta)</small></a>
   </h1>
 
-  <nav class="main-nav" [class.open]="isMenuOpen">
+  <nav
+    class="main-nav"
+    [class.open]="isMenuOpen"
+    [attr.inert]="!isMenuOpen ? '' : null"
+  >
     @for(navItem of nav; track navItem.route) {
     <a
       class="hover:color-primary hover:underline p-2 text-xs"

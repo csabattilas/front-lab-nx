@@ -19,17 +19,9 @@
   z-index: 1000;
 }
 
-.main-nav a {
-  display: none;
-}
-
 .main-nav.open {
   left: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add shadow only when open */
-}
-
-.main-nav.open a {
-  display: block;
 }
 
 .main-nav a:hover {
