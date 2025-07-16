@@ -63,7 +63,7 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
     this.direction = 'rtl';
     // internal array of target digits: ['4','8','2','9']
     /** @type {string[]} */
-    this.segments = [];
+    this._segments = [];
   }
 
   /**
@@ -72,7 +72,7 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
    */
   updated(changed) {
     if (changed.has('target')) {
-      this.segments = Array.from(this.target);
+      this._segments = Array.from(this.target);
 
       /** @ts-expect-error - type */
       this.modelValue = ''; // clear previous inputs
@@ -151,8 +151,6 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
 
     const cleaned = (char.match(/\d/) || [''])[0];
 
-    console.log(char);
-
     if (!this.__digitInputs || this.__digitInputs.length === 0) return;
 
     this.modelValue = this.__digitInputs.map(i => i.value).join('');
@@ -183,8 +181,6 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
     const currentDigits = this.__digitInputs.map(input => input.value);
     const isInvalid = this.validationStates.error.digits === 'mismatch';
 
-    console.log(isInvalid);
-
     if (
       index > 0 &&
       this.direction === 'ltr' &&
@@ -203,8 +199,6 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
   }
 
   _onKeyDown(index) {
-    console.log('keydown', this.validationStates.error.digits);
-
     if (this.validationStates.error.digits === 'mismatch') {
       this.__digitInputs[index].value = '';
     }
