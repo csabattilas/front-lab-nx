@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@import './fonts/icons.css';
+@import './fonts/inter.css';
 @import './tokens/colors.css';
 @import './tokens/fonts.css';
 @import './tokens/spacing.css';

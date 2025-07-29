@@ -12,12 +12,29 @@ body {
 }
 
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: calc(var(--spacing-unit));
+  line-height: 1;
+  overflow: hidden;
+  letter-spacing: normal;
+  text-transform: none;
+  display: flex;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* .material-symbols-outlined {
   font-size: calc(var(--spacing-unit));
   line-height: 1;
   overflow: hidden;
   display: flex;
   justify-content: center;
-}
+} */
 
 code {
   background-color: color-mix(in srgb, var(--color-primary) 5%, white);
@@ -28,4 +45,3 @@ code {
   font-size: 0.9em;
   color: var(--color-primary);
 }
-

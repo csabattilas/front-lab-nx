@@ -6,7 +6,6 @@
         *ngTemplateOutlet="
         genericCheckbox;
         context: {
-          onToggle,
           checked,
           indeterminate,
           checkboxComponent
@@ -53,7 +52,6 @@
   #titleTemplate
   let-node="node"
   let-toggleExpanded="toggleExpanded"
-  let-expandedSignal="expandedSignal"
   let-hasChildren="hasChildren"
 >
   @if(hasChildren) {
@@ -66,7 +64,6 @@
 <ng-template
   #genericCheckbox
   let-checkboxComponent="checkboxComponent"
-  let-onToggle="onToggle"
   let-checked="checked"
   let-indeterminate="indeterminate"
 >
