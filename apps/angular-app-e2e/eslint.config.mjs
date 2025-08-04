@@ -1,12 +1,5 @@
-import baseConfig from '../../eslint.base.config.mjs';
-import playwright from 'eslint-plugin-playwright';
+import baseConfig from '../../eslint.config.mjs';
+import typescriptConfig from '../../eslint.typescript.config.mjs';
+import angularConfig from '../../eslint.angular.config.mjs';
 
-export default [
-  ...baseConfig,
-  playwright.configs['flat/recommended'],
-  {
-    files: ['**/*.ts', '**/*.js'],
-    // Override or add rules here
-    rules: {},
-  },
-];
+export default [...baseConfig, ...angularConfig, ...typescriptConfig];

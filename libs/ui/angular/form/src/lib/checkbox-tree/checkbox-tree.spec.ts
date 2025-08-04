@@ -42,7 +42,7 @@ describe('CheckboxTreeComponent', () => {
   });
 
   it('should update form control when adding selected items', () => {
-    component.addSelectedItems(5);
+    component.selectItem(5);
     hostFixture.detectChanges();
 
     expect(hostComponent.control.value).toContain(5);
@@ -52,7 +52,7 @@ describe('CheckboxTreeComponent', () => {
     hostComponent.control.setValue([5, 10]);
     hostFixture.detectChanges();
 
-    component.removeSelectedItems(5);
+    component.unselectItem(5);
     hostFixture.detectChanges();
 
     expect(hostComponent.control.value).not.toContain(5);
@@ -60,13 +60,13 @@ describe('CheckboxTreeComponent', () => {
   });
 
   it('should add item to selection', () => {
-    component.addSelectedItems(42);
+    component.selectItem(42);
     expect(component.selectedItemsIds()).toContain(42);
   });
 
   it('should remove item from selection', () => {
-    component.addSelectedItems(42);
-    component.removeSelectedItems(42);
+    component.selectItem(42);
+    component.unselectItem(42);
     expect(component.selectedItemsIds()).not.toContain(42);
   });
 });

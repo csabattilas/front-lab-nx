@@ -146,11 +146,11 @@ export class CheckboxTreeNodeComponent {
    * Signal representing the checked state based on the writeValue from the checkbox tree control.
    */
   private readonly fromValueCheckedSignal = linkedSignal<boolean | null>((): boolean | null => {
-    if (!this.numberOfChildren()) {
-      return this.ctx.selectedItemsIds().has(this.node().id);
+    if (!this.isRendered() || !!this.numberOfChildren()) {
+      return null;
     }
 
-    return null;
+    return this.ctx.selectedItemsIds().has(this.node().id);
   });
 
   /**
@@ -174,7 +174,6 @@ export class CheckboxTreeNodeComponent {
       if (this.numberOfChildren()) {
         return;
       }
-
       if (this.checked()) {
         this.ctx.selectItem(this.node().id);
       } else {

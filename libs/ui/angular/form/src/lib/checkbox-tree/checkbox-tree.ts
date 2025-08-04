@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  forwardRef,
-  inject,
-  signal,
-  untracked,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, inject, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CHECKBOX_TREE_CONTEXT, CheckboxTreeContext } from './model';
 
@@ -29,18 +21,16 @@ import { CHECKBOX_TREE_CONTEXT, CheckboxTreeContext } from './model';
 })
 // should we have validation? perhaps next iteration
 export class CheckboxTreeComponent implements ControlValueAccessor, CheckboxTreeContext {
-  private readonly _selectedItemsIds = signal<Set<number>>(new Set());
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public readonly selectedItemsIds = this._selectedItemsIds.asReadonly();
-
   private readonly cdr = inject(ChangeDetectorRef);
 
+  private value = new Set<number>();
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public readonly selectedItemsIds = signal<Set<number>>(new Set());
+
   public writeValue(value: number[]): void {
-    // todo: explain this
-    queueMicrotask(() => {
-      this._selectedItemsIds.set(new Set(value || []));
-    });
+    this.selectedItemsIds.set(new Set(value || []));
+    this.value = new Set(value || []);
   }
 
   public registerOnChange(fn: (value: number[]) => void): void {
@@ -56,19 +46,13 @@ export class CheckboxTreeComponent implements ControlValueAccessor, CheckboxTree
   }
 
   public selectItem(id: number): void {
-    this._selectedItemsIds.update(ids => {
-      ids.add(id);
-      return new Set(ids);
-    });
+    this.value.add(id);
     this.onTouched();
     this.emitChange();
   }
 
   public unselectItem(id: number): void {
-    this._selectedItemsIds.update(ids => {
-      ids.delete(id);
-      return new Set(ids);
-    });
+    this.value.delete(id);
     this.onTouched();
     this.emitChange();
   }
@@ -83,9 +67,7 @@ export class CheckboxTreeComponent implements ControlValueAccessor, CheckboxTree
   };
 
   private emitChange(): void {
-    const selectedIds = untracked(() => this._selectedItemsIds());
-    const idsArray = Array.from(selectedIds);
-    this.onChange(idsArray);
+    this.onChange(Array.from(this.value));
     this.cdr.markForCheck();
   }
 }

@@ -9,8 +9,8 @@ import { CheckboxComponent } from '../checkbox/checkbox';
 // Mock context service
 const mockContextService = {
   selectedItemsIds: signal(new Set<number>()),
-  addSelectedItems: vi.fn(),
-  removeSelectedItems: vi.fn(),
+  selectItem: vi.fn(),
+  unselectItem: vi.fn(),
 };
 
 // Mock checkbox component
@@ -132,7 +132,7 @@ describe('CheckboxTreeNodeComponent', () => {
       component.onToggle(true);
       hostFixture.detectChanges();
 
-      expect(mockContextService.addSelectedItems).toHaveBeenCalledWith(1);
+      expect(mockContextService.selectItem).toHaveBeenCalledWith(1);
     });
 
     it('should remove item from selection when unchecked', () => {
@@ -145,7 +145,7 @@ describe('CheckboxTreeNodeComponent', () => {
       // Then uncheck it
       component.onToggle(false);
 
-      expect(mockContextService.removeSelectedItems).toHaveBeenCalledWith(1);
+      expect(mockContextService.unselectItem).toHaveBeenCalledWith(1);
     });
   });
 

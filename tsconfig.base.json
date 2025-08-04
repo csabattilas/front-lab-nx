@@ -18,12 +18,12 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@frontlab/lion-form": ["libs/ui/lion/form/src/index.ts"],
+      "@frontlab/lion-form": ["libs/ui/lion/form/src/index.js"],
       "@frontlab/lion-form/*": ["libs/ui/lion/form/src/*"],
       "@frontlab/ng-api": ["libs/api/angular/src/index.ts"],
       "@frontlab/ng-documentation": ["libs/ui/angular/documentation/src/index.ts"],
       "@frontlab/ng-form": ["libs/ui/angular/form/src/index.ts"],
-      "@frontlab/ng-repository": ["libs/repository/angular/src/index.js"]
+      "@frontlab/ng-repository": ["libs/repository/angular/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
