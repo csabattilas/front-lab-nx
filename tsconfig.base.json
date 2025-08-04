@@ -15,14 +15,15 @@
     "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "strict": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@front-lab-nx/ng-api": ["libs/api/angular/src/index.ts"],
-      "@front-lab-nx/ng-form": ["libs/ui/angular/form/src/index.ts"],
-      "@front-lab-nx/ng-documentation": ["libs/ui/angular/documentation/src/index.ts"],
-      "@front-lab-nx/ng-repository": ["libs/repository/angular/src/index.ts"],
-      "@front-lab-nx/lion-form": ["libs/ui/lion/form/src/index.js"],
-      "@front-lab-nx/lion-form/*": ["libs/ui/lion/form/src/*"],
+      "@frontlab/lion-form": ["libs/ui/lion/form/src/index.ts"],
+      "@frontlab/lion-form/*": ["libs/ui/lion/form/src/*"],
+      "@frontlab/ng-api": ["libs/api/angular/src/index.ts"],
+      "@frontlab/ng-documentation": ["libs/ui/angular/documentation/src/index.ts"],
+      "@frontlab/ng-form": ["libs/ui/angular/form/src/index.ts"],
+      "@frontlab/ng-repository": ["libs/repository/angular/src/index.js"]
     }
   },
   "exclude": ["node_modules", "tmp"]

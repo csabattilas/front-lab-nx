@@ -20,27 +20,21 @@
     "outDir": "../../dist/out-tsc",
     "strictNullChecks": true
   },
-  "files": ["src/main.ts"],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "exclude": [
-    "jest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "vite.configsss.ts",
-    "vite.config.mts",
-    "vitest.config.ts",
-    "vitest.config.mts",
-    "src/test-setup.ts"
-  ],
+  "files": [],
+  "include": [],
   "references": [
     {
-      "path": "./tsconfig.app.build.json"
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
     "strictTemplates": true
   }
 }

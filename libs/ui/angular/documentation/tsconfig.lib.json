@@ -1,13 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "inlineSources": true,
-    "types": [],
-    "strict": true
+    "outDir": "../../../../dist/libs/ui/angular/documentation",
+    "types": []
   },
+  "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/test-setup.ts",
@@ -15,6 +12,6 @@
     "vite.config.ts",
     "vite.config.mts",
     "vitest.config.ts",
-    "vitest.config.mts",
-  ],
+    "vitest.config.mts"
+  ]
 }

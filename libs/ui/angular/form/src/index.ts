@@ -1,2 +1,2 @@
-export * from './lib/form/checkbox-tree';
-export * from './lib/form/checkbox';
+export { CheckboxComponent } from './lib/checkbox';
+export { CheckboxTreeNodeComponent, CheckboxTreeNode, CheckboxTreeComponent } from './lib/checkbox-tree';

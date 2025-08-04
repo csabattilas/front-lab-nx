@@ -45,10 +45,7 @@ export class LockSelect extends LionListbox {
   constructor() {
     super();
     this.multipleChoice = true;
-    this.addEventListener(
-      'model-value-changed',
-      this.__onModelValueChanged.bind(this)
-    );
+    this.addEventListener('model-value-changed', this.__onModelValueChanged.bind(this));
   }
 
   /**
@@ -57,8 +54,7 @@ export class LockSelect extends LionListbox {
    */
   get modelValue() {
     if (this.__lastCheckedIndex !== -1) {
-      const modelValue =
-        this.formElements?.[this.__lastCheckedIndex]?.choiceValue;
+      const modelValue = this.formElements?.[this.__lastCheckedIndex]?.choiceValue;
       const resolved = this.__answer === modelValue;
       return [
         {
@@ -105,12 +101,7 @@ export class LockSelect extends LionListbox {
    * @returns {number} - The index of the last checked element.
    */
   __getLastCheckedIndex() {
-    if (
-      !this.checkedIndex ||
-      !Array.isArray(this.checkedIndex) ||
-      this.checkedIndex.length === 0
-    )
-      return -1;
+    if (!this.checkedIndex || !Array.isArray(this.checkedIndex) || this.checkedIndex.length === 0) return -1;
 
     for (let i = 0; i < this.checkedIndex.length; i++) {
       const index = this.checkedIndex[i];

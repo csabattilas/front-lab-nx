@@ -1,5 +1,5 @@
 import { TreeApiResponse, TreeDataDto } from './tree-repository-dto.model';
-import { CheckboxTreeNode } from '@front-lab-nx/ng-form';
+import { CheckboxTreeNode } from '@frontlab/ng-form';
 
 export interface RawNode {
   id: number;
@@ -10,19 +10,12 @@ export interface RawNode {
 /**
  * Validates that the required columns exist in the data and returns their indices
  */
-function getIndicies(
-  data: TreeDataDto,
-  requiredColumns: string[],
-  dataType: string
-): Record<string, number> {
+function getIndicies(data: TreeDataDto, requiredColumns: string[], dataType: string): Record<string, number> {
   const indices: Record<string, number> = {};
-
   for (const column of requiredColumns) {
     const index = data.columns.findIndex(c => c === column);
     if (index === -1) {
-      throw new Error(
-        `Invalid ${dataType} data format: missing required column '${column}'`
-      );
+      throw new Error(`Invalid ${dataType} data format: missing required column '${column}'`);
     }
     indices[column] = index;
   }
@@ -38,10 +31,7 @@ function mapRawNode(
   return {
     id: Number(row[indices['id']]),
     title: String(row[indices['title']]),
-    folder_id:
-      row[indices[parentIdName]] !== null
-        ? Number(row[indices[parentIdName]])
-        : null,
+    folder_id: row[indices[parentIdName]] !== null ? Number(row[indices[parentIdName]]) : null,
   };
 }
 
@@ -78,26 +68,14 @@ function sortNodeItems(node: CheckboxTreeNode): void {
 // build the tree data
 export function deserializeTreeData(data: TreeApiResponse): CheckboxTreeNode[] {
   // get indices for folders and items
-  const folderIndices = getIndicies(
-    data.folders,
-    ['id', 'title', 'parent_id'],
-    'folder'
-  );
+  const folderIndices = getIndicies(data.folders, ['id', 'title', 'parent_id'], 'folder');
 
-  const itemIndices = getIndicies(
-    data.items,
-    ['id', 'title', 'folder_id'],
-    'item'
-  );
+  const itemIndices = getIndicies(data.items, ['id', 'title', 'folder_id'], 'item');
 
   // convert raw data to typed objects
-  const folders: RawNode[] = data.folders.data.map(row =>
-    mapRawNode(row, folderIndices, 'parent_id')
-  );
+  const folders: RawNode[] = data.folders.data.map(row => mapRawNode(row, folderIndices, 'parent_id'));
 
-  const items: RawNode[] = data.items.data.map(row =>
-    mapRawNode(row, itemIndices, 'folder_id')
-  );
+  const items: RawNode[] = data.items.data.map(row => mapRawNode(row, itemIndices, 'folder_id'));
 
   // this map is used to create the folder, item relationships
   const nodeMap = new Map<number, CheckboxTreeNode>();
@@ -148,9 +126,7 @@ export function deserializeTreeData(data: TreeApiResponse): CheckboxTreeNode[] {
   }
 
   // get root nodes
-  const rootNodes = folders
-    .filter(f => f.folder_id === null)
-    .map(f => nodeMap.get(f.id) as CheckboxTreeNode);
+  const rootNodes = folders.filter(f => f.folder_id === null).map(f => nodeMap.get(f.id) as CheckboxTreeNode);
 
   // sort the root level
   rootNodes.sort(compareNodes);

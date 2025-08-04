@@ -14,15 +14,9 @@ describe('LockedSelectionListBox', () => {
 
     element = await fixture(html`
       <locked-selection-test answer="option1">
-        <lion-option value="option1" choiceValue="option1"
-          >Option 1</lion-option
-        >
-        <lion-option value="option2" choiceValue="option2"
-          >Option 2</lion-option
-        >
-        <lion-option value="option3" choiceValue="option3"
-          >Option 3</lion-option
-        >
+        <lion-option value="option1" choiceValue="option1">Option 1</lion-option>
+        <lion-option value="option2" choiceValue="option2">Option 2</lion-option>
+        <lion-option value="option3" choiceValue="option3">Option 3</lion-option>
       </locked-selection-test>
     `);
 

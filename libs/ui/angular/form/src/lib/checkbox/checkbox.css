@@ -1,0 +1,50 @@
+.native-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.checkbox {
+  margin-right: calc(var(--spacing-unit) / 2);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: var(--spacing-unit);
+  height: var(--spacing-unit);
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--color-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: calc(var(--spacing-unit) + 2px);
+  height: calc(var(--spacing-unit) + 2px);
+}
+.checkbox.checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox.indeterminate {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.material-symbols-outlined {
+  color: white;
+  font-size: calc(var(--spacing-unit) - 2px);
+  line-height: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}

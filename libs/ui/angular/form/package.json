@@ -1,5 +1,5 @@
 {
-  "name": "@front-lab-nx/ng-form",
+  "name": "@frontlab/ng-form",
   "version": "0.0.1",
   "type": "module",
   "main": "./index.mjs",
@@ -7,29 +7,17 @@
   "exports": {
     "import": "./index.mjs"
   },
-  "sideEffects": true,
+  "sideEffects": [
+    "./src/index.ts"
+  ],
   "peerDependencies": {
     "@angular/core": "^20.0.0",
     "@angular/forms": "^20.0.0"
   },
-  "dependencies": {
+  "devDependencies": {
     "@open-wc/testing-helpers": "^2.1.1",
     "vitest": "^1.1.1"
   },
-  "author": "",
-  "license": "MIT",
-  "build": {
-    "executor": "@nx/js:tsc",
-    "outputs": [
-      "{options.outputPath}"
-    ],
-    "options": {
-      "outputPath": "dist/libs/ui/angular/form",
-      "main": "libs/ui/angular/form/src/index.ts",
-      "tsConfig": "libs/ui/angular/form/tsconfig.lib.json",
-      "assets": [
-        "libs/ui/angular/form/*.md"
-      ]
-    }
-  }
+  "author": "frontlab.io",
+  "license": "MIT"
 }

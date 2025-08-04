@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-} from '@angular/core';
-import '@front-lab-nx/lion-form/integer-digit-match';
-import '@front-lab-nx/lion-form/tabs';
-import {
-  ApiDocumentationBlock,
-  ApiDocumentationComponent,
-  ExampleCardComponent,
-} from '@front-lab-nx/ng-documentation';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import '@frontlab/lion-form/integer-digit-match';
+import '@frontlab/lion-form/tabs';
+import { ApiDocumentationBlock, ApiDocumentationComponent, ExampleCardComponent } from '@frontlab/ng-documentation';
 
 @Component({
   selector: 'fl-lion-integer-digit-match-demo',

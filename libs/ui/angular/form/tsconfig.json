@@ -2,24 +2,29 @@
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "module": "es2020",
     "target": "ES2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "outDir": "dist/libs/ui/angular/form"
   },
   "files": [],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.lib.prod.json"
     }
   ],
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "typeCheckHostBindings": true,

@@ -1,13 +1,5 @@
-import {
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  effect,
-  ElementRef,
-  input,
-  signal,
-  viewChild,
-} from '@angular/core';
-import '@front-lab-nx/lion-form/lock-select/index';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, input, signal, viewChild } from '@angular/core';
+import '@frontlab/lion-form/lock-select';
 
 @Component({
   selector: 'fl-lock-select-example',

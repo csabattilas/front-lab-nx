@@ -10,10 +10,13 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "include": ["src/**/*.ts", "src/**/*.html", "src/**/*.d.ts"],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ],
   "angularCompilerOptions": {

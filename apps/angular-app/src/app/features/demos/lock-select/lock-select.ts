@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import '@lion/ui/define/lion-option.js';
-import '@front-lab-nx/lion-form/tabs';
-import {
-  ApiDocumentationBlock,
-  ApiDocumentationComponent,
-  ExampleCardComponent,
-} from '@front-lab-nx/ng-documentation';
+import '@frontlab/lion-form/tabs';
+import { ApiDocumentationBlock, ApiDocumentationComponent, ExampleCardComponent } from '@frontlab/ng-documentation';
 import { LockSelectExampleComponent } from './examples/list-value/lock-select-example';
 import { LockSelectLabelExampleComponent } from './examples/list-label/lock-select-label-example';
 
@@ -48,8 +40,7 @@ export class LockSelectComponent {
         {
           name: 'max-answers',
           type: `number | undefined`,
-          description:
-            'Maximum number of answers to select (default: undefined)',
+          description: 'Maximum number of answers to select (default: undefined)',
         },
       ],
     },

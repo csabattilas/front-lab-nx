@@ -9,7 +9,7 @@ import { ApiConfig } from './models/api-config.model';
   providers: [NgApiService, ApiFactoryService],
 })
 export class NgApiModule {
-  static forRoot(config: ApiConfig): ModuleWithProviders<NgApiModule> {
+  public static forRoot(config: ApiConfig): ModuleWithProviders<NgApiModule> {
     return {
       ngModule: NgApiModule,
       providers: [

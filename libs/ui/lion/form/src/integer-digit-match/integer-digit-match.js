@@ -10,9 +10,7 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
       width: var(--fl-lion-integer-digit-match-input-width);
       text-align: center;
       border: 0;
-      border-bottom-width: var(
-        --fl-lion-integer-digit-match-input-border-width
-      );
+      border-bottom-width: var(--fl-lion-integer-digit-match-input-border-width);
       border-bottom-style: solid;
       border-bottom-color: var(--fl-lion-integer-digit-match-input-color);
     }
@@ -52,9 +50,7 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
 
     const length = this.__digitInputs.length;
 
-    return this.direction === 'ltr'
-      ? this.__digitInputs[0]
-      : this.__digitInputs[length - 1];
+    return this.direction === 'ltr' ? this.__digitInputs[0] : this.__digitInputs[length - 1];
   }
 
   constructor() {
@@ -95,13 +91,9 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
             }
 
             if (params.direction === 'rtl') {
-              return modelValue === params.target.slice(-modelValue.length)
-                ? false
-                : 'mismatch';
+              return modelValue === params.target.slice(-modelValue.length) ? false : 'mismatch';
             } else if (params.direction === 'ltr') {
-              return modelValue === params.target.slice(0, modelValue.length)
-                ? false
-                : 'mismatch';
+              return modelValue === params.target.slice(0, modelValue.length) ? false : 'mismatch';
             }
 
             return false;
@@ -163,9 +155,7 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
 
     if (cleaned && this.validationStates.error.digits !== 'mismatch') {
       const nextIndex =
-        this.direction === 'ltr'
-          ? Math.min(index + 1, this.__digitInputs.length - 1)
-          : Math.max(index - 1, 0);
+        this.direction === 'ltr' ? Math.min(index + 1, this.__digitInputs.length - 1) : Math.max(index - 1, 0);
 
       // Only move focus if we're not already at the edge
       if (nextIndex !== index) {
@@ -181,19 +171,11 @@ export class IntegerDigitMatch extends MultiInputMixin(LionField) {
     const currentDigits = this.__digitInputs.map(input => input.value);
     const isInvalid = this.validationStates.error.digits === 'mismatch';
 
-    if (
-      index > 0 &&
-      this.direction === 'ltr' &&
-      (!currentDigits[index - 1] || isInvalid)
-    ) {
+    if (index > 0 && this.direction === 'ltr' && (!currentDigits[index - 1] || isInvalid)) {
       this.__digitInputs[index - 1].focus();
     }
 
-    if (
-      index < currentDigits.length - 1 &&
-      this.direction === 'rtl' &&
-      (!currentDigits[index + 1] || isInvalid)
-    ) {
+    if (index < currentDigits.length - 1 && this.direction === 'rtl' && (!currentDigits[index + 1] || isInvalid)) {
       this.__digitInputs[index + 1].focus();
     }
   }

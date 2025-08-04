@@ -6,10 +6,7 @@ export class FlTabs extends LionTabs {
     super.styles,
     css`
       .tabs__tab-group {
-        justify-content: var(
-          --fl-lion-tabs-tabs-group-justify-content,
-          flex-start
-        );
+        justify-content: var(--fl-lion-tabs-tabs-group-justify-content, flex-start);
         border-bottom: 1px solid var(--color-secondary, #ccc);
       }
     `,
@@ -41,9 +38,7 @@ export class FlTabs extends LionTabs {
   }
 
   __getPersistedSelectedIndex() {
-    return window.sessionStorage.getItem(
-      `fl-lion-tabs-${this.persistSelectedIndexTo}`
-    );
+    return window.sessionStorage.getItem(`fl-lion-tabs-${this.persistSelectedIndexTo}`);
   }
 }
 customElements.define('fl-lion-tabs', FlTabs);

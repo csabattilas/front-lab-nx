@@ -12,10 +12,10 @@ export class FakeApiService implements ApiService {
   private readonly http = inject(HttpClient);
   private readonly config = inject(API_CONFIG);
 
-  private baseUrl = this.config.baseUrl || 'https://api.example.com';
-  private version = this.config.version;
+  private readonly baseUrl = this.config.baseUrl ?? 'https://api.example.com';
+  private readonly version = this.config.version;
 
-  get<T>(endpoint: string, params?: Record<string, string>): Observable<T> {
+  public get<T>(endpoint: string, params?: Record<string, string>): Observable<T> {
     const url = this.buildUrl(endpoint);
     const httpParams = this.buildHttpParams(params);
 
@@ -23,9 +23,7 @@ export class FakeApiService implements ApiService {
   }
 
   private buildUrl(endpoint: string): string {
-    const normalizedEndpoint = endpoint.startsWith('/')
-      ? endpoint.substring(1)
-      : endpoint;
+    const normalizedEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
 
     if (this.version) {
       return `${this.baseUrl}/${this.version}/${normalizedEndpoint}`;

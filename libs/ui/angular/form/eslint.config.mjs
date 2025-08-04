@@ -1,14 +1,14 @@
-import baseConfig from '../../../../eslint.base.config.mjs';
-import angularConfig from '../../../../angular.eslint.config.mjs';
+import baseConfig from '../../../../eslint.config.mjs';
+import typescriptConfig from '../../../../eslint.typescript.config.mjs';
+import angularConfig from '../../../../eslint.angular.config.mjs';
 
 export default [
   ...baseConfig,
   ...angularConfig,
-  // Project-specific overrides can be added here
+  ...typescriptConfig,
   {
     files: ['**/*.ts'],
     rules: {
-      // Override the component/directive prefix for this library if needed
       '@angular-eslint/directive-selector': [
         'error',
         {

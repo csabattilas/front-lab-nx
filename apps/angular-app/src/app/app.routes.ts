@@ -2,8 +2,7 @@ import { Route } from '@angular/router';
 import { HomeComponent } from './features/home/home';
 import { LockSelectComponent } from './features/demos/lock-select/lock-select';
 import { IntegerDigitMatchComponent } from './features/demos/integer-digit-match/integer-digit-match';
-import { CheckboxTreeDemoComponent } from './features/demos/checkbox-tree/checkbox-tree/checkbox-tree';
-import { CheckboxTreeCtxDemoComponent } from './features/demos/checkbox-tree/checkbox-tree-ctx/checkbox-tree-ctx';
+import { CheckboxTreeDemoComponent } from './features/demos/checkbox-tree/checkbox-tree';
 
 export const appRoutes: Route[] = [
   {
@@ -15,11 +14,6 @@ export const appRoutes: Route[] = [
   {
     path: 'checkbox-tree',
     component: CheckboxTreeDemoComponent,
-    title: 'Checkbox Tree Demo',
-  },
-  {
-    path: 'checkbox-tree-ctx',
-    component: CheckboxTreeCtxDemoComponent,
     title: 'Checkbox Tree Demo',
   },
   {

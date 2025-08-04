@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class NgApiService implements ApiService {
-  private apiFactoryService = inject(ApiFactoryService);
-  private apiService = this.apiFactoryService.createApiService();
+  private readonly apiFactoryService = inject(ApiFactoryService);
+  private readonly apiService = this.apiFactoryService.createApiService();
 
-  get<T>(endpoint: string, params?: Record<string, string>): Observable<T> {
+  public get<T>(endpoint: string, params?: Record<string, string>): Observable<T> {
     return this.apiService.get<T>(endpoint, params);
   }
 }

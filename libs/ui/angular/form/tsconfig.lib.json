@@ -6,16 +6,16 @@
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
-    "strict": true,
+    "outDir": "../../../../dist/libs/ui/angular/form"
   },
+  "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.spec.ts",
-    "src/test-setup.ts",
     "src/**/*.test.ts",
     "vite.config.mts",
     "vite.config.mts",
     "vitest.config.ts",
     "vitest.config.mts",
     "src/test-setup.ts"
-  ],
+  ]
 }

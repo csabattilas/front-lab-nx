@@ -1,7 +1,7 @@
 import { inject, Injectable, resource, ResourceRef } from '@angular/core';
 import { catchError, firstValueFrom, map } from 'rxjs';
-import { NgApiService } from '@front-lab-nx/ng-api';
-import { CheckboxTreeNode } from '@front-lab-nx/ng-form';
+import { NgApiService } from '@frontlab/ng-api';
+import { CheckboxTreeNode } from '@frontlab/ng-form';
 import { TreeApiResponse } from './tree-repository-dto.model';
 import { deserializeTreeData } from './tree-response-deserializer';
 
@@ -11,9 +11,7 @@ import { deserializeTreeData } from './tree-response-deserializer';
 export class TreeRepositoryService {
   private readonly apiService: NgApiService = inject(NgApiService);
 
-  public getTreeDataResource(
-    apiEndpoint?: string
-  ): ResourceRef<CheckboxTreeNode[] | undefined> {
+  public getTreeDataResource(apiEndpoint?: string): ResourceRef<CheckboxTreeNode[] | undefined> {
     const endpoint = apiEndpoint ?? 'tree';
     return resource<CheckboxTreeNode[] | undefined, void>({
       loader: async () =>

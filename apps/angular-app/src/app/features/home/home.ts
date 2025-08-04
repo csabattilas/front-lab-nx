@@ -30,26 +30,15 @@ export class HomeComponent {
       route: 'checkbox-tree',
     },
     {
-      title: 'Checkbox tree (ctx)',
-      subtitle:
-        'angular, signal, context service, reactive forms, custom control',
-
-      description:
-        'Checkbox tree implementation using angular signals and a context service',
-      route: 'checkbox-tree-ctx',
-    },
-    {
       title: 'Lock select',
       subtitle: 'ing, lion-ui, listbox',
-      description:
-        'Locked select control with select and lock functionality based on ING Lion Listbox',
+      description: 'Locked select control with select and lock functionality based on ING Lion Listbox',
       route: 'lock-select',
     },
     {
       title: 'Integer digit match',
       subtitle: 'ing, lion-ui, lionfield',
-      description:
-        'Integer digit match control with digit match functionality based on ING Lion LionField',
+      description: 'Integer digit match control with digit match functionality based on ING Lion LionField',
       route: 'integer-digit-match',
     },
   ];

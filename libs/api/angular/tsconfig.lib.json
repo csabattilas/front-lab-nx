@@ -1,13 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/out-tsc",
-    "declaration": true,
-    "declarationMap": true,
-    "inlineSources": true,
-    "composite": true,
+    "outDir": "../../../dist/libs/api/angular",
     "types": []
   },
+  "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/test-setup.ts",

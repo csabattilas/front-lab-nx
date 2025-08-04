@@ -24,15 +24,12 @@ export default defineConfig(() => ({
       transformMixedEsModules: true,
     },
     lib: {
-      // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.js',
       name: 'form',
       fileName: 'index',
-      // Change this to the formats you want to support.
       formats: ['es' as const],
     },
     rollupOptions: {
-      // External packages that should not be bundled into your library.
       external: ['@open-wc/testing-helpers', '@lion/ui'],
     },
   },

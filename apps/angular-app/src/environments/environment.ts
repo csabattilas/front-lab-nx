@@ -1,4 +1,4 @@
-import { ApiConfig } from '@front-lab-nx/ng-api';
+import { ApiConfig } from '@frontlab/ng-api';
 
 export const environment = {
   production: false,

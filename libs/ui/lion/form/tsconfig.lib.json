@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../../dist/out-tsc",
+    "outDir": "../../../../dist/libs/ui/lion/form",
     "rootDir": "src",
     "declaration": true,
     "declarationDir": "dist/types",
@@ -12,7 +12,6 @@
     "moduleResolution": "NodeNext",
     "module": "NodeNext"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": [
     "vite.config.ts",
     "vitest.config.ts",

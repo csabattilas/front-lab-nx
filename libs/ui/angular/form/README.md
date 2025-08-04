@@ -22,35 +22,14 @@ The tree is built based on a JSON data structure. An example of this structure c
 
 Based on this data, the tree repository will build on more suitable data structure, which is fed to the folder tree component when used.
 
-#### Signal vs Property
-
-There is two variation built each leveraging a different approach to update the selected item ids.
-
-The first variant is using a signal to collect all the selected leaf values.
-
-The second variant is using a property of the context service to collect all the selected leaf values.
-
 #### Basic usage:
 
 ```html
-<fl-form-folder-tree [formControl]="folderSelectionControlOutputBasedTree">
+<fl-form-checkbox-tree [data]="data">
   @for (node of data; track node.id) {
-  <fl-form-folder-tree-node-otp
-    [node]="node"
-    [expanded]="true"
-  ></fl-form-folder-tree-node-otp>
+  <fl-form-checkbox-tree-node [node]="node"></fl-form-checkbox-tree-node>
   }
-</fl-form-folder-tree>
-```
-
-or
-
-```html
-<fl-form-checkbox-tree-ctx>
-  @for (node of data; track node.id) {
-  <fl-form-folder-tree-node-ctx [node]="node"></fl-form-folder-tree-node-ctx>
-  }
-</fl-form-checkbox-tree-ctx>
+</fl-form-checkbox-tree>
 ```
 
 #### Using Custom Checkbox Components
@@ -59,23 +38,18 @@ You can provide your own checkbox component as long as it implements the `Checkb
 
 ```typescript
 interface CheckboxLike {
-  checked: InputSignal<boolean> | boolean;
-  indeterminate: InputSignal<boolean> | boolean;
-  change?: EventEmitter<boolean>;
-  registerOnChange?: (fn: (value: boolean | null) => void) => void;
+  checked: boolean | InputSignal<boolean>;
+  indeterminate: boolean | InputSignal<boolean>;
+  change: EventEmitter<boolean>;
 }
 ```
 
-Example usage with a custom checkbox component:
+Example with a custom checkbox component:
 
 ```html
-<fl-form-checkbox-tree [formControl]="checkboxTreeControl">
-  @for (node of treeData; track node.id) {
-  <fl-form-checkbox-tree-node
-    [node]="node"
-    [expanded]="true"
-    [checkboxComponent]="customCheckboxComponent"
-  ></fl-form-checkbox-tree-node>
+<fl-form-checkbox-tree [data]="data" [checkboxComponent]="CustomCheckbox">
+  @for (node of data; track node.id) {
+  <fl-form-checkbox-tree-node [node]="node"></fl-form-checkbox-tree-node>
   }
 </fl-form-checkbox-tree>
 ```

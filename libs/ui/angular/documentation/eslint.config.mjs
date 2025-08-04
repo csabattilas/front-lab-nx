@@ -1,10 +1,11 @@
-import nx from '@nx/eslint-plugin';
-import baseConfig from '../../../../eslint.base.config.mjs';
+import baseConfig from '../../../../eslint.config.mjs';
+import typescriptConfig from '../../../../eslint.typescript.config.mjs';
+import angularConfig from '../../../../eslint.angular.config.mjs';
 
 export default [
   ...baseConfig,
-  ...nx.configs['flat/angular'],
-  ...nx.configs['flat/angular-template'],
+  ...angularConfig,
+  ...typescriptConfig,
   {
     files: ['**/*.ts'],
     rules: {
@@ -25,10 +26,5 @@ export default [
         },
       ],
     },
-  },
-  {
-    files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
   },
 ];

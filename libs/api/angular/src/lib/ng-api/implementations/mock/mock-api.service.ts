@@ -7,11 +7,11 @@ import { MOCK_DATA } from './mock-data';
 
 @Injectable()
 export class MockApiService implements ApiService {
-  private readonly config = inject(API_CONFIG, { optional: true }) || {
+  private readonly config = inject(API_CONFIG, { optional: true }) ?? {
     mockDelay: 300,
   };
 
-  get<T>(endpoint: string): Observable<T> {
+  public get<T>(endpoint: string): Observable<T> {
     const data = this.getMockData<T>(endpoint);
 
     return of(data).pipe(delay(this.config.mockDelay ?? 100));

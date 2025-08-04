@@ -11,13 +11,17 @@
     "composite": true,
     "module": "es2020",
     "target": "es2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "allowJs": false
   },
   "files": [],
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.html", "src/**/*.d.ts"],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ]
 }

@@ -11,12 +11,14 @@
     "target": "es2022",
     "moduleResolution": "bundler"
   },
-  "files": [],
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -16,10 +16,6 @@ const mainConfig: UserConfig = {
       overlay: true,
     },
   },
-  preview: {
-    port: 4300,
-    host: 'localhost',
-  },
   plugins: [tsconfigPaths(), angular(), nxCopyAssetsPlugin(['*.md'])],
   test: {
     watch: false,

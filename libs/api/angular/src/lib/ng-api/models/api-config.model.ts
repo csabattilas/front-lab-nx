@@ -1,7 +1,7 @@
 /**
  * API implementation types
  */
-export type ApiImplementationType = 'mock' | 'api';
+export type ApiImplementationType = 'api' | 'mock';
 
 /**
  * API configuration interface

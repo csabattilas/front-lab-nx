@@ -10,12 +10,12 @@ export const API_CONFIG = new InjectionToken<ApiConfig>('API_CONFIG');
   providedIn: 'root',
 })
 export class ApiFactoryService {
-  private config = inject(API_CONFIG, { optional: true }) || {
+  private readonly config = inject(API_CONFIG, { optional: true }) ?? {
     implementation: 'mock',
   };
 
   // factory method
-  createApiService(): ApiService {
+  public createApiService(): ApiService {
     switch (this.config.implementation) {
       case 'api':
         return new FakeApiService();
