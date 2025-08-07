@@ -11,7 +11,8 @@
     "target": "es2022",
     "moduleResolution": "bundler"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"

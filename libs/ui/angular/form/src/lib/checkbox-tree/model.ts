@@ -22,13 +22,11 @@ export interface CheckboxTreeNode {
   id: number;
   title: string;
   items?: CheckboxTreeNode[];
-  checked?: boolean;
 }
 
 export interface CheckboxTreeContext {
-  selectedItemsIds: Signal<Set<number>>;
-  selectItem(id: number): void;
-  unselectItem(id: number): void;
+  valueSignal: Signal<Set<number>>;
+  updateValue(id: number, checked: boolean): void;
 }
 
 export const CHECKBOX_TREE_CONTEXT = new InjectionToken<CheckboxTreeContext>('CHECKBOX_TREE_CONTEXT');

@@ -6,6 +6,12 @@
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
     "outDir": "../../../../dist/libs/ui/angular/form"
   },
   "include": ["src/**/*.ts"],

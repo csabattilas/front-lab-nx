@@ -1,8 +1,7 @@
-<ul>
-  <div class="checkbox-tree-node" [style.--depth]="depth()">
-    @if (checkboxComponent(); as checkboxComponentRef) {
-    <ng-container
-      *ngComponentOutlet="
+<div class="checkbox-tree-node" [style.--depth]="depth()">
+  @if (checkboxComponent(); as checkboxComponentRef) {
+  <ng-container
+    *ngComponentOutlet="
         checkboxComponentRef;
         inputs: {
           checked: checked(),
@@ -10,28 +9,29 @@
         };
         content: [titleNode()];
       "
+  ></ng-container>
+  } @else {
+  <div class="default-checkbox">
+    <input type="checkbox" [checked]="checked()" [indeterminate]="indeterminate()" (change)="onToggle($event)" />
+    <ng-container
+      *ngTemplateOutlet="titleTemplate; context: { node: node(), toggleExpanded: toggleExpandedBound, numberOfChildren: numberOfChildren() }"
     ></ng-container>
-    } @else {
-    <div class="default-checkbox">
-      <input type="checkbox" [checked]="checked()" [indeterminate]="indeterminate()" (change)="onToggle($event)" />
-      <ng-container
-        *ngTemplateOutlet="titleTemplate; context: { node: node(), toggleExpanded: toggleExpandedBound, numberOfChildren: numberOfChildren() }"
-      ></ng-container>
-      @if (!!numberOfChildren()) {
-      <ng-container *ngTemplateOutlet="expandedTemplate; context: { expandedSignal }"></ng-container>
-      }
-    </div>
-    } @if (!!numberOfChildren()) {
-    <ng-container *ngTemplateOutlet="expandedTemplate; context: { expandedSignal }"></ng-container>
+    @if (!!numberOfChildren()) {
+    <ng-container *ngTemplateOutlet="expandedTemplate; context: { expanded }"></ng-container>
     }
   </div>
+  } @if (!!numberOfChildren()) {
+  <ng-container *ngTemplateOutlet="expandedTemplate; context: { expanded }"></ng-container>
+  }
+</div>
+<ul>
   @for (node of node().items; track node.id) {
   <li>
     <fl-form-checkbox-tree-node
-      [style.display]="expandedSignal() ? 'block' : 'none'"
+      [style.display]="expanded() ? 'block' : 'none'"
       [node]="node"
       [parentChecked]="checked()"
-      [expanded]="expanded()"
+      [initialExpanded]="initialExpanded()"
       [depth]="depth()+1"
       [checkboxComponent]="checkboxComponent()"
     ></fl-form-checkbox-tree-node>
@@ -41,12 +41,12 @@
 
 <ng-template #titleTemplate let-node="node" let-toggleExpanded="toggleExpanded" let-numberOfChildren="numberOfChildren">
   @if(numberOfChildren) {
-  <button (click)="toggleExpanded()">{{ node.title }}</button>
+  <button (click)="toggleExpanded()">{{node.id}} {{ node.title }}</button>
   } @else {
-  <span>{{ node.title }}</span>
+  <span>{{node.id}} {{ node.title }}</span>
   }
 </ng-template>
 
-<ng-template #expandedTemplate let-expandedSignal="expandedSignal">
-  <span class="material-symbols-outlined"> {{ expandedSignal() ? 'expand_less' : 'expand_more' }} </span>
+<ng-template #expandedTemplate let-expanded="expanded">
+  <span class="material-symbols-outlined"> {{ expanded() ? 'expand_less' : 'expand_more' }} </span>
 </ng-template>

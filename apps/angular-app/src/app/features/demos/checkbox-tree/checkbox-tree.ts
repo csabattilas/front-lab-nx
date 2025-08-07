@@ -30,9 +30,10 @@ export class CheckboxTreeDemoComponent implements OnInit {
           description: 'Data node. An element from the root nodes of the tree(data) node',
         },
         {
-          name: 'expanded',
+          name: 'initialExpanded',
           type: 'boolean',
-          description: 'Whether the node is expanded',
+          description:
+            'Whether the node is expanded initially. Can be used to expand only the non-leaf nodes initially',
         },
       ],
     },

@@ -26,11 +26,11 @@ export class CheckboxTreeComponent implements ControlValueAccessor, CheckboxTree
   private value = new Set<number>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public readonly selectedItemsIds = signal<Set<number>>(new Set());
+  public readonly valueSignal = signal<Set<number>>(new Set());
 
-  public writeValue(value: number[]): void {
-    this.selectedItemsIds.set(new Set(value || []));
-    this.value = new Set(value || []);
+  public writeValue(value: number[] | null | undefined): void {
+    this.value = new Set(value ?? []);
+    this.valueSignal.set(new Set(value ?? []));
   }
 
   public registerOnChange(fn: (value: number[]) => void): void {
@@ -45,14 +45,12 @@ export class CheckboxTreeComponent implements ControlValueAccessor, CheckboxTree
     this.onTouched();
   }
 
-  public selectItem(id: number): void {
-    this.value.add(id);
-    this.onTouched();
-    this.emitChange();
-  }
-
-  public unselectItem(id: number): void {
-    this.value.delete(id);
+  public updateValue(id: number, checked: boolean): void {
+    if (checked) {
+      this.value.add(id);
+    } else {
+      this.value.delete(id);
+    }
     this.onTouched();
     this.emitChange();
   }
